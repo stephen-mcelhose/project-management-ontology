@@ -8,16 +8,20 @@ tags: [meta, index]
 
 # Wiki Index
 
-| Slug                    | Title                          | Type    | Description                                                                     |
-| ----------------------- | ------------------------------ | ------- | ------------------------------------------------------------------------------- |
-| [[prov-o]]              | PROV-O                         | concept | W3C provenance ontology — Entity, Activity, Agent model                         |
-| [[doap]]                | DOAP                           | concept | Description of a Project vocabulary for software projects                       |
-| [[dublin-core]]         | Dublin Core Terms              | concept | DCTERMS metadata vocabulary for document/artifact annotation                    |
-| [[foaf]]                | FOAF                           | concept | Friend of a Friend vocabulary for agents, persons, and organizations            |
-| [[schema-org-project]]  | schema.org Project             | concept | schema.org Project class — general-purpose web vocabulary                       |
-| [[proj-ontology]]       | PROJ Ontology                  | concept | PROV-O profile for publishing structured project information (candidate base)   |
-| [[promont-ontology]]    | PROMONT Ontology               | concept | DIN 69901-grounded PM ontology from AGH University (candidate base)             |
-| [[seon-spmo]]           | SEON / SPMO                    | concept | Software Engineering Ontology Network PM module — document mapping focus        |
-| [[projectco-ontology]]  | ProjectCO v2.0                 | concept | Multi-tier core PM ontology by Olsina, Becker, Papa (candidate base)            |
-| [[pmbok-owl-ip]]        | PMBOK & OWL — IP Landscape     | concept | Why there's no open PMBOK OWL and what safe alternatives exist                 |
-| [[okf-frontmatter]]     | OKF Frontmatter                | concept | Frontmatter convention used in wiki pages and document templates                |
+Links are relative to this file (`docs/wiki/`).
+
+## Research
+
+| Page                                                          | Title                          | Description                                                                     |
+| ------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------- |
+| [PROV-O](research/prov-o.md)                                  | PROV-O                         | W3C provenance ontology — Entity, Activity, Agent model                         |
+| [DOAP](research/doap.md)                                      | DOAP                           | Description of a Project vocabulary for software projects                       |
+| [Dublin Core Terms](research/dublin-core.md)                  | Dublin Core Terms              | DCTERMS metadata vocabulary for document/artifact annotation                    |
+| [FOAF](research/foaf.md)                                      | FOAF                           | Friend of a Friend vocabulary for agents, persons, and organizations            |
+| [schema.org Project](research/schema-org-project.md)          | schema.org Project             | schema.org Project class — general-purpose web vocabulary                       |
+| [PROJ Ontology](research/proj-ontology.md)                    | PROJ Ontology                  | PROV-O profile for publishing structured project information (candidate base)   |
+| [PROMONT Ontology](research/promont-ontology.md)              | PROMONT Ontology               | DIN 69901-grounded PM ontology from AGH University (candidate base)             |
+| [SEON / SPMO](research/seon-spmo.md)                          | SEON / SPMO                    | Software Engineering Ontology Network PM module — document mapping focus        |
+| [ProjectCO v2.0](research/projectco-ontology.md)              | ProjectCO v2.0                 | Multi-tier core PM ontology by Olsina, Becker, Papa (candidate base)            |
+| [PMBOK & OWL — IP Landscape](research/pmbok-owl-ip.md)        | PMBOK & OWL — IP Landscape     | Why there's no open PMBOK OWL and what safe alternatives exist                 |
+| [OKF Frontmatter](research/okf-frontmatter.md)                | OKF Frontmatter                | Frontmatter convention used in wiki pages and document templates                |
