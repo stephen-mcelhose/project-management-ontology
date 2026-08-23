@@ -12,7 +12,7 @@ Usage: python tools/validate/validate.py
 import sys
 from pathlib import Path
 
-from rdflib import Graph, OWL, RDFS, RDF, Namespace, URIRef, exceptions
+from rdflib import OWL, RDF, RDFS, Graph, Namespace, exceptions
 
 ONTOLOGY_DIR = Path(__file__).parent.parent.parent / "ontology"
 

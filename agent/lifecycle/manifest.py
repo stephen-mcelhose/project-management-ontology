@@ -16,7 +16,6 @@ any maps_to CURIEs you introduce in instructions.yaml files.
 
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any

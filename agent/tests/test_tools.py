@@ -2,21 +2,16 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
-
-import pytest
 
 from agent.lifecycle.gates import Gate
-from agent.lifecycle.state import DocumentState, GateState, SessionState
+from agent.lifecycle.state import GateState, SessionState
 from agent.lifecycle.validator import ValidationResult
 from agent.tools.get_next_gate import get_next_gate
 from agent.tools.get_progress import get_progress
 from agent.tools.record_answer import record_answer
 from agent.tools.validate_document import validate_document
 from agent.tools.write_document import write_document
-
 
 # ── Fakes ─────────────────────────────────────────────────────────────────────
 
@@ -205,7 +200,7 @@ class TestWriteDocument:
             gate_reader=reader, document_writer=writer,
         )
         assert result["written"] is True
-        written_content = list(writer.written.values())[0]
+        written_content = next(iter(writer.written.values()))
         assert "Acme" in written_content
 
     def test_missing_required_gate_returns_error(self, tmp_path):

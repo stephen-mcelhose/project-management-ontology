@@ -15,12 +15,10 @@ from __future__ import annotations
 import asyncio
 from pathlib import Path
 
-import pytest
-
 from google.adk.models.registry import LLMRegistry
 
 from agent.agent import build_agent, build_runner
-from agent.evals.runner import EvalCase, run_case, is_subsequence
+from agent.evals.runner import EvalCase, is_subsequence, run_case
 from agent.evals.scripted_model import ScriptedModel
 from agent.lifecycle.gates import Gate
 from agent.lifecycle.state import SessionState

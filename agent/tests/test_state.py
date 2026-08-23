@@ -1,7 +1,5 @@
 """Tests for agent/lifecycle/state.py."""
 
-import json
-from pathlib import Path
 
 import pytest
 
@@ -92,7 +90,7 @@ class TestIsDocumentComplete:
 class TestIsPhaseComplete:
     def _make_manifest(self, required_ids):
         class FakeManifest:
-            completion = {"required_documents": required_ids}
+            completion = {"required_documents": required_ids}  # noqa: RUF012
         return FakeManifest()
 
     def test_false_when_document_not_written(self):

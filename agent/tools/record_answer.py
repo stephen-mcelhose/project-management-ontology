@@ -5,7 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Protocol
 
-from agent.lifecycle.gates import Gate, next_unfilled_required
+from agent.lifecycle.gates import Gate
 from agent.lifecycle.state import GateState, SessionState
 
 

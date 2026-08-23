@@ -5,7 +5,6 @@ import yaml
 
 from agent.lifecycle.gates import Gate, load_gates, next_unfilled_required
 
-
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 

@@ -1,6 +1,5 @@
 """Tests for agent/lifecycle/template.py."""
 
-import pytest
 
 from agent.lifecycle.template import check_required_placeholders, render_template
 

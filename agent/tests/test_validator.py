@@ -3,12 +3,10 @@
 Uses minimal Turtle fixtures — no network, no external files.
 """
 
-from pathlib import Path
 
 import pytest
 
 from agent.lifecycle.validator import ValidationResult, validate
-
 
 # ── Turtle fixtures ───────────────────────────────────────────────────────────
 

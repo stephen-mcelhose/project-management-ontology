@@ -9,29 +9,17 @@ No real LLM calls. No network.
 from __future__ import annotations
 
 import asyncio
-import json
 from pathlib import Path
-from typing import AsyncGenerator
-
-import pytest
-import yaml
-
-from google.adk.models.base_llm import BaseLlm
-from google.adk.models.llm_request import LlmRequest
-from google.adk.models.llm_response import LlmResponse
-from google.adk.models.registry import LLMRegistry
-from google.genai import types
 
 from agent.agent import build_agent, build_runner
 from agent.lifecycle.gates import Gate
-from agent.lifecycle.state import DocumentState, GateState, SessionState
+from agent.lifecycle.state import GateState, SessionState
 from agent.lifecycle.validator import ValidationResult
 from agent.tools.get_next_gate import get_next_gate
 from agent.tools.get_progress import get_progress
 from agent.tools.record_answer import record_answer
 from agent.tools.validate_document import validate_document
 from agent.tools.write_document import write_document
-
 
 # ── Fakes ─────────────────────────────────────────────────────────────────────
 
@@ -153,7 +141,7 @@ class TestFreshSessionToolPipeline:
         )
         assert write_result["written"] is True
         assert len(writer.written) == 1
-        content = list(writer.written.values())[0]
+        content = next(iter(writer.written.values()))
         assert "Acme Modernisation" in content
         assert "Legacy system is slow." in content
         assert "{{" not in content  # no leftover placeholders

@@ -40,10 +40,15 @@ class Settings:
         if self._project:
             return self._project
         try:
-            import google.auth  # noqa: PLC0415
+            import google.auth
+            import google.auth.exceptions
 
             _, project = google.auth.default()
             self._project = project or ""
-        except Exception:
+        except ImportError:
+            # google-auth package not available in this environment
+            self._project = ""
+        except google.auth.exceptions.GoogleAuthError:
+            # No ADC credentials configured (DefaultCredentialsError, etc.)
             self._project = ""
         return self._project

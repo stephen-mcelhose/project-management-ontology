@@ -1,8 +1,12 @@
 """Unit tests for agent/agent.py — no LLM calls, no network."""
 
-import pytest
 
-from agent.agent import build_agent, build_runner, compose_instruction, _BASE_INSTRUCTION
+from agent.agent import (
+    _BASE_INSTRUCTION,
+    build_agent,
+    build_runner,
+    compose_instruction,
+)
 from agent.lifecycle.state import SessionState
 
 

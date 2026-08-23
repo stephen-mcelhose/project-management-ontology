@@ -11,7 +11,6 @@ from agent.lifecycle.manifest import (
     load_project_manifest,
 )
 
-
 # ── Fixtures ─────────────────────────────────────────────────────────────────
 
 
@@ -64,7 +63,7 @@ class TestLoadProjectManifest:
 
     def test_returns_project_manifest_type(self, templates_dir):
         write_project_manifest(templates_dir, [{"id": "initiation"}])
-        pm = load_project_manifest(str(templates_dir))
+        assert isinstance(load_project_manifest(str(templates_dir)), ProjectManifest)
 
     def test_agent_instructions_loaded(self, templates_dir):
         data = {

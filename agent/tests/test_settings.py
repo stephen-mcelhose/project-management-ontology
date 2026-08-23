@@ -3,8 +3,6 @@
 import importlib
 import os
 
-import pytest
-
 
 def make_settings(monkeypatch, **env):
     """Instantiate Settings with a clean env."""
@@ -91,9 +89,14 @@ class TestProjectResolution:
         assert s.project == "my-proj"
 
     def test_missing_project_returns_empty_string_without_adc(self, monkeypatch):
-        # Patch google.auth.default to simulate no ADC
-        import unittest.mock as mock
-        with mock.patch("google.auth.default", side_effect=Exception("no credentials")):
+        # Patch google.auth.default to simulate no ADC credentials configured.
+        # Raises DefaultCredentialsError (a GoogleAuthError) as the real SDK does.
+        import google.auth.exceptions
+        from unittest import mock
+        with mock.patch(
+            "google.auth.default",
+            side_effect=google.auth.exceptions.DefaultCredentialsError("no credentials"),
+        ):
             s = make_settings(monkeypatch)
             assert s.project == ""
 
