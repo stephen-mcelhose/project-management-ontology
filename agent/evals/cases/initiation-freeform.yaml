@@ -53,6 +53,7 @@ expect_content_contains: []
 
 # Four consecutive record_answer calls in one agent turn is the key signal.
 expect_tool_calls:
+  - get_phase_gates
   - record_answer
   - record_answer
   - record_answer

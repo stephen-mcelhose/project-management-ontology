@@ -7,9 +7,10 @@ the correct document/gate without guessing ids.
 
 from __future__ import annotations
 
-import yaml
 from pathlib import Path
-from typing import Any, Protocol
+from typing import Protocol
+
+import yaml
 
 from agent.lifecycle.gates import Gate
 
@@ -42,6 +43,6 @@ def get_phase_gates(
             gates = gate_reader.load_gates(doc_dir)
             result[doc_id] = {g.id: g.prompt for g in gates}
         except FileNotFoundError:
-            pass
+            pass  # instructions.yaml absent — skip this document
 
     return result
