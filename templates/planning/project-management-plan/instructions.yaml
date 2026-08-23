@@ -1,0 +1,127 @@
+# instructions.yaml — Project Management Plan
+#
+# Rules for an agent helping a user fill out the Project Management Plan template.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# This is the INPUT side. The output is validated by:
+#   shapes/planning/project-management-plan.shacl.ttl
+
+version: 1
+document: project-management-plan
+
+gates:
+  - id: project_name
+    order: 1
+    prompt: "What is the name of this project? (This must match the name used in the Project Charter.)"
+    fills: "# Project Management Plan: {{project_name}}"
+    maps_to: dct:title
+    required: true
+    validation: "Must match the project name already established in the Project Charter."
+
+  - id: project_purpose_and_scope
+    order: 2
+    prompt: "Describe the project's purpose and scope as it will be governed by this plan. What will the project deliver, and what is explicitly out of scope?"
+    fills: "## Project Purpose, Scope, and Direction"
+    maps_to: dct:description
+    required: true
+    validation: "Must state both what the project will and will not deliver."
+
+  - id: project_objectives
+    order: 3
+    prompt: "What are the project objectives across the six PRINCE2 performance variables? For each, state the target: (1) Time, (2) Cost, (3) Quality, (4) Scope, (5) Benefits, (6) Risk."
+    fills: "## Project Objectives"
+    maps_to: proj:purpose
+    required: true
+    validation: "All six variables must be addressed. Vague statements like 'on time' without a date are not acceptable."
+
+  - id: project_approach
+    order: 4
+    prompt: "What is the chosen project approach — how will the project deliver its output? (e.g. build in-house, buy off-the-shelf, outsource, phased delivery, agile sprints.)"
+    fills: "## Project Approach"
+    maps_to: pm:projectApproach
+    required: true
+
+  - id: management_team_structure
+    order: 5
+    prompt: "Who is on the project management team? Provide the name, role, and key responsibilities for each person. Include: Project Sponsor, Project Manager, and any key team leads."
+    fills: "## Project Management Team Structure"
+    maps_to: pm:RoleAssignment
+    required: true
+    validation: "Every named person must have a role and a summary of their responsibilities."
+
+  - id: tolerances
+    order: 6
+    prompt: "What are the agreed tolerances for this project? State the permitted deviation for each of: Time, Cost, Quality, Scope, Benefits, Risk."
+    fills: "## Tolerances"
+    maps_to: pm:hasTolerance
+    required: true
+    guidance: "Example: 'Time: ±2 weeks per stage, Cost: ±10% of stage budget.' At least Time and Cost tolerances must be provided."
+
+  - id: planning_assumptions
+    order: 7
+    prompt: "List the key planning assumptions this plan is based on. For each: state the assumption and the consequence if it proves false."
+    fills: "## Planning Assumptions"
+    maps_to: pm:hasAssumption
+    required: true
+    guidance: "Aim for 3–6 assumptions. Each should be specific and testable."
+
+  - id: constraints
+    order: 8
+    prompt: "List the constraints that limit this project's options. Examples: fixed deadline, capped budget, regulatory requirements, resource availability."
+    fills: "## Constraints"
+    maps_to: pm:hasConstraint
+    required: true
+
+  - id: risk_management_approach
+    order: 9
+    prompt: "Summarize how risks will be managed on this project. Reference the Risk Management Plan for full procedures. Who is responsible for risk management? How often will risks be reviewed?"
+    fills: "## Risk Management Approach"
+    required: true
+    guidance: "This is a summary reference — the full approach lives in the Risk Management Plan document."
+
+  - id: quality_management_approach
+    order: 10
+    prompt: "Summarize how quality will be managed on this project. Reference the Quality Management Plan for full procedures. Who is responsible for quality?"
+    fills: "## Quality Management Approach"
+    required: true
+
+  - id: change_control_approach
+    order: 11
+    prompt: "How will changes to scope, schedule, or budget be requested, assessed, and approved? Who has authority to approve changes within tolerance? Who must escalate?"
+    fills: "## Change Control Approach"
+    required: true
+    validation: "Must specify at minimum: how to submit a change request, who reviews it, and who approves it."
+
+  - id: communication_approach
+    order: 12
+    prompt: "How will project information be communicated to stakeholders? Reference the Communication Plan for the full schedule. What are the key recurring reports?"
+    fills: "## Communication Approach"
+    required: true
+
+  - id: reporting_and_controls
+    order: 13
+    prompt: "What project controls will be used? Specify: reporting frequency, stage boundaries or review gates, and escalation paths when tolerances are exceeded."
+    fills: "## Reporting and Controls"
+    required: true
+    validation: "Must specify a minimum reporting cadence (e.g. weekly status report, monthly steering group review)."
+
+# Completion rule: all required gates must be filled before the document
+# is considered draft-complete.
+completion:
+  required_gates:
+    - project_name
+    - project_purpose_and_scope
+    - project_objectives
+    - project_approach
+    - management_team_structure
+    - tolerances
+    - planning_assumptions
+    - constraints
+    - risk_management_approach
+    - quality_management_approach
+    - change_control_approach
+    - communication_approach
+    - reporting_and_controls
+  output_status: draft
+  next_document: work-breakdown-structure

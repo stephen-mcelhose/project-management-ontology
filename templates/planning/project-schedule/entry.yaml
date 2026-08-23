@@ -1,0 +1,28 @@
+id: project-schedule
+title: Project Schedule
+phase: planning
+phase_order: 3         # time baseline; depends on WBS
+
+ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/ProjectSchedule
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Plan (schedule component)
+  url: https://prince2.wiki/management-products/baselines/plan/
+package: pkgs:PlanningPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - work-breakdown-structure # must exist before the Schedule can be produced
+required_before:
+  - resource-plan            # ResourcePlan depends on ProjectSchedule
+  - work-package-description # WorkPackageDescription depends on ProjectSchedule
+  - deliverable-status-report # DeliverableStatusReport depends on ProjectSchedule
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/planning/project-schedule.shacl.ttl

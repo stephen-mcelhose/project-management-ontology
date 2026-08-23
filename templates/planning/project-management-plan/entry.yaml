@@ -1,0 +1,29 @@
+id: project-management-plan
+title: Project Management Plan
+phase: planning
+phase_order: 1         # first planning document produced; governs all subsidiary plans
+
+ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/ProjectManagementPlan
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Project Initiation Documentation (PID)
+  url: https://prince2.wiki/management-products/baselines/project-initiation-documentation/
+package: pkgs:PlanningPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - project-charter          # must exist before the PMP can be produced
+required_before:
+  - change-request           # ChangeRequest depends on ProjectManagementPlan
+  - status-report            # StatusReport depends on ProjectManagementPlan
+  - issue-log                # IssueLog depends on ProjectManagementPlan
+  - decision-log             # DecisionLog depends on ProjectManagementPlan
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/planning/project-management-plan.shacl.ttl

@@ -1,0 +1,25 @@
+id: communication-plan
+title: Communication Plan
+phase: planning
+phase_order: 8         # outlines stakeholder information needs and communication approach
+
+ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/CommunicationPlan
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Communication Management Approach
+  url: https://prince2.wiki/management-products/baselines/management-approaches/communication/
+package: pkgs:PlanningPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - stakeholder-register     # must exist before the Communication Plan can be produced
+required_before: []          # no planning-phase documents depend on CommunicationPlan
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/planning/communication-plan.shacl.ttl

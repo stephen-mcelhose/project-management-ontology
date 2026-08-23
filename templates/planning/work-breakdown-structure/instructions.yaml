@@ -1,0 +1,82 @@
+# instructions.yaml — Work Breakdown Structure
+#
+# Rules for an agent helping a user fill out the Work Breakdown Structure template.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# This is the INPUT side. The output is validated by:
+#   shapes/planning/work-breakdown-structure.shacl.ttl
+
+version: 1
+document: work-breakdown-structure
+
+gates:
+  - id: project_name
+    order: 1
+    prompt: "What is the name of this project? (Must match the Project Charter.)"
+    fills: "# Work Breakdown Structure: {{project_name}}"
+    maps_to: dct:title
+    required: true
+
+  - id: wbs_description
+    order: 2
+    prompt: "Briefly describe the purpose of this WBS. What scope does it cover and what decomposition level is planned (e.g. project → phase → work package)?"
+    fills: "## Overview"
+    maps_to: dct:description
+    required: true
+
+  - id: decomposition_approach
+    order: 3
+    prompt: "How has the scope been decomposed? Describe the WBS levels used (e.g. Level 1 = Project, Level 2 = Deliverable, Level 3 = Work Package). Is this activity-based or deliverable/product-based?"
+    fills: "## Decomposition Approach"
+    required: true
+    guidance: "PRINCE2 recommends product-based planning: focus on what must be delivered, not on lists of activities."
+
+  - id: level_1_deliverables
+    order: 4
+    prompt: "What are the top-level deliverables or project components (Level 1 / Level 2 of the WBS)? List each deliverable with a brief description."
+    fills: "## WBS Hierarchy"
+    maps_to: pm:hasDeliverable
+    required: true
+    validation: "Every deliverable listed must be within scope as defined in the Project Charter."
+
+  - id: work_packages
+    order: 5
+    prompt: "For each top-level deliverable, list the work packages that must be completed to produce it. For each work package, state: ID, name, description, responsible team/role, and estimated effort."
+    fills: "## Work Packages"
+    maps_to: pm:hasTask
+    required: true
+    validation: "Every work package must trace back to a top-level deliverable."
+
+  - id: acceptance_criteria
+    order: 6
+    prompt: "What are the acceptance criteria for the final project product? These criteria define what 'done' looks like for the whole project output."
+    fills: "## Product Acceptance Criteria"
+    maps_to: pm:acceptanceCriteria
+    required: true
+    guidance: "Each criterion should be measurable. Avoid vague statements like 'acceptable quality'."
+
+  - id: external_dependencies
+    order: 7
+    prompt: "Are there external dependencies — deliverables or activities outside the project team's control that the WBS work packages rely on? List each with owner and expected date."
+    fills: "## External Dependencies"
+    required: false
+    guidance: "If none, state 'None identified'. External dependencies are a common source of schedule risk."
+
+  - id: lessons_incorporated
+    order: 8
+    prompt: "Have any lessons from previous similar projects been incorporated into the WBS structure or work package estimates? If yes, describe how."
+    fills: "## Lessons Incorporated"
+    required: false
+
+# Completion rule
+completion:
+  required_gates:
+    - project_name
+    - wbs_description
+    - decomposition_approach
+    - level_1_deliverables
+    - work_packages
+    - acceptance_criteria
+  output_status: draft
+  next_document: project-schedule
