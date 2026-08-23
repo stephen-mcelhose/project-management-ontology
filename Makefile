@@ -1,4 +1,4 @@
-.PHONY: validate visualize wiki-lint install clean
+.PHONY: validate validate-schemas visualize wiki-lint install clean
 
 PYTHON := python3
 VENV   := .venv
@@ -17,6 +17,11 @@ install:
 
 validate:
 	$(PY) tools/validate/validate.py
+
+# ── Artifact layer ─────────────────────────────────────────────────────────────
+
+validate-schemas:
+	$(PY) tools/validate/validate_schemas.py
 
 visualize:
 	$(PY) tools/visualize/visualize.py

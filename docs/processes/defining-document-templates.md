@@ -326,6 +326,9 @@ Rules for gates:
 - End the file with a `completion:` block naming required gates and the
   `next_document` in the dependency chain
 
+After writing the file, confirm it is schema-valid: `make validate-schemas`
+(enforced by `tools/schemas/instructions-schema.json`).
+
 ### 3c. `template.md`
 
 ```markdown
@@ -440,9 +443,12 @@ EOF
 
 # 3. Template files exist and are non-empty
 ls -la templates/{phase}/{document-name}/
+
+# 4. instructions.yaml validates against the gate schema
+make validate-schemas
 ```
 
-All three checks must pass before committing.
+All four checks must pass before committing.
 
 ---
 
@@ -497,6 +503,7 @@ Copy into the GitHub issue before starting:
 - [ ] 5.  make validate passes
 - [ ] 5.  All rdfs:seeAlso URLs return 200
 - [ ] 5.  Template files non-empty
+- [ ] 5.  make validate-schemas passes
 - [ ] 6.  Issue updated with completion record
 - [ ] 6.  Committed in correct order
 ```
