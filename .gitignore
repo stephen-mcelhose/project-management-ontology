@@ -23,6 +23,7 @@ docs/generated/
 # Agent
 .env
 output/
+.agents/issues/
 
 # OS
 .DS_Store
