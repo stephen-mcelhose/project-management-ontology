@@ -10,20 +10,25 @@
 @prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
 
 # ── Document Module ────────────────────────────────────────────────────────────
-# Defines the canonical set of project management documents grounded in
-# DIN 69901 / ISO 21500 / PRINCE2 theory.
+# Canonical set of project management documents, grounded in:
 #
-# Design:
-#   - Each class is a direct subclass of foaf:Document (no pm:Document stub)
-#   - Each class also subclasses prov:Entity for provenance tracking
-#   - pm:producedInPhase links each class to its DIN 69901 phase
-#   - pm:hasHardDependency records which documents must pre-exist
+#   ISO 21502:2020  "Project, programme and portfolio management — Guidance on
+#                    project management"  https://www.iso.org/standard/74947.html
 #
-# The 27 document classes span 5 phases:
-#   Initiation (5) → Planning (8) → Execution (4) →
-#   Monitoring & Control (5) → Closure (5)
+#   DIN 69901-2:2009  "Projektmanagementsysteme — Prozesse, Prozessmodell"
+#                      https://www.beuth.de/en/standard/din-69901-2/119948897
 #
-# See research/orderly-methodical-blueprint.md for full grounding notes.
+#   PRINCE2® 7th edition management products
+#                      https://prince2.wiki/management-products/
+#
+# Design rules:
+#   • Each class is a direct subclass of foaf:Document + prov:Entity
+#   • pm:producedInPhase links each class to its DIN 69901 phase
+#   • pm:hasHardDependency records production-order dependencies
+#   • rdfs:seeAlso points to the closest PRINCE2 management product
+#   • skos:scopeNote clarifies where the match is partial
+#
+# 27 classes across 5 phases.
 
 # ── Cross-document dependency property ────────────────────────────────────────
 
@@ -46,6 +51,8 @@
     skos:altLabel "Project Brief"@en ;
     skos:definition "Outlines the initial project idea, high-level objectives, and justification to seek formal authorization."@en ;
     :producedInPhase phases:Initiation ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/project-brief/> ;
     rdfs:isDefinedBy : .
 
 :BusinessCase
@@ -55,6 +62,8 @@
     skos:definition "Provides the financial and strategic justification for the project, comparing expected costs against anticipated benefits."@en ;
     :producedInPhase phases:Initiation ;
     :hasHardDependency :ProjectProposal ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/business-case/> ;
     rdfs:isDefinedBy : .
 
 :ProjectCharter
@@ -63,8 +72,11 @@
     rdfs:label "Project Charter"@en ;
     skos:altLabel "Project Mandate"@en ;
     skos:definition "Formally authorizes the existence of the project and grants the project manager authority to apply resources to project activities."@en ;
+    skos:scopeNote "In PRINCE2, formal authorization occurs within the Project Initiation Documentation (PID) stage rather than a standalone charter."@en ;
     :producedInPhase phases:Initiation ;
     :hasHardDependency :BusinessCase ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/project-initiation-documentation/> ;
     rdfs:isDefinedBy : .
 
 :StakeholderRegister
@@ -72,8 +84,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Stakeholder Register"@en ;
     skos:definition "Identifies all individuals and groups affected by or able to influence the project, recording their interests, involvement, and potential impact."@en ;
+    skos:scopeNote "In PRINCE2 7, stakeholder analysis is captured within the Communication Management Approach rather than a dedicated register."@en ;
     :producedInPhase phases:Initiation ;
     :hasHardDependency :ProjectCharter ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/communication-management-approach/> ;
     rdfs:isDefinedBy : .
 
 :RequirementSpecification
@@ -82,8 +97,11 @@
     rdfs:label "Requirement Specification"@en ;
     skos:altLabel "Requirements Document"@en ;
     skos:definition "Documents the high-level needs, expectations, and constraints of stakeholders that the project deliverables must satisfy."@en ;
+    skos:scopeNote "Corresponds to the PRINCE2 Project Product Description, which defines the quality expectations and acceptance criteria for the project's final output."@en ;
     :producedInPhase phases:Initiation ;
     :hasHardDependency :StakeholderRegister ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/project-product-description/> ;
     rdfs:isDefinedBy : .
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -95,8 +113,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Project Management Plan"@en ;
     skos:definition "Consolidates all subsidiary plans into a single governing document that defines how the project will be executed, monitored, and controlled."@en ;
+    skos:scopeNote "Equivalent to the PRINCE2 Project Initiation Documentation (PID), which consolidates all management approaches and the overall project plan."@en ;
     :producedInPhase phases:Planning ;
     :hasHardDependency :ProjectCharter ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/project-initiation-documentation/> ;
     rdfs:isDefinedBy : .
 
 :WorkBreakdownStructure
@@ -105,8 +126,11 @@
     rdfs:label "Work Breakdown Structure"@en ;
     skos:altLabel "WBS"@en ;
     skos:definition "Hierarchically decomposes the total project scope into manageable work packages and deliverables."@en ;
+    skos:scopeNote "DIN 69901-3 calls this the Projektstrukturplan (PSP). In PRINCE2, the equivalent is the product breakdown structure embedded within the Plan."@en ;
     :producedInPhase phases:Planning ;
     :hasHardDependency :ProjectCharter ;
+    dct:source <https://www.beuth.de/en/standard/din-69901-2/119948897> ;
+    rdfs:seeAlso <https://prince2.wiki/plan/> ;
     rdfs:isDefinedBy : .
 
 :ProjectSchedule
@@ -114,8 +138,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Project Schedule"@en ;
     skos:definition "Defines the planned sequence of project activities, their durations, and key milestones, forming the project time baseline."@en ;
+    skos:scopeNote "Corresponds to the schedule component of the PRINCE2 Plan management product."@en ;
     :producedInPhase phases:Planning ;
     :hasHardDependency :WorkBreakdownStructure ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/plan/> ;
     rdfs:isDefinedBy : .
 
 :ResourcePlan
@@ -123,8 +150,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Resource Plan"@en ;
     skos:definition "Identifies the human, material, and financial resources required to complete project activities and their planned allocation."@en ;
+    skos:scopeNote "In PRINCE2, resource requirements are embedded within the Plan management product rather than a standalone document."@en ;
     :producedInPhase phases:Planning ;
     :hasHardDependency :ProjectSchedule ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/plan/> ;
     rdfs:isDefinedBy : .
 
 :CostEstimate
@@ -133,8 +163,11 @@
     rdfs:label "Cost Estimate"@en ;
     skos:altLabel "Project Budget"@en ;
     skos:definition "Determines the total approved budget by aggregating estimated costs of individual activities and resources."@en ;
+    skos:scopeNote "Cost information appears in both the PRINCE2 Business Case (benefit/cost ratio) and the Plan (cost baseline). Modelled here as a separate document per ISO 21502."@en ;
     :producedInPhase phases:Planning ;
     :hasHardDependency :ResourcePlan ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/business-case/> ;
     rdfs:isDefinedBy : .
 
 :RiskManagementPlan
@@ -142,8 +175,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Risk Management Plan"@en ;
     skos:definition "Defines how risks will be identified, analyzed, prioritized, and managed throughout the project lifecycle."@en ;
+    skos:scopeNote "Equivalent to the PRINCE2 Risk Management Approach, one of the nine management approaches in PRINCE2 7."@en ;
     :producedInPhase phases:Planning ;
     :hasHardDependency :ProjectCharter ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/risk-management-approach/> ;
     rdfs:isDefinedBy : .
 
 :QualityManagementPlan
@@ -151,8 +187,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Quality Management Plan"@en ;
     skos:definition "Establishes the quality standards, criteria, and assurance activities that project deliverables must satisfy."@en ;
+    skos:scopeNote "Equivalent to the PRINCE2 Quality Management Approach."@en ;
     :producedInPhase phases:Planning ;
     :hasHardDependency :RequirementSpecification ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/quality-management-approach/> ;
     rdfs:isDefinedBy : .
 
 :CommunicationPlan
@@ -160,8 +199,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Communication Plan"@en ;
     skos:definition "Outlines the information needs of stakeholders and the methods, frequency, and responsibilities for distributing project information."@en ;
+    skos:scopeNote "Equivalent to the PRINCE2 Communication Management Approach."@en ;
     :producedInPhase phases:Planning ;
     :hasHardDependency :StakeholderRegister ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/communication-management-approach/> ;
     rdfs:isDefinedBy : .
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -173,9 +215,12 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Work Package Description"@en ;
     skos:definition "Provides detailed instructions, acceptance criteria, and resource information for team members performing a specific work package."@en ;
+    skos:scopeNote "Directly equivalent to the PRINCE2 Work Package management product."@en ;
     :producedInPhase phases:Execution ;
     :hasHardDependency :WorkBreakdownStructure ;
     :hasHardDependency :ProjectSchedule ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/work-package/> ;
     rdfs:isDefinedBy : .
 
 :DeliverableStatusReport
@@ -183,8 +228,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Deliverable Status Report"@en ;
     skos:definition "Tracks the progress and completion status of individual project deliverables against the planned schedule."@en ;
+    skos:scopeNote "Corresponds to the PRINCE2 Checkpoint Report, produced by teams to report progress on their work packages."@en ;
     :producedInPhase phases:Execution ;
     :hasHardDependency :ProjectSchedule ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/checkpoint-report/> ;
     rdfs:isDefinedBy : .
 
 :ChangeRequest
@@ -192,8 +240,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Change Request"@en ;
     skos:definition "Documents a formal proposal to modify any aspect of the project baseline — scope, schedule, budget, or quality."@en ;
+    skos:scopeNote "Corresponds to the PRINCE2 Issue Report when the issue is a request for change (RFC type)."@en ;
     :producedInPhase phases:Execution ;
     :hasHardDependency :ProjectManagementPlan ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/issue-report/> ;
     rdfs:isDefinedBy : .
 
 :QualityAuditReport
@@ -201,8 +252,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Quality Audit Report"@en ;
     skos:definition "Documents the results of structured quality checks confirming that deliverables and processes meet the defined quality standards."@en ;
+    skos:scopeNote "In PRINCE2, quality review results are recorded as entries in the Quality Register."@en ;
     :producedInPhase phases:Execution ;
     :hasHardDependency :QualityManagementPlan ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/quality-register/> ;
     rdfs:isDefinedBy : .
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -215,8 +269,11 @@
     rdfs:label "Status Report"@en ;
     skos:altLabel "Progress Report"@en ;
     skos:definition "Summarizes current project performance against the approved baseline across schedule, cost, and scope dimensions."@en ;
+    skos:scopeNote "Equivalent to the PRINCE2 Highlight Report, produced periodically by the project manager for the project board."@en ;
     :producedInPhase phases:MonitoringControl ;
     :hasHardDependency :ProjectManagementPlan ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/highlight-report/> ;
     rdfs:isDefinedBy : .
 
 :RiskRegister
@@ -224,8 +281,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Risk Register"@en ;
     skos:definition "Logs all identified risks with their current status, probability, impact, and the effectiveness of applied response strategies."@en ;
+    skos:scopeNote "Directly equivalent to the PRINCE2 Risk Register."@en ;
     :producedInPhase phases:MonitoringControl ;
     :hasHardDependency :RiskManagementPlan ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/risk-register/> ;
     rdfs:isDefinedBy : .
 
 :IssueLog
@@ -233,8 +293,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Issue Log"@en ;
     skos:definition "Records problems that have occurred during the project and tracks their resolution status and assigned owner."@en ;
+    skos:scopeNote "Equivalent to the PRINCE2 Issue Register."@en ;
     :producedInPhase phases:MonitoringControl ;
     :hasHardDependency :ProjectManagementPlan ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/issue-register/> ;
     rdfs:isDefinedBy : .
 
 :DecisionLog
@@ -242,8 +305,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Decision Log"@en ;
     skos:definition "Documents key decisions made during the project, including the rationale and alternatives considered, to ensure transparency and accountability."@en ;
+    skos:scopeNote "Partially covered by the PRINCE2 Daily Log, which captures informal decisions and actions. A formal Decision Log is common in ISO 21502 practice but not a named PRINCE2 product."@en ;
     :producedInPhase phases:MonitoringControl ;
     :hasHardDependency :ProjectManagementPlan ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/daily-log/> ;
     rdfs:isDefinedBy : .
 
 :ChangeLog
@@ -251,8 +317,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Change Log"@en ;
     skos:definition "Tracks the status of all change requests from initial submission through to approval or rejection."@en ;
+    skos:scopeNote "In PRINCE2, change tracking is handled via the Issue Register combined with the Issue Management Approach; a separate Change Log is common in ISO 21502 practice."@en ;
     :producedInPhase phases:MonitoringControl ;
     :hasHardDependency :ChangeRequest ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/issue-management-approach/> ;
     rdfs:isDefinedBy : .
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -265,8 +334,11 @@
     rdfs:label "Handover Document"@en ;
     skos:altLabel "Handover Documentation"@en ;
     skos:definition "Provides all information necessary for the receiving party to operate, maintain, and support the project deliverables after closure."@en ;
+    skos:scopeNote "In PRINCE2, handover information is captured within the End Project Report. A standalone handover document is common in ISO 21502 and DIN 69901 practice."@en ;
     :producedInPhase phases:Closure ;
     :hasHardDependency :DeliverableStatusReport ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/end-project-report/> ;
     rdfs:isDefinedBy : .
 
 :FinalProjectReport
@@ -274,8 +346,11 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Final Project Report"@en ;
     skos:definition "Summarizes project performance, achievement of objectives, and the final status of all deliverables, milestones, and baselines."@en ;
+    skos:scopeNote "Directly equivalent to the PRINCE2 End Project Report."@en ;
     :producedInPhase phases:Closure ;
     :hasHardDependency :StatusReport ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/end-project-report/> ;
     rdfs:isDefinedBy : .
 
 :LessonsLearnedReport
@@ -283,9 +358,12 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Lessons Learned Report"@en ;
     skos:definition "Captures knowledge and insights gained during the project — what worked, what did not, and recommendations for improving future project performance."@en ;
+    skos:scopeNote "Equivalent to the PRINCE2 Lessons Report, produced from entries in the Lessons Log."@en ;
     :producedInPhase phases:Closure ;
     :hasHardDependency :IssueLog ;
     :hasHardDependency :RiskRegister ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/lessons-report/> ;
     rdfs:isDefinedBy : .
 
 :ArchiveIndex
@@ -293,9 +371,12 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Archive Index"@en ;
     skos:definition "Lists all project documents and records formally stored for long-term retention, serving as the definitive index of the project archive."@en ;
+    skos:scopeNote "Closest PRINCE2 equivalent is the Product Register (formerly Configuration Item Records), which tracks all project products. The Archive Index is broader, covering all documentation."@en ;
     rdfs:comment "Depends on all produced project documents. This all-documents dependency is expressed narratively rather than enumerated as individual triples."@en ;
     :producedInPhase phases:Closure ;
     :hasHardDependency :FinalProjectReport ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/product-register/> ;
     rdfs:isDefinedBy : .
 
 :ProjectClosureStatement
@@ -303,6 +384,9 @@
     rdfs:subClassOf foaf:Document, prov:Entity ;
     rdfs:label "Project Closure Statement"@en ;
     skos:definition "Formally confirms that all project activities are complete, deliverables have been accepted, and the project is officially closed."@en ;
+    skos:scopeNote "In PRINCE2, formal closure is confirmed via the End Project Report accepted by the project board. A standalone closure statement is common in ISO 21502 and DIN 69901 practice."@en ;
     :producedInPhase phases:Closure ;
     :hasHardDependency :FinalProjectReport ;
+    dct:source <https://www.iso.org/standard/74947.html> ;
+    rdfs:seeAlso <https://prince2.wiki/end-project-report/> ;
     rdfs:isDefinedBy : .
