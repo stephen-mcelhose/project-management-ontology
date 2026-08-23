@@ -37,6 +37,8 @@ gates:
     maps_to: pm:RoleAssignment
     required: true
     validation: "Must list at least 3 distinct stakeholders. Avoid vague entries like 'management' without specifying which team or person."
+    validation_rules:
+      min_items: 3
 
   - id: influence_impact
     order: 3

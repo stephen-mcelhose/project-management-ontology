@@ -43,6 +43,8 @@ gates:
     maps_to: pm:likelihood
     required: true
     validation: "Must define at least 3 levels with percentage ranges or descriptors."
+    validation_rules:
+      min_items: 3
 
   - id: impact_scale
     order: 5
@@ -52,6 +54,8 @@ gates:
     maps_to: pm:impact
     required: true
     validation: "Must define at least 3 levels with clear descriptors."
+    validation_rules:
+      min_items: 3
 
   - id: risk_tolerance
     order: 6

@@ -53,6 +53,8 @@ gates:
     maps_to: pm:hasMilestone
     required: true
     validation: "At minimum, provide: project start, end of each major stage/phase, and project completion milestones."
+    validation_rules:
+      min_items: 3
 
   - id: activity_sequence
     order: 6

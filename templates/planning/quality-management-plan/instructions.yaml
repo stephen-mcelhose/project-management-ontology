@@ -43,6 +43,8 @@ gates:
     fills: "## Quality Management Procedures"
     required: true
     validation: "All three aspects (planning, control, assurance) must be addressed."
+    validation_rules:
+      required_parts: [planning, control, assurance]
 
   - id: acceptance_criteria
     order: 5

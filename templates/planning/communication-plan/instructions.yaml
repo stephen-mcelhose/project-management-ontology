@@ -35,6 +35,8 @@ gates:
     maps_to: pm:RoleAssignment
     required: true
     validation: "All stakeholders from the Stakeholder Register must appear. Engagement levels must be assigned."
+    validation_rules:
+      references_document: stakeholder-register
 
   - id: communication_schedule
     order: 4

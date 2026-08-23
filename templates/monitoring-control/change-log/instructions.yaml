@@ -25,6 +25,8 @@ gates:
     maps_to: dct:identifier
     required: true
     validation: "Must match the ID from the originating Change Request document."
+    validation_rules:
+      references_document: change-request
 
   - id: change_request_ref
     order: 2

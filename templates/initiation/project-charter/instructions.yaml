@@ -126,6 +126,8 @@ gates:
     maps_to: pm:approvedBy
     required: true
     validation: "Must name a specific person or board with authority to approve, not a department name alone."
+    validation_rules:
+      named_individual: true
 
 # Completion rule: all required gates must be filled before the document
 # is considered draft-complete. The agent MUST NOT mark the document complete
