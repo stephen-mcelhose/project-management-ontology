@@ -35,6 +35,8 @@ gates:
     maps_to: pm:usesResource
     required: true
     validation: "Must cover all roles identified in the WBS work packages. Named individuals or role types are both acceptable."
+    validation_rules:
+      references_document: work-breakdown-structure
 
   - id: skill_requirements
     order: 4

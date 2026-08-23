@@ -37,6 +37,8 @@ gates:
     maps_to: pm:RoleAssignment
     required: true
     validation: "Must be a named person or team, not a generic role like 'Development Team'."
+    validation_rules:
+      named_individual: true
 
   - id: date_of_agreement
     order: 4

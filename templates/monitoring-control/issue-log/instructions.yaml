@@ -25,6 +25,8 @@ gates:
     maps_to: dct:identifier
     required: true
     validation: "Must follow a consistent scheme (e.g. ISS-NNN). Never reuse an ID, even for closed issues."
+    validation_rules:
+      unique: true
 
   - id: issue_type
     order: 2
@@ -34,6 +36,8 @@ gates:
     maps_to: dct:description
     required: true
     validation: "Must be one of the three PRINCE2 issue types. 'Problem or Concern' covers informal problems that don't fit RFC or Off-Specification."
+    validation_rules:
+      allowed_values: [Request for Change, Off-Specification, Problem or Concern]
 
   - id: date_raised
     order: 3

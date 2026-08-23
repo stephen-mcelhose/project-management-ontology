@@ -21,6 +21,8 @@ gates:
     maps_to: dct:identifier
     required: true
     validation: "Must be a unique identifier. Check the Issue Register for the next available number. Duplicate IDs cause traceability failures."
+    validation_rules:
+      unique: true
 
   - id: issue_type
     order: 2
@@ -30,6 +32,8 @@ gates:
     maps_to: dct:description
     required: true
     validation: "Must be one of the three PRINCE2 issue types. This classification determines who has authority to approve the resolution."
+    validation_rules:
+      allowed_values: [Request for Change, Off-Specification, Problem or Concern]
 
   - id: date_raised_and_by
     order: 3
@@ -116,6 +120,8 @@ gates:
     maps_to: dct:description
     required: true
     validation: "Must include at least two options. The recommended option must be clearly identified. 'Do nothing' must always be evaluated as a baseline option."
+    validation_rules:
+      min_items: 2
 
   - id: decision
     order: 13

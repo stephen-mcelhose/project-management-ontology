@@ -21,6 +21,8 @@ gates:
     maps_to: dct:identifier
     required: true
     validation: "Must be a unique identifier consistent with the Quality Register numbering scheme."
+    validation_rules:
+      unique: true
 
   - id: product_id_and_name
     order: 2
@@ -30,6 +32,8 @@ gates:
     maps_to: pm:hasDeliverable
     required: true
     validation: "Product ID must correspond to a real deliverable in the project's Product Register."
+    validation_rules:
+      references_document: product-register
 
   - id: quality_method
     order: 3
@@ -39,6 +43,8 @@ gates:
     maps_to: pm:projectApproach
     required: true
     validation: "Must match a method defined in the Quality Management Plan for this product type."
+    validation_rules:
+      references_document: quality-management-plan
 
   - id: producer
     order: 4
@@ -118,6 +124,8 @@ gates:
     maps_to: pm:deliverableStatus
     required: true
     validation: "Must be one of: Pass, Fail, or Conditional Pass. Conditional Pass means the product can proceed subject to specified corrective actions being completed and re-verified."
+    validation_rules:
+      allowed_values: [Pass, Fail, Conditional Pass]
 
   - id: actions
     order: 13

@@ -37,6 +37,8 @@ gates:
     maps_to: proj:purpose
     required: true
     validation: "All six variables must be addressed. Vague statements like 'on time' without a date are not acceptable."
+    validation_rules:
+      required_parts: [time, cost, quality, scope, benefits, risk]
 
   - id: project_approach
     order: 4

@@ -69,6 +69,8 @@ gates:
     maps_to: pm:hasSponsor
     required: true
     validation: "Must be a named person, not a team, department, or job title alone."
+    validation_rules:
+      named_individual: true
 
   - id: stakeholders
     order: 8

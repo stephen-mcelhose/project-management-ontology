@@ -96,6 +96,8 @@ gates:
     maps_to: pm:acceptanceResponsibility
     required: true
     validation: "Must be a named role or individual, not 'the business' alone."
+    validation_rules:
+      named_individual: true
 
 # Completion rule: all required gates must be filled before the document
 # is considered draft-complete. The agent MUST NOT mark the document complete

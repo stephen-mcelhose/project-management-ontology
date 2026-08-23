@@ -25,6 +25,8 @@ gates:
     maps_to: dct:identifier
     required: true
     validation: "Must follow a consistent scheme (e.g. RISK-NNN). Never reuse an ID, even for closed risks."
+    validation_rules:
+      unique: true
 
   - id: risk_type
     order: 2
@@ -34,6 +36,8 @@ gates:
     maps_to: dct:description
     required: true
     validation: "Must be either 'Threat' or 'Opportunity'."
+    validation_rules:
+      allowed_values: [Threat, Opportunity]
 
   - id: risk_description
     order: 3
@@ -43,6 +47,8 @@ gates:
     maps_to: dct:description
     required: true
     validation: "All three parts (cause, event, impact) must be present. Avoid vague statements like 'there might be delays'."
+    validation_rules:
+      required_parts: [cause, event, impact]
 
   - id: probability
     order: 4
@@ -88,6 +94,8 @@ gates:
     maps_to: pm:riskOwner
     required: true
     validation: "Must be a named individual. Risk ownership cannot be collective."
+    validation_rules:
+      named_individual: true
 
   - id: response_strategy
     order: 9

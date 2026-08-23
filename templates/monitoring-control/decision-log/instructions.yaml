@@ -25,6 +25,8 @@ gates:
     maps_to: dct:identifier
     required: true
     validation: "Must follow a consistent scheme (e.g. DEC-NNN). Never reuse an ID."
+    validation_rules:
+      unique: true
 
   - id: decision_date
     order: 2
