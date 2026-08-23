@@ -50,7 +50,10 @@ or question in a PM document. A gate specifies:
 - `fills` — which template section receives the answer
 - `maps_to` — the ontology property the answer asserts as an RDF triple
 - `required` — whether the document is incomplete without it
-- `validation` / `guidance` — acceptance rules for the answer
+- `type` — the rendering shape of the gate's output; one of seven values (`string`, `date`, `identifier`, `prose`, `list`, `table`, `section`) — see [ADR-004](../adrs/adr-004-gate-output-type-system.md)
+- `deferred_value` — literal text written when a `required: false` gate is skipped; mandatory on all optional gates
+- `validation` / `guidance` — acceptance rules for the answer (prose, LLM-readable)
+- `validation_rules` — optional machine-readable constraint block alongside `validation:`; closed key vocabulary — see [ADR-005](../adrs/adr-005-gate-validation-rules.md)
 
 Gates are worked in `order` sequence. A document is complete when all
 `required: true` gates in its `completion.required_gates` list are filled.
@@ -248,5 +251,8 @@ A template pack is the primary deliverable of each template issue (#8–#34).
 
 - ADR-002: `docs/adrs/adr-002-phase-agent-prompts.md`
 - ADR-003: `docs/adrs/adr-003-phase-manifest.md`
+- ADR-004: `docs/adrs/adr-004-gate-output-type-system.md`
+- ADR-005: `docs/adrs/adr-005-gate-validation-rules.md`
 - Process guide: `docs/processes/defining-document-templates.md`
 - GAN review session — 2026-08-23
+- M3 Artifact Hygiene session — 2026-08-24
