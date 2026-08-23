@@ -16,18 +16,18 @@ Each package delivers one template pack per PM document in that phase:
 | Planning Package              |     8     |  8   | ✅ Complete    |
 | Execution Package             |     4     |  4   | ✅ Complete    |
 | Monitoring & Control Package  |     6     |  6   | ✅ Complete    |
-| **Closure Package**           |   **5**   |  0   | 🔄 In progress |
-| **Total**                     |  **27**   |  22  |                |
+| **Closure Package**           |   **5**   |  5   | ✅ Complete    |
+| **Total**                     |  **27**   |  27  |                |
 
 ### Closure Package detail
 
-| #   | Document                  | Branch               | Status  |
-| --- | ------------------------- | -------------------- | ------- |
-| 30  | Handover Document         | feat/closure-package | ⏳ Open |
-| 31  | Final Project Report      | feat/closure-package | ⏳ Open |
-| 32  | Lessons Learned Report    | feat/closure-package | ⏳ Open |
-| 33  | Archive Index             | feat/closure-package | ⏳ Open |
-| 34  | Project Closure Statement | feat/closure-package | ⏳ Open |
+| #   | Document                  | Status       |
+| --- | ------------------------- | ------------ |
+| 30  | Handover Document         | ✅ Complete  |
+| 31  | Final Project Report      | ✅ Complete  |
+| 32  | Lessons Learned Report    | ✅ Complete  |
+| 33  | Archive Index             | ✅ Complete  |
+| 34  | Project Closure Statement | ✅ Complete  |
 
 ---
 
@@ -36,9 +36,9 @@ Each package delivers one template pack per PM document in that phase:
 | Milestone                       | Issues | Done | Status          | Blocked by           |
 | ------------------------------- | :----: | :--: | --------------- | -------------------- |
 | M3 · Artifact Hygiene           |   9    |  0   | ⏳ Not started  | —                    |
-| M4 · Phase Manifests & Prompts  |   5    |  4   | 🔄 In progress  | Closure Package (#43)|
-| M5 · ADK Agent                  |   1    |  0   | ⏳ Not started  | M3, M4               |
-| M6 · Orchestrator               |   1    |  0   | ⏳ Not started  | M5                   |
+| M4 · Phase Manifests & Prompts  |   5    |  5   | ✅ Complete     | —                    |
+| M5 · Process Agent              |   1    |  0   | ⏳ Not started  | M3, M4               |
+| M6 · Process Agent: Control & State |  1  |  0   | ⏳ Not started  | M5                   |
 | M7 · Skills & Automation        |   3    |  0   | ⏳ Not started  | —                    |
 
 ### M3 · Artifact Hygiene
@@ -62,20 +62,20 @@ Each package delivers one template pack per PM document in that phase:
 | 40  | Manifest: Planning phase                           | ✅ Closed   |
 | 41  | Manifest: Execution phase                          | ✅ Closed   |
 | 42  | Manifest: Monitoring & Control phase               | ✅ Closed   |
-| 43  | Manifest: Closure phase                            | ⏳ Open     |
+| 43  | Manifest: Closure phase                            | ✅ Closed   |
 | 48  | Agent prompts for all phases                       | ✅ Closed   |
 
-### M5 · ADK Agent
+### M5 · Process Agent
 
-| #   | Issue                                              | Status  |
-| --- | -------------------------------------------------- | ------- |
-| 39  | Build Python ADK agent for OKF wiki + template Q&A | ⏳ Open |
+| #   | Issue                                                              | Status  |
+| --- | ------------------------------------------------------------------ | ------- |
+| 39  | Process agent: drive and transition artifacts via ontology-encoded lifecycle | ⏳ Open |
 
-### M6 · Orchestrator
+### M6 · Process Agent: Control & State
 
-| #   | Issue                                                  | Status  |
-| --- | ------------------------------------------------------ | ------- |
-| 49  | Orchestrator: multi-agent coordination across lifecycle | ⏳ Open |
+| #   | Issue                                                                          | Status  |
+| --- | ------------------------------------------------------------------------------ | ------- |
+| 49  | Process agent: human-in-the-loop review, out-of-order navigation, multi-project state | ⏳ Open |
 
 ### M7 · Skills & Automation
 
@@ -93,23 +93,23 @@ Developed from patterns discovered in the Closure Package.
 ## Sequencing
 
 ```
-Closure Package ──────────────────────────────────┐
-  └── M4 (Closure manifest #43) ─────────────────┤
-                                                  ▼
-                                   M3 · Artifact Hygiene
-                                          │
-                                          ▼
-                                   M5 · ADK Agent
-                                          │
-                                          ▼
-                                   M6 · Orchestrator
+✅ Closure Package
+✅ M4 · Phase Manifests & Prompts
+         │
+         ▼
+M3 · Artifact Hygiene
+         │
+         ▼
+M5 · Process Agent
+         │
+         ▼
+M6 · Process Agent: Control & State
 
 M7 · Skills & Automation  (parallel — no hard dependency)
 ```
 
 M7 can run in parallel with any other milestone.
-M3 and M4 can overlap once the Closure Package PR is merged.
-M5 depends on M3 (interface contract) and M4 (manifests complete).
+M5 depends on M3 (interface contract) and M4 (manifests complete) — both now done.
 M6 depends on M5.
 
 ---
