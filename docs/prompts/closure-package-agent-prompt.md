@@ -1,3 +1,11 @@
+---
+type: runbook
+title: Closure Package Agent Prompt
+description: Agent instructions for building the Closure Package template packs (Issues #30–#34).
+timestamp: 2026-08-23T00:00:00Z
+tags: [prompt, agent, closure]
+---
+
 ## Task: Build Closure Package template packs — Issues #30–#34
 
 **Repo:** `/Users/stephen.mcelhose.ext/repos/project-management-ontology`

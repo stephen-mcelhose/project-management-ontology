@@ -1,3 +1,11 @@
+---
+type: runbook
+title: Planning Package Agent Prompt
+description: Agent instructions for building the Planning Package template packs (Issues #13–#20).
+timestamp: 2026-08-23T00:00:00Z
+tags: [prompt, agent, planning]
+---
+
 ## Task: Build Planning Package template packs — Issues #13–#20
 
 **Repo:** `/Users/stephen.mcelhose.ext/repos/project-management-ontology`
