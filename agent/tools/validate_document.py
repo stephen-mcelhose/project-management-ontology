@@ -5,8 +5,8 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Protocol
 
-from agent.lifecycle.validator import ValidationResult
 from agent.lifecycle.state import SessionState
+from agent.lifecycle.validator import ValidationResult
 
 
 class ValidatorProtocol(Protocol):

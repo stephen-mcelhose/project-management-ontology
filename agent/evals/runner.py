@@ -24,19 +24,17 @@ Usage (eval, real model)::
 
 from __future__ import annotations
 
-import asyncio
 from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
-from google.adk.runners import InMemoryRunner
 from google.adk.agents import LlmAgent
 from google.adk.models.llm_response import LlmResponse
+from google.adk.runners import InMemoryRunner
 from google.genai import types
 
+from agent.evals.scripted_model import text_response, tool_response
 from agent.lifecycle.state import SessionState
-from agent.evals.scripted_model import tool_response, text_response
-
 
 # ── Data model ────────────────────────────────────────────────────────────────
 

@@ -33,8 +33,11 @@ def validate(document_path: Path, shape_path: Path) -> ValidationResult:
             messages=[f"Document file not found: {document_path}"],
         )
     try:
-        import pyshacl  # noqa: PLC0415
+        import pyshacl
+    except ImportError as exc:
+        return ValidationResult(passed=False, messages=[f"pyshacl is not installed: {exc}"])
 
+    try:
         conforms, _, results_text = pyshacl.validate(
             str(document_path),
             shacl_graph=str(shape_path),
@@ -50,5 +53,5 @@ def validate(document_path: Path, shape_path: Path) -> ValidationResult:
             if line.strip() and not line.startswith("@")
         ]
         return ValidationResult(passed=False, messages=lines or [results_text])
-    except Exception as exc:
+    except (OSError, ValueError, RuntimeError) as exc:
         return ValidationResult(passed=False, messages=[str(exc)])

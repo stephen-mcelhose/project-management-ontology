@@ -92,7 +92,7 @@ def main(argv=None) -> None:
 
     # Settings must be imported here (not at module level) so env vars set
     # by tests via monkeypatch are picked up at instantiation time.
-    from agent.settings import Settings  # noqa: PLC0415
+    from agent.settings import Settings
     settings = Settings()
 
     if not settings.use_vertexai and not settings.api_key:
@@ -113,9 +113,9 @@ def main(argv=None) -> None:
     print(f"Templates:    {args.templates_dir}", file=sys.stderr)
     print(f"Output:       {output_dir}", file=sys.stderr)
 
-    from agent.lifecycle.state import SessionState  # noqa: PLC0415
-    from agent.lifecycle.manifest import load_project_manifest  # noqa: PLC0415
-    from agent.agent import build_agent, build_runner  # noqa: PLC0415
+    from agent.agent import build_agent, build_runner
+    from agent.lifecycle.manifest import load_project_manifest
+    from agent.lifecycle.state import SessionState
 
     session = SessionState.load(session_path)
 

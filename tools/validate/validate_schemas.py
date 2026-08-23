@@ -50,7 +50,7 @@ def _load_ontology() -> tuple[rdflib.Graph, dict[str, str]]:
     for ttl in sorted(ONTOLOGY_DIR.rglob("*.ttl")):
         try:
             graph.parse(str(ttl), format="turtle")
-        except Exception as exc:
+        except (OSError, rdflib.exceptions.ParserError) as exc:
             print(f"  ⚠ Could not parse {ttl.relative_to(REPO_ROOT)}: {exc}", file=sys.stderr)
 
     return graph, curie_prefixes
