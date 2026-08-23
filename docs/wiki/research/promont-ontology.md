@@ -20,7 +20,9 @@ Unlike ontologies that derive from PMBOK (which is IP-restricted — see [PMBOK 
 - Resource and role concepts
 - Schedule and milestone management
 
-This makes PROMONT legally unambiguous to build upon.
+This makes PROMONT safe to model against — DIN 69901 process group concepts are
+not tied to any proprietary framework, unlike the PMBOK Guide (see
+[PMBOK & OWL — IP Landscape](pmbok-owl-ip.md)).
 
 ## Key Characteristics
 
@@ -29,7 +31,7 @@ This makes PROMONT legally unambiguous to build upon.
 | Developer       | AGH University, Krakow (Dept. Applied Computer Science)    |
 | Standard basis  | DIN 69901 (German PM standard)                             |
 | Primary URL     | https://ai.ia.agh.edu.pl                                   |
-| License         | Open source                                                |
+| License         | Academically available (no formal open-source license)     |
 | Format          | OWL                                                        |
 
 ## Design Focus

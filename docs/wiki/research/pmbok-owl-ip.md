@@ -13,13 +13,22 @@ tags: [pmbok, pmi, ip, ontology, landscape]
 
 The **Project Management Institute (PMI)** treats the PMBOK Guide text as highly protected proprietary intellectual property. This means there is no officially sanctioned, PMI-endorsed OWL or Turtle ontology of PMBOK concepts available for open use — unlike comparable domains:
 
-| Domain            | Open Ontology          | Status              |
-| ----------------- | ---------------------- | ------------------- |
-| Medical           | SNOMED CT, ICD-10      | ✅ Open / licensed  |
-| Finance           | FIBO                   | ✅ Open             |
-| Project Mgmt      | PMBOK                  | ❌ Proprietary text |
+| Domain            | Open Ontology          | Status                                                   |
+| ----------------- | ---------------------- | -------------------------------------------------------- |
+| Medical           | SNOMED CT, ICD-10      | ⚠️ Member-country licensed (SNOMED CT); ICD-10 open      |
+| Finance           | FIBO                   | ✅ Open (CC BY 4.0)                                      |
+| Project Mgmt      | PMBOK                  | ❌ Proprietary text                                      |
 
-This has been noted explicitly in ontology research circles. Maria-Esther Vidal and others (including commentary on keet.wordpress.com) documented attempts to formalize PMBOK 5th edition in OWL that ran into IP barriers — the *process descriptions* and *knowledge area definitions* are PMI's IP even if the underlying *concepts* (task, risk, milestone) are not.
+> **SNOMED CT licensing note**: SNOMED CT is managed by SNOMED International. Organizations
+> in member countries (40+) access it freely via National Release Centres; users
+> outside member countries require a commercial licence. It is not unconditionally open.
+> See [snomed.org/licensing](https://www.snomed.org/licensing).
+
+This has been noted explicitly in ontology research circles. Researchers
+(including commentary previously at keet.wordpress.com — now offline; see
+sources) documented attempts to formalize PMBOK 5th edition in OWL that ran
+into IP barriers — the *process descriptions* and *knowledge area definitions*
+are PMI's IP even if the underlying *concepts* (task, risk, milestone) are not.
 
 ## What PMI Protects
 
@@ -48,9 +57,9 @@ Several open, non-IP-restricted standards provide the same conceptual coverage a
 | Standard        | Body    | Key strengths                                    | OWL available |
 | --------------- | ------- | ------------------------------------------------ | ------------- |
 | **DIN 69901**   | DIN     | Comprehensive German PM standard; basis for [PROMONT Ontology](promont-ontology.md) | Via PROMONT |
-| **ISO 21500**   | ISO     | International PM standard aligned with PMBOK    | No official OWL |
+| **ISO 21502**   | ISO     | Project management guidance (successor to ISO 21500:2012); used in this project's templates | No official OWL |
 | **PM²**         | EU      | European Commission open PM methodology          | No official OWL |
-| **PRINCE2**     | Axelos  | UK process-based PM; partially open concepts     | No official OWL |
+| **PRINCE2**     | PeopleCert (formerly Axelos, acquired 2021) | UK process-based PM; partially open concepts | No official OWL |
 | **Scrum Guide** | Scrum.org | Open source; process framework                | No official OWL |
 
 ## Existing Academic Approaches

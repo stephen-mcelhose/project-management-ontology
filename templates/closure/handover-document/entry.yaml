@@ -1,0 +1,30 @@
+id: handover-document
+title: Handover Document
+phase: closure
+phase_order: 1         # first document produced in the closure phase
+
+ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/HandoverDocument
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: End Project Report (handover section)
+  url: https://prince2.wiki/management-products/reports/end-project-report/
+package: pkgs:ClosurePackage
+
+# Scope note: In PRINCE2, handover information is contained within the End Project Report.
+# A standalone Handover Document is the ISO 21502 / DIN 69901 practice and is
+# commonly required by receiving operational teams.
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - deliverable-status-report   # cross-phase: from Execution
+required_before:
+  - final-project-report        # FinalProjectReport depends on handover being complete
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/closure/handover-document.shacl.ttl

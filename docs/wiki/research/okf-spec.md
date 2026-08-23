@@ -66,6 +66,7 @@ In practice:
 - `dcterms:description` maps to OKF `description`
 - `dcterms:created` maps to OKF `timestamp`
 - `dcterms:subject` maps to OKF `tags`
+- `foaf:primaryTopic` maps to OKF `resource` (no direct DCTERMS equivalent; see note in [OKF frontmatter](okf-frontmatter.md))
 
 (See [OKF frontmatter](okf-frontmatter.md) for the full mapping table.)
 

@@ -42,7 +42,17 @@ In a project management ontology, PROV-O is essential for:
 - **Responsibility Mapping**: Connecting [FOAF](foaf.md) agents to project [DOAP](doap.md) activities.
 - **Change Management**: Modeling how one version of an entity was derived from another.
 
+## Usage in This Project
+
+PROV-O is used **indirectly** in this project via the [PROJ Ontology](proj-ontology.md),
+which is a PROV-O profile. The `prov:Entity`, `prov:Activity`, and `prov:Agent`
+tripartite model is inherited through PROJ's specializations — raw `prov:` terms
+may not appear directly in this project's Turtle files. See
+[PROJ Ontology](proj-ontology.md) and [ADR-001](../../adrs/adr-001-base-ontology.md)
+for how PROV-O concepts surface in the design.
+
 ## Related Vocabularies
+- [PROJ Ontology](proj-ontology.md): PROV-O profile selected as the base for this project
 - [DOAP](doap.md): Description of a Project
 - [Dublin Core](dublin-core.md): Metadata for artifacts (Entities)
 - [FOAF](foaf.md): Modeling Agents and Organizations
