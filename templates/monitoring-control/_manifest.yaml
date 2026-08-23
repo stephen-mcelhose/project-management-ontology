@@ -1,0 +1,78 @@
+# Phase manifest — Monitoring & Control
+#
+# This is the single-read index for the Monitoring & Control Phase.
+# See ADR-003 for the manifest pattern and field definitions.
+# Do not duplicate gate content from instructions.yaml here.
+
+type: phase-manifest
+phase: monitoring-control
+phase_label: Monitoring & Control
+ontology_phase: https://stephen-mcelhose.github.io/project-management-ontology/phases/MonitoringControl
+din_69901_part: DIN 69901-2:2009
+standard: ISO 21502:2020
+package: pkgs:MonitoringControlPackage
+
+# Document sequence — dependency order, phase-local numbering
+documents:
+  - id: status-report
+    phase_local_order: 1
+    title: Status Report
+    ontology_class: pm:StatusReport
+    path: templates/monitoring-control/status-report/
+    dependencies:
+      - project-management-plan     # cross-phase: from Planning
+    required_before: []
+
+  - id: risk-register
+    phase_local_order: 2
+    title: Risk Register
+    ontology_class: pm:RiskRegister
+    path: templates/monitoring-control/risk-register/
+    dependencies:
+      - risk-management-plan        # cross-phase: from Planning
+    required_before: []
+
+  - id: issue-log
+    phase_local_order: 3
+    title: Issue Log
+    ontology_class: pm:IssueLog
+    path: templates/monitoring-control/issue-log/
+    dependencies:
+      - project-management-plan     # cross-phase: from Planning
+    required_before: []
+
+  - id: decision-log
+    phase_local_order: 4
+    title: Decision Log
+    ontology_class: pm:DecisionLog
+    path: templates/monitoring-control/decision-log/
+    dependencies:
+      - project-management-plan     # cross-phase: from Planning
+    required_before: []
+
+  - id: change-log
+    phase_local_order: 5
+    title: Change Log
+    ontology_class: pm:ChangeLog
+    path: templates/monitoring-control/change-log/
+    dependencies:
+      - change-request              # cross-phase: from Execution
+    required_before: []
+
+# Shared context
+shared_context:
+  - field: project_name
+    maps_to: dct:title
+    first_captured_in: project-proposal   # cross-phase: captured in Initiation
+
+# Phase completion
+completion:
+  required_documents:
+    - status-report
+    - risk-register
+    - issue-log
+    - decision-log
+    - change-log
+  output_status: draft
+  next_phase: closure
+  first_document_in_next_phase: handover-document

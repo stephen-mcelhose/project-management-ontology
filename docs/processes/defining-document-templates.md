@@ -63,6 +63,7 @@ Issue filed
         entry.yaml          ← metadata + citations
         instructions.yaml   ← agent gates (how to fill)
         template.md         ← markdown scaffold
+      templates/{phase}/_manifest.yaml   ← create or update
     │
     ▼
 4. Write the SHACL shape
@@ -273,6 +274,22 @@ Rules for the scaffold:
 
 ---
 
+## Step 3d — Update the phase manifest
+
+Every phase has a `_manifest.yaml` at `templates/{phase}/_manifest.yaml`
+(see ADR-003). Update it to include this document:
+
+- **If this is the first document in a new phase:** create the manifest from
+  the template in ADR-003. Set `phase_local_order: 1`.
+- **If adding to an existing phase:** add the document in the correct position,
+  incrementing `phase_local_order`. Update `dependencies` and `required_before`
+  on any documents whose chain this document joins.
+- If this document introduces a new shared context field (a field that should
+  not be re-asked across subsequent documents), add it to `shared_context`.
+- Commit the manifest update in the **same commit** as the template pack (Step 6).
+
+---
+
 ## Step 4 — Write the SHACL shape
 
 Create `shapes/{phase}/{document-name}.shacl.ttl`.
@@ -392,6 +409,7 @@ Copy into the GitHub issue before starting:
 - [ ] 3a. entry.yaml written
 - [ ] 3b. instructions.yaml written (one gate per standard field)
 - [ ] 3c. template.md written (sections sourced from standard)
+- [ ] 3d. _manifest.yaml created or updated for the phase
 - [ ] 4.  SHACL shape written
 - [ ] 5.  make validate passes
 - [ ] 5.  All rdfs:seeAlso URLs return 200

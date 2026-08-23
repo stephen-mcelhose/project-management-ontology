@@ -1,0 +1,115 @@
+# Phase manifest — Planning
+#
+# This is the single-read index for the Planning Phase.
+# See ADR-003 for the manifest pattern and field definitions.
+# Do not duplicate gate content from instructions.yaml here.
+
+type: phase-manifest
+phase: planning
+phase_label: Planning
+ontology_phase: https://stephen-mcelhose.github.io/project-management-ontology/phases/Planning
+din_69901_part: DIN 69901-2:2009
+standard: ISO 21502:2020
+package: pkgs:PlanningPackage
+
+# Document sequence — dependency order, phase-local numbering
+documents:
+  - id: project-management-plan
+    phase_local_order: 1
+    title: Project Management Plan
+    ontology_class: pm:ProjectManagementPlan
+    path: templates/planning/project-management-plan/
+    dependencies:
+      - project-charter       # cross-phase: from Initiation
+    required_before:
+      - work-breakdown-structure
+      - risk-management-plan
+      - quality-management-plan
+
+  - id: work-breakdown-structure
+    phase_local_order: 2
+    title: Work Breakdown Structure
+    ontology_class: pm:WorkBreakdownStructure
+    path: templates/planning/work-breakdown-structure/
+    dependencies:
+      - project-management-plan
+    required_before:
+      - project-schedule
+
+  - id: project-schedule
+    phase_local_order: 3
+    title: Project Schedule
+    ontology_class: pm:ProjectSchedule
+    path: templates/planning/project-schedule/
+    dependencies:
+      - work-breakdown-structure
+    required_before:
+      - resource-plan
+
+  - id: resource-plan
+    phase_local_order: 4
+    title: Resource Plan
+    ontology_class: pm:ResourcePlan
+    path: templates/planning/resource-plan/
+    dependencies:
+      - project-schedule
+    required_before:
+      - cost-estimate
+
+  - id: cost-estimate
+    phase_local_order: 5
+    title: Cost Estimate
+    ontology_class: pm:CostEstimate
+    path: templates/planning/cost-estimate/
+    dependencies:
+      - resource-plan
+    required_before: []
+
+  - id: risk-management-plan
+    phase_local_order: 6
+    title: Risk Management Plan
+    ontology_class: pm:RiskManagementPlan
+    path: templates/planning/risk-management-plan/
+    dependencies:
+      - project-management-plan
+    required_before: []
+
+  - id: quality-management-plan
+    phase_local_order: 7
+    title: Quality Management Plan
+    ontology_class: pm:QualityManagementPlan
+    path: templates/planning/quality-management-plan/
+    dependencies:
+      - requirement-specification   # cross-phase: from Initiation
+    required_before: []
+
+  - id: communication-plan
+    phase_local_order: 8
+    title: Communication Plan
+    ontology_class: pm:CommunicationPlan
+    path: templates/planning/communication-plan/
+    dependencies:
+      - stakeholder-register        # cross-phase: from Initiation
+    required_before: []
+
+# Shared context — fields carried forward from Initiation or within this phase
+# An agent MUST NOT re-ask for these after the first capture.
+shared_context:
+  - field: project_name
+    maps_to: dct:title
+    first_captured_in: project-proposal   # cross-phase: captured in Initiation
+
+# Phase completion
+completion:
+  required_documents:
+    - project-management-plan
+    - work-breakdown-structure
+    - project-schedule
+    - resource-plan
+    - cost-estimate
+    - risk-management-plan
+    - quality-management-plan
+    - communication-plan
+  output_status: draft
+  next_phase: execution
+  first_document_in_next_phase: work-package-description
