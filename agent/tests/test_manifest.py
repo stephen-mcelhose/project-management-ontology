@@ -65,6 +65,21 @@ class TestLoadProjectManifest:
     def test_returns_project_manifest_type(self, templates_dir):
         write_project_manifest(templates_dir, [{"id": "initiation"}])
         pm = load_project_manifest(str(templates_dir))
+
+    def test_agent_instructions_loaded(self, templates_dir):
+        data = {
+            "type": "project-manifest",
+            "phases": [{"id": "initiation"}],
+            "agent_instructions": "You are an ISO 21502 PM assistant.",
+        }
+        (templates_dir / "_project-manifest.yaml").write_text(yaml.dump(data))
+        pm = load_project_manifest(str(templates_dir))
+        assert pm.agent_instructions == "You are an ISO 21502 PM assistant."
+
+    def test_agent_instructions_defaults_to_empty(self, templates_dir):
+        write_project_manifest(templates_dir, [{"id": "initiation"}])
+        pm = load_project_manifest(str(templates_dir))
+        assert pm.agent_instructions == ""
         assert isinstance(pm, ProjectManifest)
 
 

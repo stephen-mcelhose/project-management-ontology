@@ -55,6 +55,13 @@ class PhaseManifest:
 class ProjectManifest:
     # Ontology: pm:Project (ontology/modules/project.ttl)
     phases: list[PhaseEntry]
+    agent_instructions: str = ""
+    """Domain-specific instruction text injected into the agent's system prompt.
+
+    Loaded from _project-manifest.yaml agent_instructions field (optional).
+    When present, prepended to the base mechanics instruction in build_agent().
+    See ADR-007.
+    """
 
 
 def load_project_manifest(templates_dir: str) -> ProjectManifest:
@@ -71,7 +78,10 @@ def load_project_manifest(templates_dir: str) -> ProjectManifest:
     with path.open() as f:
         data = yaml.safe_load(f)
     phases = [PhaseEntry(id=p["id"]) for p in data.get("phases", [])]
-    return ProjectManifest(phases=phases)
+    return ProjectManifest(
+        phases=phases,
+        agent_instructions=data.get("agent_instructions", ""),
+    )
 
 
 def load_phase_manifest(templates_dir: str, phase_id: str) -> PhaseManifest:

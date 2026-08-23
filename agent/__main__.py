@@ -114,9 +114,23 @@ def main(argv=None) -> None:
     print(f"Output:       {output_dir}", file=sys.stderr)
 
     from agent.lifecycle.state import SessionState  # noqa: PLC0415
+    from agent.lifecycle.manifest import load_project_manifest  # noqa: PLC0415
     from agent.agent import build_agent, build_runner  # noqa: PLC0415
 
     session = SessionState.load(session_path)
+
+    # Load domain instructions from _project-manifest.yaml if it exists.
+    # Gracefully absent until issue #50 authors the file (ADR-007).
+    domain_instructions = ""
+    try:
+        project_manifest = load_project_manifest(args.templates_dir)
+        domain_instructions = project_manifest.agent_instructions
+        if domain_instructions:
+            print("Domain instructions: loaded from _project-manifest.yaml", file=sys.stderr)
+        else:
+            print("Domain instructions: none (agent_instructions not set in _project-manifest.yaml)", file=sys.stderr)
+    except FileNotFoundError:
+        print("Domain instructions: none (_project-manifest.yaml not found)", file=sys.stderr)
 
     model = "__fake__" if args.fake_model else settings.model
 
@@ -126,6 +140,7 @@ def main(argv=None) -> None:
         templates_dir=args.templates_dir,
         output_dir=output_dir,
         model=model,
+        domain_instructions=domain_instructions,
     )
     runner = build_runner(agent)
 
