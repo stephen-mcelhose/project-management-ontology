@@ -139,6 +139,7 @@ Time-boxed investigations. Each produces a written recommendation or go/no-go �
 | -- | ------------------------------------------------------ | ------------ | ------- |
 | 62 | Spike: conditional gate branching in instructions.yaml | #47 / M3     | ⏳ Open |
 | 63 | Spike: auto-generate SHACL shapes from pm: ontology   | #47 / M3     | ⏳ Open |
+| 65 | Spike: evaluate LangGraph as orchestration layer       | ADR-006 / M5 | ⏳ Open — **start when #49 is picked up** |
 
 ---
 

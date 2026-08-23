@@ -33,6 +33,12 @@ Links are relative to this file (`docs/wiki/`).
 | [OKF Frontmatter](research/okf-frontmatter.md)                | OKF Frontmatter                | Frontmatter convention used in wiki pages and document templates                |
 | [OKF Specification](research/okf-spec.md)                     | OKF Specification              | OKF v0.1 formal spec by Google Cloud — structure, fields, and reference tools  |
 
+## Specs
+
+| Page | Title | Description |
+| ---- | ----- | ----------- |
+| [Process Agent Spec](../specs/process-agent.md) | Process Agent | RFC 2119 normative spec for the PM process agent (issue #39) |
+
 ## Decisions
 
 | Page                                                                   | Title                           | Description                                                                              |
@@ -42,3 +48,4 @@ Links are relative to this file (`docs/wiki/`).
 | [ADR-003: Phase Manifest Pattern](../adrs/adr-003-phase-manifest.md)   | ADR-003: Phase Manifest Pattern | `_manifest.yaml` required per phase; single-read index for agents and orchestrators     |
 | [ADR-004: Gate Output Type System](../adrs/adr-004-gate-output-type-system.md) | ADR-004: Gate Output Type System | Seven gate output types (scalar/block/section); named individuals in `pm:GateOutputType`; amendment process |
 | [ADR-005: Gate Validation Rules Schema](../adrs/adr-005-gate-validation-rules.md) | ADR-005: Gate Validation Rules | Six `validation_rules:` keys for programmatic gate constraint checking; inventory of ~25 qualifying gates; amendment process |
+| [ADR-006: Process Agent Architecture](../adrs/adr-006-process-agent-architecture.md) | ADR-006: Process Agent Architecture | Python + google-adk LlmAgent + env-file auth + JSON session state; LangGraph deferred to spike #65 |
