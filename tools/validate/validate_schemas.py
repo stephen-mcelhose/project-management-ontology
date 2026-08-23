@@ -246,13 +246,13 @@ def validate_project_manifest() -> tuple[int, int]:
 
     # ── Check 1: file exists and parses ──────────────────────────────────────
     if not project_path.exists():
-        print(f"  ✗ {rel}  NOT FOUND", file=sys.stderr)
+        print(f"  ✗ {rel}  NOT FOUND")
         return 0, 1
 
     try:
-        data = yaml.safe_load(project_path.read_text())
+        data = yaml.safe_load(project_path.read_text()) or {}
     except yaml.YAMLError as exc:
-        print(f"  ✗ {rel}  YAML parse error: {exc}", file=sys.stderr)
+        print(f"  ✗ {rel}  YAML parse error: {exc}")
         return 0, 1
 
     errors: list[str] = []
@@ -314,9 +314,9 @@ def validate_project_manifest() -> tuple[int, int]:
             )
 
     if errors:
-        print(f"  ✗ {rel}", file=sys.stderr)
+        print(f"  ✗ {rel}")
         for msg in errors:
-            print(f"      {msg}", file=sys.stderr)
+            print(f"      {msg}")
         failed += 1
     else:
         print(f"  ✓ {rel}")
@@ -326,18 +326,15 @@ def validate_project_manifest() -> tuple[int, int]:
     for phase_manifest in sorted(TEMPLATES_DIR.glob("*/_manifest.yaml")):
         rel_pm = phase_manifest.relative_to(REPO_ROOT)
         try:
-            pm_data = yaml.safe_load(phase_manifest.read_text())
+            pm_data = yaml.safe_load(phase_manifest.read_text()) or {}
         except yaml.YAMLError as exc:
-            print(f"  ✗ {rel_pm}  YAML parse error: {exc}", file=sys.stderr)
+            print(f"  ✗ {rel_pm}  YAML parse error: {exc}")
             failed += 1
             continue
 
         if "transition_condition" not in pm_data.get("completion", {}):
-            print(f"  ✗ {rel_pm}", file=sys.stderr)
-            print(
-                f"      completion: missing transition_condition",
-                file=sys.stderr,
-            )
+            print(f"  ✗ {rel_pm}")
+            print(f"      completion: missing transition_condition")
             failed += 1
         else:
             print(f"  ✓ {rel_pm}")
