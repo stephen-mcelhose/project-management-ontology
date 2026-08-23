@@ -72,20 +72,29 @@ def test_eval_case(case_path, request, tmp_path):
         run_case(case, agent, runner, session, session_path, str(tmp_path))
     )
 
+    # Tool call sequence
     assert is_subsequence(case.expect_tool_calls, result.tool_calls_seen), (
         f"Expected tool call subsequence: {case.expect_tool_calls}\n"
         f"Got: {result.tool_calls_seen}"
     )
 
-    for gate_id, expected_answer in case.expect_gate_answers.items():
-        actual = result.gate_answers.get(gate_id)
-        assert actual == expected_answer, (
-            f"Gate '{gate_id}': expected answer {expected_answer!r}, got {actual!r}\n"
-            f"All recorded gates: {list(result.gate_answers)}"
+    # Gate answers — doc_id → gate_id → expected value.
+    # Failure here means capture broke (agent dropped or mis-routed the answer).
+    # If this passes but content_contains fails, the template/renderer is the culprit.
+    for doc_id, gates in case.expect_gate_answers.items():
+        for gate_id, expected in gates.items():
+            actual = result.gate_answers.get(doc_id, {}).get(gate_id)
+            assert actual == expected, (
+                f"Gate '{doc_id}.{gate_id}': expected {expected!r}, got {actual!r}\n"
+                f"Recorded gates for '{doc_id}': {list(result.gate_answers.get(doc_id, {}))}"
+            )
+
+    # Document written
+    if case.expect_document_written:
+        assert result.document_written, (
+            f"Expected {case.phase}/{case.document}.md to exist in {tmp_path}"
         )
 
-    assert result.document_written, (
-        f"Expected {case.phase}/{case.document}.md to exist in {tmp_path}"
-    )
+    # Rendered content
     for needle, present in result.content_checks.items():
         assert present, f"Expected '{needle}' in written document"
