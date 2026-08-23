@@ -1,0 +1,78 @@
+# Eval case: initiation-freeform
+# User volunteers information across multiple initiation documents in a single
+# message. Agent should extract each piece and record it to the correct document
+# without losing anything and without re-asking for information already given.
+#
+# Also verifies that a planning-phase mention is acknowledged in text only —
+# the agent does not attempt to record it anywhere.
+
+id: initiation-freeform
+description: >
+  User opens with a rich message covering project_name, problem_statement,
+  and sponsor (all project-proposal gates) plus stakeholders (a
+  stakeholder-register gate) in one turn. Agent must record to both documents
+  and continue collecting the remaining project-proposal gates.
+
+phase: initiation
+document: project-proposal
+
+turns:
+  - user: >
+      Let's kick off the initiation package. The project is Supply Chain
+      Modernisation — we're replacing a 15-year-old ERP integration layer
+      that causes roughly 3–4 hours of monthly downtime. Anna Müller, our
+      Supply Chain Director, is the sponsor. Key stakeholders are Anna,
+      Ben Carter from IT Architecture, and the Finance Controller. Once we
+      reach Planning we'll need a solid risk management plan too.
+
+  - user: >
+      Objectives: (1) Eliminate ERP-caused outages by end of Q3.
+      (2) Reduce integration maintenance cost by 40%.
+      (3) Enable real-time inventory visibility.
+
+# ── Assertions ────────────────────────────────────────────────────────────────
+
+# Gate-level capture is the primary assertion: did the agent extract and record
+# each piece to the correct document? A failure here means the agent dropped or
+# mis-routed information from the user's message.
+expect_gate_answers:
+  project-proposal:
+    project_name: "Supply Chain Modernisation"
+    problem_statement: "15-year-old ERP integration layer — root cause of 3–4 hours of monthly downtime."
+    sponsor: "Anna Müller, Supply Chain Director."
+    objectives: "(1) Eliminate ERP-caused outages by end of Q3. (2) Reduce integration maintenance cost by 40%. (3) Enable real-time inventory visibility."
+  stakeholder-register:
+    stakeholders: "Anna Müller (Supply Chain Director), Ben Carter (IT Architecture), Finance Controller."
+
+# This case does not complete the document — focused on capture only.
+expect_document_written: false
+expect_content_contains: []
+
+# Four consecutive record_answer calls in one agent turn is the key signal.
+expect_tool_calls:
+  - record_answer
+  - record_answer
+  - record_answer
+  - record_answer
+
+# ── Scripted responses ────────────────────────────────────────────────────────
+# Models the ideal agent behaviour: extract all five pieces from turn 1,
+# acknowledge the planning mention in text, then continue collecting.
+scripted_responses:
+
+  # Turn 1 — rich opening message
+  # Agent extracts and records four gate answers before asking the next gate.
+  - tool_call: {name: record_answer, args: {document_id: project-proposal, gate_id: project_name, answer: "Supply Chain Modernisation"}}
+  - tool_call: {name: record_answer, args: {document_id: project-proposal, gate_id: problem_statement, answer: "15-year-old ERP integration layer — root cause of 3–4 hours of monthly downtime."}}
+  - tool_call: {name: record_answer, args: {document_id: project-proposal, gate_id: sponsor, answer: "Anna Müller, Supply Chain Director."}}
+  - tool_call: {name: record_answer, args: {document_id: stakeholder-register, gate_id: stakeholders, answer: "Anna Müller (Supply Chain Director), Ben Carter (IT Architecture), Finance Controller."}}
+  - tool_call: {name: get_next_gate, args: {document_id: project-proposal}}
+  - text: >
+      Captured — I've also saved the stakeholder list for the Stakeholder Register
+      and noted the risk management plan for Planning phase. Continuing with the
+      Project Proposal: what objectives does this project need to achieve?
+
+  # Turn 2 — objectives
+  - tool_call: {name: record_answer, args: {document_id: project-proposal, gate_id: objectives, answer: "(1) Eliminate ERP-caused outages by end of Q3. (2) Reduce integration maintenance cost by 40%. (3) Enable real-time inventory visibility."}}
+  - tool_call: {name: get_next_gate, args: {document_id: project-proposal}}
+  - text: "Good. What are the expected benefits beyond those objectives?"
