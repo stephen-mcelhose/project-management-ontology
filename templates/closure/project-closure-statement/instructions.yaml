@@ -1,0 +1,74 @@
+# instructions.yaml — Project Closure Statement
+#
+# Rules for an agent helping a project manager fill out a Project Closure Statement.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# ISO 21502:2020 basis: Section 9 — Closing a project
+# The Project Closure Statement is the formal declaration that the project is closed.
+# It is the final document produced in the project lifecycle and must be signed by
+# the Project Board (or sponsor) to be authoritative.
+#
+# PRINCE2 note: In PRINCE2, this closure is authorised by the Project Board as part of
+# the Closing a Project process, not as a separate document. A standalone Closure
+# Statement is the ISO 21502 / DIN 69901 practice.
+#
+# This is the INPUT side. The output is validated by:
+#   shapes/closure/project-closure-statement.shacl.ttl
+
+version: 1
+document: project-closure-statement
+
+gates:
+  - id: closure_declaration
+    order: 1
+    prompt: "State formally that the project is closed. Include the project name, the closure date, and a one-sentence statement of the project's outcome."
+    fills: "## Closure Declaration"
+    maps_to: dct:description
+    required: true
+    validation: "Must include project name, closure date, and an outcome statement."
+    guidance: "This is the formal declaration — be precise and factual. Avoid marketing language. 'The project delivered X and is hereby closed on [date]' is the correct register."
+
+  - id: objectives_met
+    order: 2
+    prompt: "Were the project's objectives met? Summarise the outcome per objective — fully met, partially met, or not met. Reference the Final Project Report for detail."
+    fills: "## Objectives Met"
+    maps_to: pm:hasObjective
+    required: true
+    guidance: "This is a summary, not a repetition of the Final Project Report. One line per objective is sufficient. Any 'not met' objective requires a brief explanation."
+
+  - id: outstanding_commitments
+    order: 3
+    prompt: "Are there any commitments, open actions, or known defects that remain unresolved at closure? List each with a named owner and target resolution date, or state 'None'."
+    fills: "## Outstanding Commitments"
+    maps_to: dct:description
+    required: true
+    guidance: "Outstanding commitments do not prevent closure — but they must be formally recorded and handed over. The Project Board accepts closure knowing these items exist."
+
+  - id: benefits_realisation
+    order: 4
+    prompt: "What is the current benefits realisation status? If benefits are post-project, state the planned review date and the owner responsible for tracking them."
+    fills: "## Benefits Realisation"
+    maps_to: dct:description
+    required: false
+    guidance: "If benefits have already been realised, state this clearly. If they are post-project, the Project Board must confirm that a benefits review is planned."
+
+  - id: formal_approval
+    order: 5
+    prompt: "Who formally authorises closure of this project? Record the name, role, and organisation of each approver, plus the approval date."
+    fills: "## Formal Approval"
+    maps_to: pm:approvedBy
+    required: true
+    guidance: "At minimum, the Project Board Chair (or executive sponsor) must sign. Without formal approval this document has no standing. The project is not closed until this gate is complete."
+
+# Completion rule: all required gates must be filled before the document
+# is considered draft-complete. The agent MUST NOT mark the document complete
+# if any required gate is empty or contains only a placeholder.
+completion:
+  required_gates:
+    - closure_declaration
+    - objectives_met
+    - outstanding_commitments
+    - formal_approval
+  output_status: draft
+  next_document: null

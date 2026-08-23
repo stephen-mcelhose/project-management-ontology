@@ -1,0 +1,110 @@
+# shapes/closure/handover-document.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Handover Document is "ingested" (converted from the filled template.md
+# into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:HandoverDocument
+#     → "these rules apply to any node of type pm:HandoverDocument"
+#
+#   sh:property [ sh:path dct:title ; sh:minCount 1 ]
+#     → "every HandoverDocument instance must have at least one dct:title triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s shapes/closure/handover-document.shacl.ttl \
+#            -d path/to/my-handover-document.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix proj:  <https://linked.data.gov.au/def/project#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/project-management-ontology/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:HandoverDocumentShape
+    a sh:NodeShape ;
+
+    # Target: applies to any RDF node typed as pm:HandoverDocument
+    sh:targetClass pm:HandoverDocument ;
+
+    rdfs:label "Handover Document shape"@en ;
+    rdfs:comment "Validates that a filled Handover Document instance satisfies the minimum information requirements of ISO 21502:2020 §9 (Closing a project)."@en ;
+
+    # ── Required: title ─────────────────────────────────────────────────────
+    # The document must have a title identifying the project.
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 3 ;
+        sh:message  "A Handover Document must have a dct:title."@en ;
+    ] ;
+
+    # ── Required: description / project summary ──────────────────────────────
+    # Maps to the overall project summary section.
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Handover Document must have a dct:description (project summary)."@en ;
+    ] ;
+
+    # ── Required: project link ───────────────────────────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Handover Document must reference the project it describes via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Closure phase ──────────────────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/project-management-ontology/phases/Closure> ;
+        sh:message  "A Handover Document must be linked to the Closure phase."@en ;
+    ] ;
+
+    # ── Required: creation date ──────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Handover Document must record the date it was created (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator (document author) ──────────────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Handover Document must identify its author (dct:creator)."@en ;
+    ] ;
+
+    # ── Required: formal acceptance ──────────────────────────────────────────
+    # Handover is only complete when formally accepted by the receiving party.
+    sh:property [
+        sh:path     pm:approvedBy ;
+        sh:minCount 1 ;
+        sh:class    foaf:Agent ;
+        sh:message  "A Handover Document must record who formally accepted the handover (pm:approvedBy)."@en ;
+    ] .

@@ -1,0 +1,81 @@
+# instructions.yaml — Lessons Learned Report
+#
+# Rules for an agent helping a project manager fill out a Lessons Learned Report.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# PRINCE2 basis: Lessons Report
+# The Lessons Report captures lessons that can improve performance on future projects.
+# PRINCE2 distinguishes between:
+#   - Lessons about management (processes, communication, decision-making)
+#   - Lessons about specialist delivery (technical, domain-specific)
+# Both are in scope here.
+#
+# Sources to draw from: Issue Log, Risk Register, Status Report history.
+#
+# This is the INPUT side. The output is validated by:
+#   shapes/closure/lessons-learned-report.shacl.ttl
+
+version: 1
+document: lessons-learned-report
+
+gates:
+  - id: project_context
+    order: 1
+    prompt: "Briefly describe the project context: project name, type of project, team size, and duration. This grounds the lessons for readers who may not know the project."
+    fills: "## Project Context"
+    maps_to: dct:description
+    required: true
+    validation: "Must include project name and at least one contextual factor (size, type, or duration)."
+
+  - id: process_lessons
+    order: 2
+    prompt: "What lessons were learned about project management processes? For each lesson, state: (1) what happened, (2) the impact, and (3) the recommended change for future projects."
+    fills: "## Process Lessons"
+    maps_to: dct:description
+    required: true
+    guidance: "Process lessons cover planning accuracy, communication, change management, reporting, and governance. Reference the Issue Log and Status Reports for concrete examples."
+
+  - id: technical_lessons
+    order: 3
+    prompt: "What lessons were learned in the specialist or technical domain? For each lesson, state what happened, the impact, and the recommendation for future projects."
+    fills: "## Technical Lessons"
+    maps_to: dct:description
+    required: false
+    guidance: "Technical lessons are domain-specific. If the project had no notable technical lessons, state the reason rather than leaving this blank."
+
+  - id: risk_lessons
+    order: 4
+    prompt: "What lessons were learned about risk management? Review the Risk Register: which risks materialized, which were avoidable, and which mitigation strategies worked well?"
+    fills: "## Risk Management Lessons"
+    maps_to: pm:hasRisk
+    required: true
+    guidance: "Reference the Risk Register directly. A risk lesson with no register entry is an assertion without evidence — trace back to specific logged risks."
+
+  - id: stakeholder_lessons
+    order: 5
+    prompt: "What lessons were learned about stakeholder engagement and communication? Include both what worked well and what should be done differently."
+    fills: "## Stakeholder and Communication Lessons"
+    maps_to: dct:description
+    required: false
+    guidance: "Poor stakeholder engagement is a root cause of many project failures. Be honest about what the team could have done better."
+
+  - id: recommendations
+    order: 6
+    prompt: "Summarize the top recommendations for future projects based on the lessons above. List them in priority order — most impactful first."
+    fills: "## Recommendations for Future Projects"
+    maps_to: dct:description
+    required: true
+    guidance: "Recommendations must be actionable and specific. 'Communicate better' is not a recommendation — 'schedule weekly Project Board briefings from stage 1' is."
+
+# Completion rule: all required gates must be filled before the document
+# is considered draft-complete. The agent MUST NOT mark the document complete
+# if any required gate is empty or contains only a placeholder.
+completion:
+  required_gates:
+    - project_context
+    - process_lessons
+    - risk_lessons
+    - recommendations
+  output_status: draft
+  next_document: null
