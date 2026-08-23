@@ -29,7 +29,7 @@ Read all four of these files before writing anything. They define the exact form
 
 ### Your job
 
-Build template packs for all four Execution Package issues, **in parallel**:
+Build template packs for all four Execution Package issues. **Parallelize research (Step 1) across all documents** — fetching PRINCE2 URLs and reading `document.ttl` has no shared state. **Do ontology gap-checking (Step 2) as a single consolidated pass** across every document in this batch before writing any template — documents in the same package frequently need the same or overlapping ontology properties (e.g. shared fields on `pm:Project`), and editing `ontology/modules/*.ttl` concurrently from multiple agents/sessions risks conflicting or duplicate properties. Once the ontology is settled and validated, templates and shapes (Steps 3–4) can again be written in parallel per document:
 
 | Issue | Document | Ontology class | PRINCE2 source |
 | ----- | -------- | -------------- | -------------- |
@@ -50,10 +50,21 @@ shapes/execution/{kebab-name}.shacl.ttl
 
 ---
 
+### Step 0 — Environment setup (do this first)
+
+```bash
+git fetch origin
+git rebase origin/main          # your worktree may predate later ontology/prompt commits
+ls .venv/bin/python 2>/dev/null || make install   # create the venv if missing
+```
+
+---
+
 ### Process (follow exactly — read `docs/processes/defining-document-templates.md` for full detail)
 
 **Step 1 — Research**
 - Fetch the PRINCE2 URL for the document. Read the actual sections listed on the page — these define the fields your template must cover.
+  - If your fetch tool returns empty content for a `prince2.wiki` page, fall back to `curl -s <url>` and strip HTML tags directly — the site is static and fetchable, the tool failure is silent, not a dead link.
 - Note the ISO 21502:2020 equivalent section if discernible.
 - Read `ontology/modules/document.ttl` to find the class and its existing `rdfs:seeAlso` annotations.
 
@@ -126,6 +137,7 @@ SHACL shape at `shapes/execution/{name}.shacl.ttl`.
 ---
 
 ### Constraints
+- Every `dependencies` / `required_before` entry in `entry.yaml` must be verified against the actual `:hasHardDependency` triples in `ontology/modules/document.ttl` — do not infer the dependency chain from the issue table alone, they can differ.
 - Section names and order in `template.md` must come from the actual PRINCE2 page — not guessed
 - Every `maps_to` in `instructions.yaml` must reference a real property in the ontology — fix the ontology first if needed
 - Do not close an issue if `python tools/validate/validate.py` fails or the PRINCE2 URL returns anything other than 200
