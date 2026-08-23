@@ -82,5 +82,6 @@ completion:
     - stakeholder-register
     - requirement-specification
   output_status: draft
+  transition_condition: "all required_documents at output_status: draft"
   next_phase: planning
   first_document_in_next_phase: project-management-plan

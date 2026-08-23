@@ -74,5 +74,6 @@ completion:
     - decision-log
     - change-log
   output_status: draft
+  transition_condition: "all required_documents at output_status: draft"
   next_phase: closure
   first_document_in_next_phase: handover-document
