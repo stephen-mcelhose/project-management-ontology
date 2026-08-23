@@ -1,4 +1,4 @@
-.PHONY: validate validate-schemas visualize wiki-lint install clean agent-test agent-evals agent-run
+.PHONY: validate validate-schemas visualize wiki-lint install clean agent-test agent-run
 
 PYTHON := python3
 VENV   := .venv
@@ -36,9 +36,6 @@ wiki-lint:
 
 agent-test:
 	$(PY) -m pytest agent/tests/ -v
-
-agent-evals:
-	$(PY) -m pytest agent/evals/ -v -m eval --run-evals
 
 agent-run:
 	$(PY) -m agent --templates-dir templates/ --output-dir output/
