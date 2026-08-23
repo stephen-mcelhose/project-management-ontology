@@ -30,6 +30,46 @@
 #
 # 27 classes across 5 phases.
 
+# ── Document instance properties ──────────────────────────────────────────────
+# These properties apply to *instances* of document classes (filled documents),
+# not to the classes themselves.
+
+:describesProject
+    a owl:ObjectProperty ;
+    rdfs:domain foaf:Document ;
+    rdfs:range :Project ;
+    rdfs:label "describes project"@en ;
+    rdfs:comment "Links a filled project management document to the project it documents. Required for SHACL validation of document instances."@en ;
+    rdfs:isDefinedBy : .
+
+:approvedBy
+    a owl:ObjectProperty ;
+    rdfs:domain foaf:Document ;
+    rdfs:range foaf:Agent ;
+    rdfs:label "approved by"@en ;
+    rdfs:comment "The person or body that formally approved this document."@en ;
+    rdfs:isDefinedBy : .
+
+:documentStatus
+    a owl:ObjectProperty ;
+    rdfs:domain foaf:Document ;
+    rdfs:range :DocumentStatus ;
+    rdfs:label "document status"@en ;
+    rdfs:comment "The current lifecycle status of this document instance."@en ;
+    rdfs:isDefinedBy : .
+
+:DocumentStatus
+    a owl:Class ;
+    rdfs:label "Document Status"@en ;
+    rdfs:comment "Controlled vocabulary for document lifecycle states."@en ;
+    rdfs:isDefinedBy : .
+
+:doc-status-draft      a :DocumentStatus ; rdfs:label "Draft"@en .
+:doc-status-in-review  a :DocumentStatus ; rdfs:label "In Review"@en .
+:doc-status-approved   a :DocumentStatus ; rdfs:label "Approved"@en .
+:doc-status-superseded a :DocumentStatus ; rdfs:label "Superseded"@en .
+:doc-status-withdrawn  a :DocumentStatus ; rdfs:label "Withdrawn"@en .
+
 # ── Cross-document dependency property ────────────────────────────────────────
 
 :hasHardDependency
