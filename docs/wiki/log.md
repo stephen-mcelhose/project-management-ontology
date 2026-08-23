@@ -19,3 +19,15 @@ Sources ingested:
 - from-url-pmbok-owl-ip.md → pmbok-owl-ip.md
 - initial-research-user.md → (cross-referenced in candidate pages)
 - okf-frontmatter.md written from llm-wiki skill spec + Dublin Core mapping
+
+## [2026-08-23] lint | 11 pages checked, 3 issues found, 2 fixed
+
+Pages audited: prov-o, doap, dublin-core, foaf, schema-org-project, proj-ontology, promont-ontology, seon-spmo, projectco-ontology, pmbok-owl-ip, okf-frontmatter
+
+Fixed:
+1. seon-spmo.md — added missing cross-reference to okf-frontmatter.md on "OKF-annotated document templates" (near-orphan resolved)
+2. okf-frontmatter.md — corrected inaccurate claim "All files under docs/wiki/*.md" to exclude structural files (AGENTS.md, log.md)
+
+Advisory (human judgment required):
+- schema-org-project.md Sources section lists cross-reference pages alongside raw sources — minor convention deviation
+- okf-frontmatter.md resource field (https://okfn.org) is loose; OKF frontmatter as used here is a project-level convention, not an official OKFN standard

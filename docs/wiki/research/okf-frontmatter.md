@@ -67,7 +67,7 @@ OKF frontmatter fields map closely to [Dublin Core](dublin-core.md) properties:
 
 ## Usage in This Project
 
-All files under `docs/wiki/*.md` and `docs/templates/*.md` carry OKF frontmatter. The `llm-wiki` skill enforces its presence during lint passes and ingestion.
+All concept and research pages in `docs/wiki/` and templates in `docs/templates/` carry OKF frontmatter. Structural files (`AGENTS.md`, `log.md`) are exempt. The `llm-wiki` skill enforces its presence during lint passes and ingestion.
 
 ## Sources
 
