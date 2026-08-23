@@ -18,6 +18,7 @@ from agent.lifecycle.gate_reader import FileGateReader
 from agent.lifecycle.state import SessionState
 from agent.lifecycle.validator import validate as _validate
 from agent.tools.get_next_gate import get_next_gate as _get_next_gate
+from agent.tools.get_phase_gates import get_phase_gates as _get_phase_gates
 from agent.tools.get_progress import get_progress as _get_progress
 from agent.tools.record_answer import record_answer as _record_answer
 from agent.tools.validate_document import validate_document as _validate_document
@@ -30,18 +31,26 @@ from agent.tools.write_document import write_document as _write_document
 _BASE_INSTRUCTION = """\
 Your workflow for each document:
 1. Call get_progress() to orient yourself.
-2. Call get_next_gate(document_id) to find the next question to ask.
-3. Ask the user the gate's prompt in plain language. Wait for their answer.
-4. Call record_answer(document_id, gate_id, answer) with their response.
-5. Repeat until get_next_gate returns null (all required gates answered).
-6. Call write_document(document_id) to produce the filled Markdown document.
-7. Call validate_document(document_id) and report any issues to the user.
-8. Advance to the next document or phase.
+2. Call get_phase_gates() to load the full map of gate ids and prompts for
+   every document in the current phase. Keep this map for the session.
+3. Call get_next_gate(document_id) to find the next question to ask.
+4. Before asking the question, scan the user's most recent message against
+   the phase gate map. For every piece of information that clearly matches a
+   gate — in any document in the phase — call record_answer(document_id,
+   gate_id, answer). Only use gate ids that appear in the map.
+5. Ask the user for the next unfilled gate. Wait for their answer.
+6. Call record_answer for their response, then repeat from step 3.
+7. When get_next_gate returns null, call write_document(document_id).
+8. Call validate_document(document_id) and report any issues to the user.
+9. Advance to the next document or phase.
 
 Rules:
 - Ask one gate at a time. Do not ask multiple questions in one turn.
 - When a gate has a guidance field, use it to challenge vague or incomplete answers.
 - Never invent answers — always ask the user.
+- Only record against gate ids returned by get_phase_gates — never guess an id.
+- If the user mentions something that does not match any gate in the phase,
+  acknowledge it briefly and move on. Do not record it.
 - When all required documents in a phase are complete, announce this and
   ask before advancing to the next phase.
 """
@@ -89,6 +98,14 @@ def build_agent(
     def get_progress() -> dict[str, Any]:
         """Return current phase, document, and answered gate count."""
         return _get_progress(session)
+
+    def get_phase_gates() -> dict[str, dict[str, str]]:
+        """Return {document_id: {gate_id: prompt}} for every document in the current phase."""
+        return _get_phase_gates(
+            phase=session.current_phase,
+            templates_dir=templates_dir,
+            gate_reader=gate_reader,
+        )
 
     def get_next_gate(document_id: str) -> dict[str, Any] | None:
         """Return the next unfilled required gate for document_id, or null."""
@@ -140,6 +157,7 @@ def build_agent(
         instruction=compose_instruction(domain_instructions),
         tools=[
             FunctionTool(get_progress),
+            FunctionTool(get_phase_gates),
             FunctionTool(get_next_gate),
             FunctionTool(record_answer),
             FunctionTool(write_document),
