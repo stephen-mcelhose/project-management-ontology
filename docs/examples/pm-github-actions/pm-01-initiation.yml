@@ -1,0 +1,607 @@
+# =============================================================================
+# PM WORKFLOW — PHASE 1: INITIATION
+# Event-driven state machine
+# =============================================================================
+#
+# > [!WARNING]
+# > ILLUSTRATIVE ONLY — DO NOT MOVE TO .github/workflows/
+# >
+# > This file is an intellectual exercise, not a production workflow.
+# > It contains known security defects that were deliberately left unfixed
+# > to keep the illustration readable:
+# >
+# >   SCRIPT INJECTION — inputs.sponsor and inputs.project_name are
+# >   interpolated directly into JavaScript string literals (lines ~105–107).
+# >   A value containing a single quote breaks the script; a crafted value
+# >   executes arbitrary JS in the runner context.
+# >
+# >   NO CONCURRENCY CONTROL — rapid successive comments will trigger
+# >   simultaneous runs that corrupt the label-based state machine.
+# >
+# >   NO AUTHORIZATION — any commenter can advance a gate.
+# >
+# > See worked-example.md for a simulation of this workflow.
+# > See README.md for the ontology ↔ GitHub Actions analogy explained.
+# =============================================================================
+#
+# HOW IT WORKS
+# ─────────────
+# This is NOT a linear script. It is a state machine driven by GitHub events.
+# Each run is short-lived — it posts one gate prompt then exits.
+# A human comment triggers the next run.
+#
+#   workflow_dispatch ──► open Issue ──► post Gate 1 prompt ──► EXIT
+#                                               │
+#                                       human replies in Issue
+#                                               │
+#                                issue_comment trigger fires
+#                                               │
+#                                       read active gate label
+#                                               │
+#                                    validate comment body
+#                                        │           │
+#                                      FAIL        PASS
+#                                        │           │
+#                                 post "try      tick checklist
+#                                 again" note    advance label
+#                                 EXIT           post Gate N+1
+#                                                prompt & EXIT
+#                                                     │
+#                                            (repeat until Gate 12)
+#                                                     │
+#                                            post completion comment
+#                                            dispatch next document
+#                                            EXIT
+#
+# STATE: tracked as a GitHub Issue label (pm:gate:N).
+#        Visible in the UI at all times — no hidden state.
+#
+# KNOWN LIMITATION (no LLM)
+# ──────────────────────────
+# Without an LLM parsing replies, validation is structural not semantic.
+# Format hints in each prompt are therefore LOAD-BEARING — they tell the
+# human exactly how to structure their reply so the workflow can parse it.
+# A reply that is correct but wrongly formatted will fail validation.
+# With an LLM in the loop the format hints become advisory, not required.
+#
+# ONTOLOGY ↔ GITHUB ACTIONS MAPPING
+# ──────────────────────────────────
+# pm:Phase                       │ This workflow file
+# pm:Document                    │ A dispatched instance of this workflow
+# pm:WorkflowStep / Gate         │ A branch in the gate-router step
+# dependencies: [...]            │ needs: / workflow_run trigger
+# shared_context:                │ Issue body (written once, read by all runs)
+# maps_to: dct:title             │ Comment annotation
+# required: true                 │ Validation failure → retry prompt
+# required: false                │ "skip" reply accepted; deferred_value used
+# completion.transition_condition│ Gate 12 pass → dispatch next document
+# =============================================================================
+
+name: "PM · Phase 1 · Initiation"
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_name:
+        description: "Project name  [shared_context → dct:title]"
+        required: true
+        type: string
+      sponsor:
+        description: "Project sponsor (First Last)  [pm:hasSponsor]"
+        required: true
+        type: string
+      document:
+        description: "Document to open"
+        required: true
+        default: "project-proposal"
+        type: choice
+        options:
+          - project-proposal
+          - business-case
+          - project-charter
+          - stakeholder-register
+          - requirement-specification
+
+  issue_comment:
+    types: [created]
+
+jobs:
+
+  # ===========================================================================
+  # JOB A — start-document
+  # Fires on workflow_dispatch only.
+  # Opens a tracking Issue (the document thread) and posts Gate 1's prompt.
+  # ===========================================================================
+  start-document:
+    name: "🚀 Open document thread"
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Open Issue and post Gate 1"
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const projectName = '${{ inputs.project_name }}';
+            const sponsor     = '${{ inputs.sponsor }}';
+            const document    = '${{ inputs.document }}';
+
+            // The Issue body is the shared_context record for this document.
+            // It is updated by the workflow as each gate passes — one source
+            // of truth, readable by all subsequent workflow runs.
+            const issueBody = [
+              `## PM Document: \`${document}\``,
+              `**Phase:** Initiation | **Project:** ${projectName} | **Sponsor:** ${sponsor}`,
+              `**Ontology class:** pm:ProjectProposal`,
+              ``,
+              `---`,
+              `## Gates`,
+              `<!-- The workflow ticks these as each gate passes. -->`,
+              `- [ ] Gate 1  · project_name         [dct:title]`,
+              `- [ ] Gate 2  · problem_statement     [dct:description]`,
+              `- [ ] Gate 3  · objectives            [proj:purpose]`,
+              `- [ ] Gate 4  · expected_benefits     [proj:purpose]`,
+              `- [ ] Gate 5  · scope_in`,
+              `- [ ] Gate 6  · scope_out`,
+              `- [ ] Gate 7  · sponsor               [pm:hasSponsor]`,
+              `- [ ] Gate 8  · stakeholders          [pm:RoleAssignment]`,
+              `- [ ] Gate 9  · rough_budget          [pm:budget]  *(optional)*`,
+              `- [ ] Gate 10 · rough_timeline        [pm:plannedEndDate]  *(optional)*`,
+              `- [ ] Gate 11 · risks_assumptions     [pm:Risk]`,
+              `- [ ] Gate 12 · authorization_request`,
+            ].join('\n');
+
+            const { data: issue } = await github.rest.issues.create({
+              owner:  context.repo.owner,
+              repo:   context.repo.repo,
+              title:  `[PM · Initiation] ${projectName} — ${document}`,
+              body:   issueBody,
+              labels: [
+                'pm:gate',
+                'pm:initiation',
+                `pm:${document}`,
+                'pm:gate:1',        // ← STATE: active gate
+              ],
+            });
+
+            // Gate 1 prompt — format hint is load-bearing (no LLM)
+            await github.rest.issues.createComment({
+              owner:        context.repo.owner,
+              repo:         context.repo.repo,
+              issue_number: issue.number,
+              body: [
+                `## 🔖 Gate 1 of 12 — Project Name`,
+                `*maps_to: \`dct:title\` · required*`,
+                ``,
+                `What is the name of this project?`,
+                ``,
+                `**Format** *(validation is structural — follow this exactly)*`,
+                `\`\`\``,
+                `Name: <your project name>`,
+                `\`\`\``,
+                ``,
+                `**Rules:** Must be a proper noun phrase. Avoid generic names like "New System".`,
+                ``,
+                `> Reply with the formatted block above.`,
+              ].join('\n'),
+            });
+
+            core.summary.addRaw(`Issue: ${issue.html_url}`);
+
+
+  # ===========================================================================
+  # JOB B — advance-gate
+  # Fires on issue_comment — but only for Issues labelled pm:gate.
+  # Reads the active gate label, validates the reply, advances or retries.
+  # ===========================================================================
+  advance-gate:
+    name: "⚙️ Validate and advance"
+    if: |
+      github.event_name == 'issue_comment' &&
+      contains(github.event.issue.labels.*.name, 'pm:gate') &&
+      github.event.comment.user.login != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Route, validate, advance"
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue   = context.payload.issue;
+            const answer  = context.payload.comment.body.trim();
+
+            // ── Read current gate from label ──────────────────────────────
+            const labels      = issue.labels.map(l => l.name);
+            const gateLabel   = labels.find(l => /^pm:gate:\d+$/.test(l));
+            const currentGate = gateLabel ? parseInt(gateLabel.split(':')[2]) : null;
+
+            if (!currentGate) {
+              core.warning('No active gate label. Skipping.');
+              return;
+            }
+
+            // ── Gate definitions ──────────────────────────────────────────
+            // Each gate: id, title, mapsTo, required, validate(answer), next
+            //
+            // validate() returns null on pass, or an error string on fail.
+            //
+            // KNOWN LIMITATION: these validators are structural (regex/length).
+            // They enforce format compliance, not semantic correctness.
+            // With an LLM in the loop, validate() would call the model and
+            // the format hints in prompts below would become advisory only.
+            const gates = {
+              1: {
+                id: 'project_name', title: 'Project Name',
+                mapsTo: 'dct:title', required: true, next: 2,
+                // Format: "Name: <value>"
+                parse:    (a) => { const m = a.match(/^Name:\s*(.+)$/m); return m?.[1]?.trim() ?? null; },
+                validate: (a) => a ? null : 'Reply must contain "Name: <your project name>".',
+              },
+              2: {
+                id: 'problem_statement', title: 'Problem / Opportunity',
+                mapsTo: 'dct:description', required: true, next: 3,
+                // Format: "Problem: <value>"
+                parse:    (a) => { const m = a.match(/^Problem:\s*(.+)/ms); return m?.[1]?.trim() ?? null; },
+                validate: (a) => a && a.length > 20 ? null : 'Reply must start with "Problem:" and describe a specific observable situation.',
+              },
+              3: {
+                id: 'objectives', title: 'Objectives',
+                mapsTo: 'proj:purpose', required: true, next: 4,
+                // Format: bulleted list under "Objectives:" header
+                parse: (a) => {
+                  const block = a.match(/^Objectives:\s*\n([\s\S]+)/m)?.[1] ?? '';
+                  return block.split('\n').map(l => l.trim()).filter(l => l.startsWith('-'));
+                },
+                validate: (a) => {
+                  return Array.isArray(a) && a.length >= 2
+                    ? null
+                    : 'Reply must contain "Objectives:" followed by at least 2 bullet lines (- ...).';
+                },
+              },
+              4: {
+                id: 'expected_benefits', title: 'Expected Benefits',
+                mapsTo: 'proj:purpose', required: true, next: 5,
+                parse:    (a) => { const m = a.match(/^Benefits:\s*(.+)/ms); return m?.[1]?.trim() ?? null; },
+                validate: (a) => a && a.length > 20 ? null : 'Reply must start with "Benefits:" and be specific (cost savings, time savings, etc.).',
+              },
+              5: {
+                id: 'scope_in', title: 'Scope — In',
+                mapsTo: null, required: true, next: 6,
+                parse: (a) => {
+                  const block = a.match(/^In-scope:\s*\n([\s\S]+?)(?=\n\n|$)/m)?.[1] ?? '';
+                  return block.split('\n').filter(l => l.trim().startsWith('-'));
+                },
+                validate: (a) => Array.isArray(a) && a.length >= 1 ? null : 'Reply must contain "In-scope:" followed by at least 1 bullet line.',
+              },
+              6: {
+                id: 'scope_out', title: 'Scope — Out',
+                mapsTo: null, required: true, next: 7,
+                parse: (a) => {
+                  const block = a.match(/^Out-of-scope:\s*\n([\s\S]+?)(?=\n\n|$)/m)?.[1] ?? '';
+                  return block.split('\n').filter(l => l.trim().startsWith('-'));
+                },
+                validate: (a) => {
+                  return Array.isArray(a) && a.length >= 2
+                    ? null
+                    : 'Reply must contain "Out-of-scope:" followed by at least 2 bullet lines. An empty out-of-scope is a red flag.';
+                },
+              },
+              7: {
+                id: 'sponsor', title: 'Proposed Sponsor',
+                mapsTo: 'pm:hasSponsor', required: true, next: 8,
+                // named_individual rule: must look like First Last
+                parse:    (a) => { const m = a.match(/^Sponsor:\s*(.+)$/m); return m?.[1]?.trim() ?? null; },
+                validate: (a) => /^[A-Z][a-z]+ [A-Z][a-z]+/.test(a ?? '') ? null : 'Reply must be "Sponsor: First Last" — a named individual, not a team or department.',
+              },
+              8: {
+                id: 'stakeholders', title: 'Key Stakeholders',
+                mapsTo: 'pm:RoleAssignment', required: true, next: 9,
+                parse: (a) => {
+                  const block = a.match(/^Stakeholders:\s*\n([\s\S]+?)(?=\n\n|$)/m)?.[1] ?? '';
+                  return block.split('\n').filter(l => l.trim().startsWith('-'));
+                },
+                validate: (a) => Array.isArray(a) && a.length >= 1 ? null : 'Reply must contain "Stakeholders:" followed by bullet lines.',
+              },
+              9: {
+                id: 'rough_budget', title: 'Rough Budget',
+                mapsTo: 'pm:budget', required: false, next: 10,
+                deferred: 'Not yet estimated.',
+                parse:    (a) => { const m = a.match(/^Budget:\s*(.+)$/m); return m?.[1]?.trim() ?? null; },
+                validate: (_) => null,   // optional — any format accepted
+              },
+              10: {
+                id: 'rough_timeline', title: 'Rough Timeline',
+                mapsTo: 'pm:plannedEndDate', required: false, next: 11,
+                deferred: 'Not yet estimated.',
+                parse:    (a) => { const m = a.match(/^Timeline:\s*(.+)$/m); return m?.[1]?.trim() ?? null; },
+                validate: (_) => null,
+              },
+              11: {
+                id: 'risks_assumptions', title: 'Key Risks & Assumptions',
+                mapsTo: 'pm:Risk', required: true, next: 12,
+                parse: (a) => {
+                  const block = a.match(/^Risks:\s*\n([\s\S]+?)(?=\n\n|$)/m)?.[1] ?? '';
+                  return block.split('\n').filter(l => l.trim().startsWith('-'));
+                },
+                validate: (a) => {
+                  return Array.isArray(a) && a.length >= 2
+                    ? null
+                    : 'Reply must contain "Risks:" followed by at least 2 bullets in the form "- If [X], then [Y]."';
+                },
+              },
+              12: {
+                id: 'authorization_request', title: 'Authorization Request',
+                mapsTo: null, required: true, next: null,
+                parse:    (a) => { const m = a.match(/^Authorization:\s*(.+)/ms); return m?.[1]?.trim() ?? null; },
+                validate: (a) => a && a.length > 20 ? null : 'Reply must start with "Authorization:" and state the specific decision being requested.',
+              },
+            };
+
+            // ── Prompts for each gate (format hints are load-bearing) ─────
+            const prompts = {
+              2: {
+                title: 'Problem / Opportunity', mapsTo: 'dct:description', required: true,
+                body: [
+                  'What problem or opportunity is this project addressing?',
+                  'Describe the current situation and why it is unsatisfactory.',
+                  '',
+                  '**Rules:** Must describe a specific observable problem, not a solution.',
+                  '',
+                  '**Format** *(required — validation is structural)*',
+                  '```',
+                  'Problem: <describe the problem or opportunity here,',
+                  '         can span multiple lines>',
+                  '```',
+                ].join('\n'),
+              },
+              3: {
+                title: 'Objectives', mapsTo: 'proj:purpose', required: true,
+                body: [
+                  'What are the 2–5 specific, measurable objectives this project must achieve?',
+                  '',
+                  '**Rules:** Each objective must start with a verb and include a measure.',
+                  'Avoid vague language like "improve" without a metric.',
+                  '',
+                  '**Format** *(required)*',
+                  '```',
+                  'Objectives:',
+                  '- Reduce onboarding time by 30% by Q3 2026',
+                  '- Deliver a self-service reporting dashboard for finance',
+                  '- Enable real-time data sync across all regional offices',
+                  '```',
+                ].join('\n'),
+              },
+              4: {
+                title: 'Expected Benefits', mapsTo: 'proj:purpose', required: true,
+                body: [
+                  'What tangible benefits will the organization gain if this project succeeds?',
+                  '',
+                  '**Rules:** Be concrete — cost savings, time savings, revenue, risk reduction.',
+                  '',
+                  '**Format** *(required)*',
+                  '```',
+                  'Benefits: <describe the expected benefits, can span multiple lines>',
+                  '```',
+                ].join('\n'),
+              },
+              5: {
+                title: 'Scope — In', mapsTo: null, required: true,
+                body: [
+                  'What is explicitly **in scope**?',
+                  '',
+                  '**Format** *(required)*',
+                  '```',
+                  'In-scope:',
+                  '- <deliverable or capability>',
+                  '- <deliverable or capability>',
+                  '```',
+                ].join('\n'),
+              },
+              6: {
+                title: 'Scope — Out', mapsTo: null, required: true,
+                body: [
+                  'What is explicitly **out of scope**?',
+                  '',
+                  '**Rules:** Name things a stakeholder might assume are included but are not.',
+                  'Minimum 2 items — an empty out-of-scope is a red flag.',
+                  '',
+                  '**Format** *(required)*',
+                  '```',
+                  'Out-of-scope:',
+                  '- <thing that is NOT included>',
+                  '- <thing that is NOT included>',
+                  '```',
+                ].join('\n'),
+              },
+              7: {
+                title: 'Proposed Sponsor', mapsTo: 'pm:hasSponsor', required: true,
+                body: [
+                  'Who is the proposed project sponsor?',
+                  '',
+                  '**Rules:** Must be a named individual with authority to approve resources.',
+                  'Not a team, department, or job title alone.',
+                  '',
+                  '**Format** *(required — validator checks for First Last pattern)*',
+                  '```',
+                  'Sponsor: First Last',
+                  '```',
+                ].join('\n'),
+              },
+              8: {
+                title: 'Key Stakeholders', mapsTo: 'pm:RoleAssignment', required: true,
+                body: [
+                  'Who are the key stakeholders?',
+                  '',
+                  '**Format** *(required)*',
+                  '```',
+                  'Stakeholders:',
+                  '- Name / Role — brief note on their interest or influence',
+                  '- Name / Role — brief note on their interest or influence',
+                  '```',
+                ].join('\n'),
+              },
+              9: {
+                title: 'Rough Budget', mapsTo: 'pm:budget', required: false,
+                body: [
+                  'What is the rough budget estimate?',
+                  '',
+                  '*This gate is optional — reply `skip` to defer.*',
+                  '',
+                  '**Format**',
+                  '```',
+                  'Budget: <e.g. "<€50k", "€100–200k", "TBD">',
+                  '```',
+                ].join('\n'),
+              },
+              10: {
+                title: 'Rough Timeline', mapsTo: 'pm:plannedEndDate', required: false,
+                body: [
+                  'What is the rough desired timeline?',
+                  '',
+                  '*This gate is optional — reply `skip` to defer.*',
+                  '',
+                  '**Format**',
+                  '```',
+                  'Timeline: <e.g. "Complete by Q3 2026", "6-month duration">',
+                  '```',
+                ].join('\n'),
+              },
+              11: {
+                title: 'Key Risks & Assumptions', mapsTo: 'pm:Risk', required: true,
+                body: [
+                  'List the top 2–3 risks or assumptions that could invalidate this proposal.',
+                  '',
+                  '**Rules:** These will seed the Risk Register in Monitoring & Control.',
+                  '',
+                  '**Format** *(required — validator checks for "If ... then ..." structure)*',
+                  '```',
+                  'Risks:',
+                  '- If [assumption is wrong / risk occurs], then [consequence]',
+                  '- If [assumption is wrong / risk occurs], then [consequence]',
+                  '```',
+                ].join('\n'),
+              },
+              12: {
+                title: 'Authorization Request', mapsTo: null, required: true,
+                body: [
+                  'What decision or authorization are you requesting?',
+                  '',
+                  '**Format** *(required)*',
+                  '```',
+                  'Authorization: <e.g. "Approval to proceed to Business Case">',
+                  '```',
+                ].join('\n'),
+              },
+            };
+
+            // ── Run the gate ──────────────────────────────────────────────
+            const gate = gates[currentGate];
+            const isSkip = answer.toLowerCase() === 'skip';
+
+            // Optional gates accept "skip"
+            if (isSkip && !gate.required) {
+              // treat as passed with deferred value — fall through to advance
+            } else {
+              const parsed = gate.parse(answer);
+              const error  = gate.validate(parsed);
+
+              if (error) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner, repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: [
+                    `## ❌ Gate ${currentGate} — ${gate.title} — format error`,
+                    ``,
+                    `**Problem:** ${error}`,
+                    ``,
+                    `Check the format hint in the previous prompt and reply again.`,
+                    ``,
+                    `> ⚠️ This validator is structural (no LLM). Your answer may be`,
+                    `> correct but the format must match exactly for it to be accepted.`,
+                  ].join('\n'),
+                });
+                return;
+              }
+            }
+
+            // ── Gate passed ───────────────────────────────────────────────
+            // Tick the checklist in the Issue body
+            const updatedBody = issue.body.replace(
+              `- [ ] Gate ${currentGate}`,
+              `- [x] Gate ${currentGate}`
+            );
+            await github.rest.issues.update({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issue.number, body: updatedBody,
+            });
+
+            // Rotate state label
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: issue.number, name: gateLabel,
+            });
+
+            if (gate.next) {
+              // ── Advance to next gate ─────────────────────────────────────
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issue.number, labels: [`pm:gate:${gate.next}`],
+              });
+
+              const next = gates[gate.next];
+              const p    = prompts[gate.next];
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issue.number,
+                body: [
+                  `## ✅ Gate ${currentGate} — ${gate.title} — accepted`,
+                  ``,
+                  `---`,
+                  ``,
+                  `## 🔖 Gate ${gate.next} of 12 — ${p.title}`,
+                  next.mapsTo ? `*maps_to: \`${next.mapsTo}\` · ${next.required ? 'required' : 'optional'}*` : `*${next.required ? 'required' : 'optional'}*`,
+                  ``,
+                  p.body,
+                  ``,
+                  `> Reply to this comment with the formatted block above.`,
+                ].join('\n'),
+              });
+
+            } else {
+              // ── All gates complete ────────────────────────────────────────
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issue.number, labels: ['pm:draft'],
+              });
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issue.number,
+                body: [
+                  `## ✅ Project Proposal — \`output_status: draft\``,
+                  ``,
+                  `All required gates satisfied.`,
+                  `**next_document:** business-case`,
+                  ``,
+                  `*dispatching Business Case...*`,
+                ].join('\n'),
+              });
+              await github.rest.issues.update({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: issue.number, state: 'closed',
+              });
+
+              // completion.transition_condition satisfied → dispatch next document
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner, repo: context.repo.repo,
+                workflow_id: 'pm-01-initiation.yml',
+                ref: 'main',
+                inputs: {
+                  project_name: issue.title.split('—')[0].replace('[PM · Initiation]', '').trim(),
+                  sponsor:      '',
+                  document:     'business-case',
+                },
+              });
+            }
