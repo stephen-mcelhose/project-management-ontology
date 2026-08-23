@@ -6,7 +6,7 @@ description: >
   document class. Follow this process every time you fill a GitHub issue that
   defines a template.
 tags: [process, templates, ontology, shacl]
-updated: 2026-08-23
+updated: 2026-08-22
 ---
 
 # Process: Defining Document Templates
@@ -15,6 +15,33 @@ Follow this process **every time** you work on a GitHub issue that defines a
 document template and ruleset. The goal is: every template is grounded in a
 cited standard, every ontology gap found during research is fixed before the
 template is written, and every URL is verified before it is committed.
+
+---
+
+## Working on a batch of issues (a package milestone)
+
+When a prompt asks you to build several document packs at once (e.g. all
+Issues in a Package milestone), parallelize by step, not by document:
+
+- **Step 1 (Research) parallelizes cleanly.** Fetching PRINCE2 URLs and
+  reading `document.ttl` per document has no shared state.
+- **Step 2 (Ontology gap check) must be a single consolidated pass across
+  the whole batch**, done before any template is written. Documents in the
+  same package frequently need the same or overlapping properties (e.g.
+  several documents adding fields to `pm:Project`). Running Step 2
+  concurrently per-document — whether as separate agent sessions or just
+  interleaved edits — risks duplicate or conflicting properties and
+  `ontology/modules/*.ttl` merge conflicts.
+- **Steps 3–4 (template + shape) parallelize again once the ontology is
+  settled and `python tools/validate/validate.py` passes.**
+
+## Environment setup (do this before Step 1)
+
+```bash
+git fetch origin
+git rebase origin/main          # worktrees can predate later ontology/prompt commits
+ls .venv/bin/python 2>/dev/null || make install   # create the venv if missing
+```
 
 ---
 
@@ -72,6 +99,19 @@ page: purpose, composition, quality criteria, derivation, format.
 curl -s https://prince2.wiki/management-products/baselines/project-initiation-documentation/ | ...
 # or use WebFetch
 ```
+
+> **Lesson learned:** URL-fetch tools can silently return empty content for
+> `prince2.wiki` pages instead of erroring. If that happens, don't assume the
+> link is dead — the site is verified 200 and served as static HTML. Fall back
+> to `curl -s <url>` and strip tags (e.g. regex on `<h1>`/`<h2>`/`<li>`) to
+> recover the real section structure before concluding a URL needs fixing.
+
+Also note in `1a`: cross-check every dependency you plan to write into
+`entry.yaml` (`dependencies:` / `required_before:`) against the actual
+`:hasHardDependency` triples in `document.ttl`. Don't infer the chain from an
+issue table or from what "feels" like the right order — the ontology is the
+source of truth and can differ (e.g. a downstream document's real hard
+dependency may skip one you'd otherwise assume).
 
 Write down every field the standard names. Do not invent fields.
 
