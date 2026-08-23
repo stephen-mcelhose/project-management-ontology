@@ -68,9 +68,12 @@ def validate_semantics(g: Graph) -> list[str]:
     missing = [p for p in expected if (PHASES[p], RDF.type, PM.PhaseType) not in g]
     chk(not missing, f"All 5 DIN 69901 phases defined ({', '.join(missing) if missing else 'OK'})")
 
-    # Document annotation property
+    # Document annotation property — domain must be foaf:Document, not a pm: stub
+    FOAF = Namespace("http://xmlns.com/foaf/0.1/")
     chk((PM.producedInPhase, RDF.type, OWL.ObjectProperty) in g,
         ":producedInPhase ObjectProperty defined")
+    chk((PM.producedInPhase, RDFS.domain, FOAF.Document) in g,
+        ":producedInPhase domain is foaf:Document (not a pm: stub)")
 
     # All OWL classes must have rdfs:label
     classes = list(g.subjects(RDF.type, OWL.Class))

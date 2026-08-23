@@ -1,6 +1,7 @@
 @prefix :      <https://stephen-mcelhose.github.io/project-management-ontology/> .
 @prefix phases: <https://stephen-mcelhose.github.io/project-management-ontology/phases/> .
 @prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
 @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
@@ -94,8 +95,8 @@ phases:Closure
 
 :producedInPhase
     a owl:ObjectProperty ;
-    rdfs:domain :Document ;
+    rdfs:domain foaf:Document ;
     rdfs:range :PhaseType ;
     rdfs:label "produced in phase"@en ;
-    rdfs:comment "The DIN 69901 phase in which this document template is typically produced."@en ;
+    rdfs:comment "The DIN 69901 phase in which this document is typically produced. Applied directly to foaf:Document subclasses — no intermediate pm:Document needed."@en ;
     rdfs:isDefinedBy : .
