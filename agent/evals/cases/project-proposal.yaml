@@ -1,0 +1,50 @@
+# Eval case: project-proposal
+# Drives the agent through the full project-proposal gate sequence.
+# Run with: pytest -m eval --run-evals agent/evals/
+
+id: project-proposal-full-walk
+description: >
+  Verify the agent walks all required gates for the project-proposal document,
+  writes the output Markdown, and the content reflects the user's answers.
+
+phase: initiation
+document: project-proposal
+
+# User turns to feed the agent in order
+turns:
+  - user: "Let's start. I want to create a Project Proposal."
+  - user: "The project name is Platform Modernisation."
+  - user: >
+      The problem is that our core data platform runs on a 10-year-old
+      batch ETL framework that cannot support near-real-time analytics.
+  - user: >
+      Objectives: (1) Replace batch ETL with streaming pipeline.
+      (2) Reduce data latency from 24h to <15min. (3) Enable self-serve BI.
+  - user: "Expected benefits: faster decisions, reduced operational costs."
+  - user: "In scope: data ingestion, transformation, and serving layers."
+  - user: "Out of scope: frontend dashboards, ML feature store."
+  - user: "Sponsor is Jane Smith, Head of Data Engineering."
+  - user: "Key stakeholders: Data team, Analytics team, Finance."
+  - user: "Rough budget: €200–400k."
+  - user: "Timeline: 12 months, starting Q2 2026."
+  - user: >
+      Risks: (1) If vendor SLA is missed, timeline slips.
+      (2) If headcount not approved, scope must be reduced.
+  - user: "We request approval to proceed to a Business Case."
+
+# Assertions on the written document
+expect_document_written: true
+expect_content_contains:
+  - "Platform Modernisation"
+  - "batch ETL"
+  - "Jane Smith"
+  - "€200"
+
+# Assertions on tool call sequence (ordered, may have interleaved text turns)
+expect_tool_calls:
+  - get_next_gate
+  - record_answer
+  - get_next_gate
+  - record_answer
+  - write_document
+  - validate_document
