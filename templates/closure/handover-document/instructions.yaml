@@ -20,6 +20,7 @@ document: handover-document
 gates:
   - id: project_summary
     order: 1
+    type: prose
     prompt: "Provide a brief summary of the project: its name, purpose, and the deliverables being handed over."
     fills: "## Project Summary"
     maps_to: dct:description
@@ -28,6 +29,7 @@ gates:
 
   - id: deliverables_handover
     order: 2
+    type: section
     prompt: "List each deliverable being handed over. For each, state: the deliverable name, its status at handover (complete / conditionally accepted / deferred), and the receiving party."
     fills: "## Deliverables Handover"
     maps_to: pm:hasDeliverable
@@ -37,6 +39,7 @@ gates:
 
   - id: operational_responsibilities
     order: 3
+    type: section
     prompt: "Who assumes operational responsibility for each handover item? Name the individual or team and their role."
     fills: "## Operational Responsibilities"
     maps_to: dct:contributor
@@ -45,6 +48,7 @@ gates:
 
   - id: outstanding_items
     order: 4
+    type: section
     prompt: "Are there any outstanding items, known defects, or deferred scope elements? List each with an agreed resolution date and responsible owner, or state 'None'."
     fills: "## Outstanding Items"
     maps_to: dct:description
@@ -53,14 +57,17 @@ gates:
 
   - id: support_arrangements
     order: 5
+    type: prose
     prompt: "What support, warranty, or maintenance arrangements are in place after handover? State duration, scope, and contact point."
     fills: "## Support Arrangements"
     maps_to: dct:description
     required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
     guidance: "If no formal support arrangement applies, state 'No post-handover support agreed' rather than leaving this blank."
 
   - id: handover_acceptance
     order: 6
+    type: prose
     prompt: "Who formally accepts this handover, and on what date? Record the name, role, and organisation of the accepting party."
     fills: "## Handover Acceptance"
     maps_to: pm:approvedBy

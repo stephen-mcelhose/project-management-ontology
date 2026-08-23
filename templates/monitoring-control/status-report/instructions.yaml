@@ -18,6 +18,7 @@ document: status-report
 gates:
   - id: reporting_period
     order: 1
+    type: prose
     prompt: "What is the reporting period covered by this Status Report? (e.g. '1–14 July 2025', 'Week 28', 'Sprint 7')"
     fills: "## Reporting Period"
     maps_to: dct:temporal
@@ -26,6 +27,7 @@ gates:
 
   - id: status_time
     order: 2
+    type: prose
     prompt: "What is the current schedule status? State whether the stage is on track, ahead, or behind — and by how much. Reference the approved baseline."
     fills: "## Status Summary / Time"
     maps_to: pm:hasTolerance
@@ -34,6 +36,7 @@ gates:
 
   - id: status_cost
     order: 3
+    type: prose
     prompt: "What is the current cost status? State actual spend vs. budget and whether the cost tolerance is at risk."
     fills: "## Status Summary / Cost"
     maps_to: pm:hasTolerance
@@ -41,6 +44,7 @@ gates:
 
   - id: status_quality
     order: 4
+    type: prose
     prompt: "What is the current quality status? Report on any quality events, failed quality reviews, or products awaiting sign-off."
     fills: "## Status Summary / Quality"
     maps_to: pm:hasTolerance
@@ -48,6 +52,7 @@ gates:
 
   - id: status_scope
     order: 5
+    type: prose
     prompt: "What is the current scope status? State whether the scope is intact or whether any agreed scope changes have occurred since the last report."
     fills: "## Status Summary / Scope"
     maps_to: pm:hasTolerance
@@ -55,14 +60,17 @@ gates:
 
   - id: status_benefits
     order: 6
+    type: prose
     prompt: "What is the current benefits realization status? State whether expected benefits remain achievable per the Business Case."
     fills: "## Status Summary / Benefits"
     maps_to: pm:hasTolerance
     required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
     guidance: "Benefits may not be measurable during execution — note if tracking is deferred to closure."
 
   - id: status_risk
     order: 7
+    type: prose
     prompt: "What is the overall risk exposure for this period? Summarize the net risk position — are the project's risks increasing or decreasing?"
     fills: "## Status Summary / Risk"
     maps_to: pm:hasRisk
@@ -70,6 +78,7 @@ gates:
 
   - id: work_packages_current
     order: 8
+    type: list
     prompt: "Which products (deliverables) are currently being worked on this period? List product names — not tasks or activities."
     fills: "## Work Packages / Current Period"
     maps_to: dct:description
@@ -78,6 +87,7 @@ gates:
 
   - id: work_packages_next
     order: 9
+    type: list
     prompt: "Which products are planned to start in the next reporting period?"
     fills: "## Work Packages / Next Period"
     maps_to: dct:description
@@ -85,14 +95,17 @@ gates:
 
   - id: change_requests
     order: 10
+    type: list
     prompt: "Are there any pending or newly raised Change Requests this period? List their IDs and current status, or state 'None this period'."
     fills: "## Change Requests"
     maps_to: dct:references
     required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
     guidance: "Reference the Change Log. In PRINCE2, change requests are formally recorded as Issue Reports linked to the Issue Register."
 
   - id: key_risks_issues
     order: 11
+    type: section
     prompt: "What significant risks or issues require the Project Board's attention this period? List only escalations — items within the project manager's tolerance do not belong here."
     fills: "## Key Risks and Issues"
     maps_to: pm:hasRisk

@@ -13,6 +13,7 @@ document: quality-management-plan
 gates:
   - id: project_name
     order: 1
+    type: string
     prompt: "What is the name of this project? (Must match the Project Charter and Requirement Specification.)"
     fills: "# Quality Management Plan: {{project_name}}"
     maps_to: dct:title
@@ -20,6 +21,7 @@ gates:
 
   - id: quality_scope
     order: 2
+    type: prose
     prompt: "What is in scope for quality management on this project? Which products and activities are subject to quality control? Are any explicitly excluded?"
     fills: "## Scope"
     maps_to: dct:description
@@ -27,6 +29,7 @@ gates:
 
   - id: quality_standards
     order: 3
+    type: list
     prompt: "What quality standards apply to this project? List all applicable organizational, industry, legal, or regulatory standards. For each standard, note which deliverables it applies to."
     fills: "## Applicable Standards"
     maps_to: pm:qualityExpectations
@@ -35,6 +38,7 @@ gates:
 
   - id: quality_procedures
     order: 4
+    type: prose
     prompt: "Describe the quality management procedures: (a) Quality Planning — how quality requirements are defined per deliverable, (b) Quality Control — how deliverables are inspected/tested, (c) Quality Assurance — how the process is audited."
     fills: "## Quality Management Procedures"
     required: true
@@ -42,6 +46,7 @@ gates:
 
   - id: acceptance_criteria
     order: 5
+    type: section
     prompt: "What are the acceptance criteria for the final project product and key deliverables? For each deliverable, state the specific measurable criteria it must meet to be accepted."
     fills: "## Acceptance Criteria"
     maps_to: pm:acceptanceCriteria
@@ -50,6 +55,7 @@ gates:
 
   - id: quality_roles
     order: 6
+    type: section
     prompt: "Who is responsible for quality management activities? Define: Quality Manager or QA Lead (who assures the process), Reviewers (who perform quality checks on deliverables), Approvers (who sign off acceptance)."
     fills: "## Responsibilities"
     maps_to: pm:RoleAssignment
@@ -57,12 +63,14 @@ gates:
 
   - id: quality_tools
     order: 7
+    type: list
     prompt: "What tools and techniques will be used for quality control and assurance? (e.g. code reviews, peer reviews, testing frameworks, checklists, audits, walkthroughs.)"
     fills: "## Supporting Tools and Techniques"
     required: true
 
   - id: quality_records
     order: 8
+    type: prose
     prompt: "How will quality records be maintained? Where will quality evidence (test results, review minutes, audit reports) be stored? How long will they be retained?"
     fills: "## Quality Records"
     required: true

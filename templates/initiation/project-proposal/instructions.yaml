@@ -13,6 +13,7 @@ document: project-proposal
 gates:
   - id: project_name
     order: 1
+    type: prose
     prompt: "What is the name of this project? (Be specific — avoid generic names like 'New System'.)"
     fills: "## Project Name"
     maps_to: dct:title
@@ -21,6 +22,7 @@ gates:
 
   - id: problem_statement
     order: 2
+    type: prose
     prompt: "What problem or opportunity is this project addressing? Describe the current situation and why it is unsatisfactory or why acting now is worth it."
     fills: "## Problem / Opportunity"
     maps_to: dct:description
@@ -29,6 +31,7 @@ gates:
 
   - id: objectives
     order: 3
+    type: list
     prompt: "What are the 2–5 specific, measurable objectives this project must achieve? Each objective should start with a verb (e.g. 'Reduce', 'Deliver', 'Enable')."
     fills: "## Objectives"
     maps_to: proj:purpose
@@ -37,6 +40,7 @@ gates:
 
   - id: expected_benefits
     order: 4
+    type: prose
     prompt: "What tangible benefits will the organization gain if this project succeeds? (These will become the Business Case — be concrete: cost savings, time savings, revenue, risk reduction.)"
     fills: "## Expected Benefits"
     maps_to: proj:purpose
@@ -44,12 +48,14 @@ gates:
 
   - id: scope_in
     order: 5
+    type: list
     prompt: "What is explicitly IN scope? List the work, deliverables, or capabilities this project will produce."
     fills: "## Scope / In Scope"
     required: true
 
   - id: scope_out
     order: 6
+    type: list
     prompt: "What is explicitly OUT of scope? Name things a stakeholder might assume are included but are not."
     fills: "## Scope / Out of Scope"
     required: true
@@ -57,6 +63,7 @@ gates:
 
   - id: sponsor
     order: 7
+    type: prose
     prompt: "Who is the proposed project sponsor? (A named individual who has authority to approve resources and owns the business outcome.)"
     fills: "## Proposed Sponsor"
     maps_to: pm:hasSponsor
@@ -65,6 +72,7 @@ gates:
 
   - id: stakeholders
     order: 8
+    type: prose
     prompt: "Who are the key stakeholders? (Teams, roles, or named individuals who will be affected by or influence this project.)"
     fills: "## Key Stakeholders"
     maps_to: pm:RoleAssignment
@@ -72,20 +80,25 @@ gates:
 
   - id: rough_budget
     order: 9
+    type: prose
     prompt: "What is the rough budget estimate or order of magnitude? (e.g. '<€50k', '€100–200k', 'TBD — requires scoping'). It is acceptable to say TBD here."
     fills: "## Rough Budget Estimate"
     maps_to: pm:budget
     required: false
+    deferred_value: "*Not yet estimated.*"
 
   - id: rough_timeline
     order: 10
+    type: prose
     prompt: "What is the rough desired timeline? (e.g. 'Complete by Q3 2026', '6-month duration starting now'). It is acceptable to say TBD."
     fills: "## Rough Timeline"
     maps_to: pm:plannedEndDate
     required: false
+    deferred_value: "*Not yet estimated.*"
 
   - id: risks_assumptions
     order: 11
+    type: list
     prompt: "List the top 2–3 risks or assumptions that could invalidate this proposal. (These will seed the Risk Register later.)"
     fills: "## Key Risks and Assumptions"
     maps_to: pm:Risk
@@ -94,6 +107,7 @@ gates:
 
   - id: authorization_request
     order: 12
+    type: prose
     prompt: "What decision or authorization are you requesting? (e.g. 'Approval to proceed to Business Case', 'Approval to allocate 2 weeks of analyst time for scoping'.)"
     fills: "## Authorization Request"
     required: true

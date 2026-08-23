@@ -22,6 +22,7 @@ document: lessons-learned-report
 gates:
   - id: project_context
     order: 1
+    type: prose
     prompt: "Briefly describe the project context: project name, type of project, team size, and duration. This grounds the lessons for readers who may not know the project."
     fills: "## Project Context"
     maps_to: dct:description
@@ -30,6 +31,7 @@ gates:
 
   - id: process_lessons
     order: 2
+    type: section
     prompt: "What lessons were learned about project management processes? For each lesson, state: (1) what happened, (2) the impact, and (3) the recommended change for future projects."
     fills: "## Process Lessons"
     maps_to: dct:description
@@ -38,14 +40,17 @@ gates:
 
   - id: technical_lessons
     order: 3
+    type: section
     prompt: "What lessons were learned in the specialist or technical domain? For each lesson, state what happened, the impact, and the recommendation for future projects."
     fills: "## Technical Lessons"
     maps_to: dct:description
     required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
     guidance: "Technical lessons are domain-specific. If the project had no notable technical lessons, state the reason rather than leaving this blank."
 
   - id: risk_lessons
     order: 4
+    type: section
     prompt: "What lessons were learned about risk management? Review the Risk Register: which risks materialized, which were avoidable, and which mitigation strategies worked well?"
     fills: "## Risk Management Lessons"
     maps_to: pm:hasRisk
@@ -54,14 +59,17 @@ gates:
 
   - id: stakeholder_lessons
     order: 5
+    type: section
     prompt: "What lessons were learned about stakeholder engagement and communication? Include both what worked well and what should be done differently."
     fills: "## Stakeholder and Communication Lessons"
     maps_to: dct:description
     required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
     guidance: "Poor stakeholder engagement is a root cause of many project failures. Be honest about what the team could have done better."
 
   - id: recommendations
     order: 6
+    type: list
     prompt: "Summarize the top recommendations for future projects based on the lessons above. List them in priority order — most impactful first."
     fills: "## Recommendations for Future Projects"
     maps_to: dct:description

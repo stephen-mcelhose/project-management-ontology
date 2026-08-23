@@ -13,6 +13,7 @@ document: project-management-plan
 gates:
   - id: project_name
     order: 1
+    type: string
     prompt: "What is the name of this project? (This must match the name used in the Project Charter.)"
     fills: "# Project Management Plan: {{project_name}}"
     maps_to: dct:title
@@ -21,6 +22,7 @@ gates:
 
   - id: project_purpose_and_scope
     order: 2
+    type: prose
     prompt: "Describe the project's purpose and scope as it will be governed by this plan. What will the project deliver, and what is explicitly out of scope?"
     fills: "## Project Purpose, Scope, and Direction"
     maps_to: dct:description
@@ -29,6 +31,7 @@ gates:
 
   - id: project_objectives
     order: 3
+    type: section
     prompt: "What are the project objectives across the six PRINCE2 performance variables? For each, state the target: (1) Time, (2) Cost, (3) Quality, (4) Scope, (5) Benefits, (6) Risk."
     fills: "## Project Objectives"
     maps_to: proj:purpose
@@ -37,6 +40,7 @@ gates:
 
   - id: project_approach
     order: 4
+    type: prose
     prompt: "What is the chosen project approach — how will the project deliver its output? (e.g. build in-house, buy off-the-shelf, outsource, phased delivery, agile sprints.)"
     fills: "## Project Approach"
     maps_to: pm:projectApproach
@@ -44,6 +48,7 @@ gates:
 
   - id: management_team_structure
     order: 5
+    type: section
     prompt: "Who is on the project management team? Provide the name, role, and key responsibilities for each person. Include: Project Sponsor, Project Manager, and any key team leads."
     fills: "## Project Management Team Structure"
     maps_to: pm:RoleAssignment
@@ -52,6 +57,7 @@ gates:
 
   - id: tolerances
     order: 6
+    type: section
     prompt: "What are the agreed tolerances for this project? State the permitted deviation for each of: Time, Cost, Quality, Scope, Benefits, Risk."
     fills: "## Tolerances"
     maps_to: pm:hasTolerance
@@ -60,6 +66,7 @@ gates:
 
   - id: planning_assumptions
     order: 7
+    type: list
     prompt: "List the key planning assumptions this plan is based on. For each: state the assumption and the consequence if it proves false."
     fills: "## Planning Assumptions"
     maps_to: pm:hasAssumption
@@ -68,6 +75,7 @@ gates:
 
   - id: constraints
     order: 8
+    type: list
     prompt: "List the constraints that limit this project's options. Examples: fixed deadline, capped budget, regulatory requirements, resource availability."
     fills: "## Constraints"
     maps_to: pm:hasConstraint
@@ -75,6 +83,7 @@ gates:
 
   - id: risk_management_approach
     order: 9
+    type: prose
     prompt: "Summarize how risks will be managed on this project. Reference the Risk Management Plan for full procedures. Who is responsible for risk management? How often will risks be reviewed?"
     fills: "## Risk Management Approach"
     required: true
@@ -82,12 +91,14 @@ gates:
 
   - id: quality_management_approach
     order: 10
+    type: prose
     prompt: "Summarize how quality will be managed on this project. Reference the Quality Management Plan for full procedures. Who is responsible for quality?"
     fills: "## Quality Management Approach"
     required: true
 
   - id: change_control_approach
     order: 11
+    type: prose
     prompt: "How will changes to scope, schedule, or budget be requested, assessed, and approved? Who has authority to approve changes within tolerance? Who must escalate?"
     fills: "## Change Control Approach"
     required: true
@@ -95,12 +106,14 @@ gates:
 
   - id: communication_approach
     order: 12
+    type: prose
     prompt: "How will project information be communicated to stakeholders? Reference the Communication Plan for the full schedule. What are the key recurring reports?"
     fills: "## Communication Approach"
     required: true
 
   - id: reporting_and_controls
     order: 13
+    type: prose
     prompt: "What project controls will be used? Specify: reporting frequency, stage boundaries or review gates, and escalation paths when tolerances are exceeded."
     fills: "## Reporting and Controls"
     required: true
