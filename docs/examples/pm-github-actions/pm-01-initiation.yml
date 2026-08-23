@@ -527,9 +527,11 @@ jobs:
             }
 
             // ── Gate passed ───────────────────────────────────────────────
-            // Tick the checklist in the Issue body
+            // Tick the checklist in the Issue body.
+            // Use a regex with (?!\d) so "Gate 1" doesn't substring-match
+            // "Gate 10", "Gate 11", "Gate 12".
             const updatedBody = issue.body.replace(
-              `- [ ] Gate ${currentGate}`,
+              new RegExp(`- \\[ \\] Gate ${currentGate}(?!\\d)`),
               `- [x] Gate ${currentGate}`
             );
             await github.rest.issues.update({

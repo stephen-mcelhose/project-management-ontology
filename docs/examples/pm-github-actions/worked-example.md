@@ -296,7 +296,7 @@ Issue label `pm:draft` added. Issue closed.
 | ---------- | ---------------------------------------------------------------------- |
 | State      | Closed                                                                 |
 | Labels     | `pm:gate` · `pm:initiation` · `pm:project-proposal` · `pm:draft`      |
-| Checklist  | 12/12 ticked                                                           |
+| Checklist  | 12/12 ticked (regex uses `(?!\d)` lookahead — without it, ticking Gate 1 corrupts Gates 10–12) |
 | Runs fired | 14 (1 dispatch + 1 per comment, including retries at Gates 2 and 7)    |
 
 ---
