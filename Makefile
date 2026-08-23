@@ -1,4 +1,4 @@
-.PHONY: validate validate-schemas visualize wiki-lint install clean agent-test tool-test agent-run
+.PHONY: validate validate-schemas visualize wiki-lint install clean agent-test tool-test agent-run agent-web agent-eval
 
 PYTHON := python3
 VENV   := .venv
@@ -30,7 +30,7 @@ visualize:
 # ── Wiki ───────────────────────────────────────────────────────────────────────
 
 wiki-lint:
-	@echo "Run: /llm-wiki lint  (in csgdaa-code)"
+	@echo "Run: /llm-wiki lint"
 
 # ── Agent ──────────────────────────────────────────────────────────────────────
 
@@ -42,6 +42,9 @@ tool-test:
 
 agent-run:
 	$(PY) -m agent --templates-dir templates/ --output-dir output/
+
+agent-eval:
+	$(PY) -m pytest agent/evals/ --run-evals -v
 
 # ── Clean ──────────────────────────────────────────────────────────────────────
 

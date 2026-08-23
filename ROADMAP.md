@@ -79,8 +79,6 @@ Each package delivers one template pack per PM document in that phase:
 
 ### M7 · Skills & Automation
 
-Generic csgdaa-code skills, reusable outside this project.
-Developed from patterns discovered in the Closure Package.
 
 | #   | Issue                                              | Status  |
 | --- | -------------------------------------------------- | ------- |
