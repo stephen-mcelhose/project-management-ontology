@@ -26,6 +26,12 @@ tags: [vocabulary, rdf, social, agent]
 - **`foaf:currentProject`**: Links a person to a project they are currently working on.
 - **`foaf:pastProject`**: Links a person to a project they have previously completed.
 
+> **Spec status**: Both `foaf:currentProject` and `foaf:pastProject` carry
+> `term_status: testing` in the FOAF 0.1 specification — they are not marked
+> stable and should be used with caution in production linked data. Consult
+> the [FOAF specification](http://xmlns.com/foaf/spec/) for the current term
+> status of any property before use.
+
 ## FOAF Agents and Project Roles
 
 While FOAF provides the basic link between people and projects, it does not natively define specific "roles" (like Scrum Master or Lead Developer). Instead, it is designed to be extended by other vocabularies:

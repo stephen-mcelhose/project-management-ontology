@@ -25,7 +25,12 @@ Foundation Ontology (UFO — Unified Foundational Ontology)
                    └─ Reference Ontologies (method-specific)
 ```
 
-This layered design means SPMO concepts are grounded in **UFO** (a well-regarded foundational ontology from the same UFES group), giving it rigorous philosophical underpinnings.
+This layered design means SPMO concepts are grounded in **UFO** (a well-regarded
+foundational ontology from the same UFES group), giving it rigorous philosophical
+underpinnings. SEON is originally modeled using **OntoUML** — a UML profile for
+conceptual modeling grounded in UFO — before being published as OWL. Practitioners
+wishing to extend SPMO directly will need OntoUML-aware tooling (e.g., Menthor
+Editor); standard OWL editors work with the published OWL export.
 
 ## Key Facts
 

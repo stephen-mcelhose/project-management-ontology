@@ -65,3 +65,61 @@ Fixed:
 
 Advisory (no fix needed):
 - glossary.md uses `type: reference` which is not in the project's documented type vocabulary (`concept | how-to | decision | runbook | proposal | spike`). `reference` is a reasonable extension and not a spec violation; document as an accepted type in AGENTS.md if the pattern recurs.
+
+## [2026-08-23] lint | Extensive wiki review — industry accuracy, deep dives, structural drift
+
+Pages reviewed: all 13 research pages, glossary.md, index.md, AGENTS.md, log.md
+
+### Highs fixed (2 of 3 — 1 was a false alarm)
+
+1. **glossary.md / Gate** — added "Not to be confused with" note distinguishing this
+   project's use of "gate" (a template field-filling step) from the PM industry's
+   "phase gate / stage gate" (Cooper's Stage-Gate® model — a formal Go/No-Go
+   review checkpoint between phases).
+2. **okf-frontmatter.md + okf-spec.md / resource field mapping** — corrected
+   `dcterms:relation` (too broad: "a related resource") to `foaf:primaryTopic`
+   (semantically correct: "the document is primarily about this URI"). No DCTERMS
+   equivalent exists; FOAF is the right namespace. Notes column added to mapping table.
+3. ~~schema-org-project.md / FundingAgency hierarchy~~ — verified correct via
+   schema.org: FundingAgency IS a subclass of Project. No fix needed.
+
+### Mediums fixed (9)
+
+4. **glossary.md / Package** — added "Not to be confused with: WBS work package"
+   distinction.
+5. **glossary.md / Output Status** — new entry added defining `pending`, `draft`,
+   and `approved` values with cross-reference to Phase Transition.
+6. **AGENTS.md / type vocabulary** — added `reference` as a documented valid type
+   for catalog/index pages (resolves 2026-08-23 lint advisory).
+7. **AGENTS.md / structural drift** — removed non-existent `decisions/` and
+   `how-to/` subdirectories from the directory layout. ADRs correctly documented
+   as living in `docs/adrs/` (outside the wiki, indexed via `index.md`). Page slug
+   convention updated accordingly.
+8. **prov-o.md** — added "Usage in This Project" section clarifying PROV-O is used
+   indirectly via the PROJ profile; raw `prov:` terms may not appear in Turtle files.
+   Added PROJ Ontology to Related Vocabularies.
+9. **promont-ontology.md** — softened "legally unambiguous to build upon" →
+   "safe to model against — DIN 69901 concepts are not tied to any proprietary
+   framework." Changed "Open source" → "Academically available (no formal
+   open-source license)."
+10. **seon-spmo.md** — added OntoUML note: SEON is originally modeled in OntoUML
+    (a UML profile grounded in UFO) before being published as OWL; practitioners
+    extending SPMO need OntoUML-aware tooling.
+11. **pmbok-owl-ip.md** — four fixes:
+    - SNOMED CT changed from "✅ Open / licensed" to "⚠️ Member-country licensed"
+      with explanatory blockquote and snomed.org/licensing reference.
+    - ISO 21500 updated to ISO 21502 (successor standard; consistent with project
+      templates which already cite ISO 21502:2020).
+    - Axelos updated to "PeopleCert (formerly Axelos, acquired 2021)".
+    - Dead keet.wordpress.com attribution defused: "Researchers (including
+      commentary previously at keet.wordpress.com — now offline)" replaces the
+      unverifiable Vidal attribution.
+12. **foaf.md** — added spec status blockquote noting `foaf:currentProject` and
+    `foaf:pastProject` carry `term_status: testing` in the FOAF 0.1 spec; caution
+    advised in production linked data.
+
+### Issues filed for further research
+
+- #51 — wiki: update PROMONT URL to ontology-specific resource
+- #52 — wiki: verify SNOMED CT member country count in pmbok-owl-ip.md
+- #53 — wiki: audit foaf:currentProject usage in ontology — term_status:testing

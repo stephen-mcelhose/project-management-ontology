@@ -55,6 +55,12 @@ or question in a PM document. A gate specifies:
 Gates are worked in `order` sequence. A document is complete when all
 `required: true` gates in its `completion.required_gates` list are filled.
 
+**Not to be confused with:** a *phase gate* or *stage gate* (Cooper's
+Stage-Gate® model, also used in PMI/PMBOK practice) — a formal Go/No-Go
+review checkpoint where a project is evaluated before advancing to the next
+phase. In this project, `gate` means a single field-filling step within a
+document template, not a phase-boundary review event.
+
 ---
 
 ## Manifest
@@ -105,7 +111,29 @@ not an ontology concept.
 prefer "package" when referring to the delivery milestone and "phase" when
 referring to the lifecycle stage.
 
-**Not to be confused with:** [Phase](#phase)
+**Not to be confused with:** [Phase](#phase), or a WBS *work package* — the
+lowest-level deliverable unit in a Work Breakdown Structure, where work is
+assigned, estimated, and tracked.
+
+---
+
+## Output Status
+
+The lifecycle state of a PM document, carried in the manifest and
+`instructions.yaml` files as `output_status`. Valid values:
+
+| Value       | Meaning                                                              |
+| ----------- | -------------------------------------------------------------------- |
+| `pending`   | Document is in progress — one or more required gates are unfilled    |
+| `draft`     | All required gates are filled; document meets its completion condition |
+| `approved`  | Draft has received explicit sponsor sign-off                         |
+
+A phase's exit condition requires all mandatory documents to reach
+`output_status: draft` (see [Phase Transition](#phase-transition)).
+
+**Not to be confused with:** completion of the gate sequence alone. A
+document can have all gates answered yet still await sponsor sign-off before
+reaching `approved`.
 
 ---
 

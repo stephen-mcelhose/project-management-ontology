@@ -60,14 +60,14 @@ tags: [vocabulary, rdf, provenance, w3c]
 
 OKF frontmatter fields map closely to [Dublin Core](dublin-core.md) properties:
 
-| OKF field     | Dublin Core equivalent      |
-| ------------- | --------------------------- |
-| `title`       | `dcterms:title`             |
-| `description` | `dcterms:description`       |
-| `timestamp`   | `dcterms:created`           |
-| `type`        | `dcterms:type`              |
-| `resource`    | `dcterms:relation`          |
-| `tags`        | `dcterms:subject`           |
+| OKF field     | Closest equivalent                        | Notes                                                   |
+| ------------- | ----------------------------------------- | ------------------------------------------------------- |
+| `title`       | `dcterms:title`                           | Direct match                                            |
+| `description` | `dcterms:description`                     | Direct match                                            |
+| `timestamp`   | `dcterms:created`                         | Direct match                                            |
+| `type`        | `dcterms:type`                            | Direct match                                            |
+| `resource`    | `foaf:primaryTopic`                       | No DCTERMS equivalent; `foaf:primaryTopic` expresses "this document is primarily about this URI" — `dcterms:relation` (generic "related resource") is too broad |
+| `tags`        | `dcterms:subject`                         | Direct match                                            |
 
 ## Usage in This Project
 

@@ -15,7 +15,7 @@ Topics covered:
 - OKF frontmatter spec and how it applies to document templates
 - Document template patterns (project charter, risk register, RACI matrix, etc.)
 - Workflow generation from ontology instances
-- Lessons learned / ADRs
+- ADRs and architectural decisions (live in `docs/adrs/`; indexed in `index.md`)
 
 ## Directory Layout
 
@@ -26,16 +26,18 @@ docs/wiki/
   log.md             ← append-only operation log
   raw/               ← immutable source files (URLs, notes, paste)
   research/          ← concept pages distilled from research sources
-  decisions/         ← ADRs and architectural decisions
-  how-to/            ← step-by-step procedural guides
+
+docs/adrs/           ← Architectural Decision Records (outside wiki; indexed in wiki/index.md)
 ```
 
-New pages go in the subdirectory matching their `type`. Fall back to the wiki root only if no subdirectory fits.
+New wiki pages go in `research/` or the wiki root. ADRs go in `docs/adrs/` and are
+catalogued in `index.md` under the Decisions section.
 
 ## Conventions
 
-- **Page slugs**: kebab-case filenames placed in the appropriate subdirectory (e.g., `research/prov-o.md`, `decisions/adr-001-base-ontology.md`)
-- **Frontmatter**: OKF — `type` (default `concept`), `title`, `description`, `timestamp` (ISO-8601 UTC); optional `resource`, `tags`
+- **Page slugs**: kebab-case filenames placed in `research/` or the wiki root (e.g., `research/prov-o.md`)
+- **Frontmatter**: OKF — `type`, `title`, `description`, `timestamp` (ISO-8601 UTC); optional `resource`, `tags`
+  - Valid `type` values: `concept` (default) | `how-to` | `decision` | `runbook` | `proposal` | `spike` | `template` | `reference` (for catalog/index pages such as the glossary)
 - **Cross-references**: standard relative markdown links — `[Title](relative/path/to/page.md)`. Paths are relative to the linking file. Never use `[[wikilinks]]`.
 - **Sources section**: every page ends with `## Sources` listing its raw inputs
 
