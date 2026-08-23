@@ -24,6 +24,7 @@ document: archive-index
 gates:
   - id: archive_location
     order: 1
+    type: prose
     prompt: "Where will the project archive be stored? State the system or location name (e.g. SharePoint site URL, shared drive path, document management system reference) and the archive owner."
     fills: "## Archive Location"
     maps_to: dct:description
@@ -32,6 +33,7 @@ gates:
 
   - id: document_inventory
     order: 2
+    type: list
     prompt: "List all documents that form part of the project archive. For each document, state: document name, document type (plan / report / log / contract / etc.), version, and date finalized."
     fills: "## Document Inventory"
     maps_to: dct:hasPart
@@ -41,6 +43,7 @@ gates:
 
   - id: access_controls
     order: 3
+    type: prose
     prompt: "Who may access the project archive, and under what conditions? State which roles have read access, which have write/update access, and whether any documents are restricted."
     fills: "## Access Controls"
     maps_to: dct:accessRights
@@ -49,6 +52,7 @@ gates:
 
   - id: retention_policy
     order: 4
+    type: prose
     prompt: "How long must project records be retained? State the retention period, the legal or organisational policy basis, and the scheduled review or destruction date."
     fills: "## Retention Policy"
     maps_to: dct:description
@@ -57,6 +61,7 @@ gates:
 
   - id: handover_confirmation
     order: 5
+    type: prose
     prompt: "Confirm that the project archive has been transferred to the archive owner. State the name and role of the person who confirmed receipt, and the transfer date."
     fills: "## Handover Confirmation"
     maps_to: pm:approvedBy

@@ -21,6 +21,7 @@ document: requirement-specification
 gates:
   - id: product_title
     order: 1
+    type: prose
     prompt: "What is the name of the project's main final product / output?"
     fills: "## Title"
     maps_to: dct:title
@@ -28,6 +29,7 @@ gates:
 
   - id: purpose
     order: 2
+    type: prose
     prompt: "Why is this product being created? Who are the target users, and what problem or opportunity does it address?"
     fills: "## Purpose"
     maps_to: dct:description
@@ -36,6 +38,7 @@ gates:
 
   - id: composition
     order: 3
+    type: list
     prompt: "What are the major components or parts that make up the final product? (For software: e.g. database, UI, API. For a document: main chapters.) This effectively defines the product scope."
     fills: "## Composition"
     maps_to: pm:productComposition
@@ -43,13 +46,16 @@ gates:
 
   - id: development_skills
     order: 4
+    type: prose
     prompt: "What specialized skills, knowledge, or experience are needed to create this product?"
     fills: "## Development Skills Required"
     maps_to: pm:developmentSkillsRequired
     required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
 
   - id: quality_expectations
     order: 5
+    type: prose
     prompt: "What are the customer's high-level quality expectations for the product? (e.g. 'highly reliable', 'modern look', 'user-friendly'.) These are broader and less measurable than acceptance criteria."
     fills: "## Customer's Quality Expectations"
     maps_to: pm:qualityExpectations
@@ -57,6 +63,7 @@ gates:
 
   - id: requirements
     order: 6
+    type: section
     prompt: "List the individual requirements the product must satisfy. For each: state whether it is functional or non-functional, and phrase it as testable — avoid vague language like 'fast' without a measure (e.g. 'search results returned in under 2 seconds')."
     fills: "## Requirements"
     maps_to: pm:hasRequirement
@@ -66,6 +73,7 @@ gates:
 
   - id: acceptance_criteria
     order: 7
+    type: section
     prompt: "What measurable attributes must the product meet before the customer will accept it? Prioritize the list (e.g. must-have vs. nice-to-have)."
     fills: "## Acceptance Criteria"
     maps_to: pm:acceptanceCriteria
@@ -74,6 +82,7 @@ gates:
 
   - id: acceptance_method
     order: 8
+    type: prose
     prompt: "How will each acceptance criterion be verified? (e.g. demonstration, inspection, test, third-party audit, pilot.)"
     fills: "## Acceptance Method"
     maps_to: pm:acceptanceMethod
@@ -81,6 +90,7 @@ gates:
 
   - id: acceptance_responsibility
     order: 9
+    type: prose
     prompt: "Who is responsible for confirming the acceptance criteria have been met? (Usually the Senior User / a named business representative.)"
     fills: "## Acceptance Responsibilities"
     maps_to: pm:acceptanceResponsibility

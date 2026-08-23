@@ -15,6 +15,7 @@ document: quality-audit-report
 gates:
   - id: audit_id
     order: 1
+    type: identifier
     prompt: "What is the unique identifier for this Quality Audit Report? (e.g. QA-001. Must be traceable to the project's Quality Register.)"
     fills: "# Quality Audit Report: {{audit_id}}"
     maps_to: dct:identifier
@@ -23,6 +24,7 @@ gates:
 
   - id: product_id_and_name
     order: 2
+    type: prose
     prompt: "What is the ID and name of the product being quality-checked? Reference its entry in the Product Register / Work Breakdown Structure."
     fills: "## Product Reviewed"
     maps_to: pm:hasDeliverable
@@ -31,6 +33,7 @@ gates:
 
   - id: quality_method
     order: 3
+    type: prose
     prompt: "What quality control method was used for this review? (e.g. formal document review, structured walkthrough, software testing, physical inspection, quality workshop.)"
     fills: "## Quality Method"
     maps_to: pm:projectApproach
@@ -39,6 +42,7 @@ gates:
 
   - id: producer
     order: 4
+    type: prose
     prompt: "Who produced or developed the product being reviewed? Provide the name and role of the person or team responsible for creating this deliverable."
     fills: "## Producer"
     maps_to: pm:RoleAssignment
@@ -46,6 +50,7 @@ gates:
 
   - id: reviewer
     order: 5
+    type: section
     prompt: "Who reviewed or tested the product? Provide the name and role of each reviewer. (There may be more than one.)"
     fills: "## Reviewer(s)"
     maps_to: pm:RoleAssignment
@@ -54,6 +59,7 @@ gates:
 
   - id: approver
     order: 6
+    type: prose
     prompt: "Who is responsible for formally signing off and accepting this product? Provide the name and role of the approver."
     fills: "## Approver"
     maps_to: pm:RoleAssignment
@@ -62,6 +68,7 @@ gates:
 
   - id: target_review_date
     order: 7
+    type: date
     prompt: "What was the planned date for the quality review of this product? (As scheduled in the project plan.)"
     fills: "## Target Review Date"
     maps_to: pm:plannedStartDate
@@ -69,6 +76,7 @@ gates:
 
   - id: actual_review_date
     order: 8
+    type: date
     prompt: "What was the actual date the quality review took place?"
     fills: "## Actual Review Date"
     maps_to: dct:created
@@ -77,6 +85,7 @@ gates:
 
   - id: target_approval_date
     order: 9
+    type: date
     prompt: "What was the planned date for formal product approval?"
     fills: "## Target Approval Date"
     maps_to: pm:plannedEndDate
@@ -84,14 +93,17 @@ gates:
 
   - id: actual_approval_date
     order: 10
+    type: date
     prompt: "What was the actual date the product was formally approved? Leave blank if approval is still pending."
     fills: "## Actual Approval Date"
     maps_to: pm:plannedEndDate
     required: false
+    deferred_value: "*Pending.*"
     guidance: "If approval is pending, leave as TBD. If the product failed and requires rework, note that here."
 
   - id: quality_criteria
     order: 11
+    type: list
     prompt: "What quality criteria were applied in this review? List each criterion and its source (e.g. 'Zero critical defects — per Product Description PD-005, §3.2')."
     fills: "## Quality Criteria Applied"
     maps_to: pm:acceptanceCriteria
@@ -100,6 +112,7 @@ gates:
 
   - id: result
     order: 12
+    type: string
     prompt: "What was the result of the quality review? State: Pass, Fail, or Conditional Pass. For Conditional Pass or Fail, summarise the specific defects or non-conformances found."
     fills: "## Result"
     maps_to: pm:deliverableStatus
@@ -108,14 +121,17 @@ gates:
 
   - id: actions
     order: 13
+    type: list
     prompt: "If the result was Fail or Conditional Pass, what corrective actions are required? For each action: describe it, assign it to a named owner, and state the target completion date."
     fills: "## Corrective Actions"
     maps_to: dct:description
     required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
     guidance: "If the result was Pass, state 'No corrective actions required.' Each Conditional Pass action must be verified before the product can be formally approved."
 
   - id: quality_records_link
     order: 14
+    type: prose
     prompt: "Provide a link or reference to the quality records supporting this review (e.g. signed-off review forms, test results, acceptance certificates, or inspection checklists)."
     fills: "## Quality Records Reference"
     maps_to: dct:description

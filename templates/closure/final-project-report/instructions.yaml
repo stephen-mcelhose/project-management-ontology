@@ -21,6 +21,7 @@ document: final-project-report
 gates:
   - id: project_summary
     order: 1
+    type: prose
     prompt: "Provide a brief summary of the project: its name, purpose, approved start and end dates, and actual start and end dates."
     fills: "## Project Summary"
     maps_to: dct:description
@@ -29,6 +30,7 @@ gates:
 
   - id: achievement_of_objectives
     order: 2
+    type: section
     prompt: "Were the project's objectives met? For each objective stated in the Project Charter, confirm whether it was fully met, partially met, or not met — and explain why."
     fills: "## Achievement of Objectives"
     maps_to: pm:hasObjective
@@ -37,6 +39,7 @@ gates:
 
   - id: performance_against_plan
     order: 3
+    type: section
     prompt: "How did the project perform against the approved plan across each of the six tolerance areas: time, cost, quality, scope, benefits, and risk? State approved baseline vs. actual for time and cost."
     fills: "## Performance Against Plan"
     maps_to: pm:hasTolerance
@@ -45,6 +48,7 @@ gates:
 
   - id: business_case_review
     order: 4
+    type: prose
     prompt: "Was the Business Case achieved? State whether the expected benefits remain on track to be realized. If benefits are post-project, note the planned review date."
     fills: "## Business Case Review"
     maps_to: dct:description
@@ -53,6 +57,7 @@ gates:
 
   - id: lessons_summary
     order: 5
+    type: list
     prompt: "What are the top three to five lessons from this project? These will be expanded in the Lessons Learned Report — here provide a brief headline for each."
     fills: "## Lessons Summary"
     maps_to: dct:description
@@ -61,6 +66,7 @@ gates:
 
   - id: outstanding_actions
     order: 6
+    type: section
     prompt: "Are there any actions or recommendations that remain open at project closure? List each with an agreed owner and target date, or state 'No outstanding actions'."
     fills: "## Outstanding Actions"
     maps_to: dct:description
@@ -69,10 +75,12 @@ gates:
 
   - id: recommendations
     order: 7
+    type: section
     prompt: "What recommendations does the Project Manager make to the Project Board, sponsor, or operational owner? Include any advice on follow-on projects or benefits realisation."
     fills: "## Recommendations"
     maps_to: dct:description
     required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
     guidance: "Recommendations are the Project Manager's expert view. They are advisory — the Project Board decides whether to act on them."
 
 # Completion rule: all required gates must be filled before the document

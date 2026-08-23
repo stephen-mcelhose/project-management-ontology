@@ -22,6 +22,7 @@ document: project-closure-statement
 gates:
   - id: closure_declaration
     order: 1
+    type: prose
     prompt: "State formally that the project is closed. Include the project name, the closure date, and a one-sentence statement of the project's outcome."
     fills: "## Closure Declaration"
     maps_to: dct:description
@@ -31,6 +32,7 @@ gates:
 
   - id: objectives_met
     order: 2
+    type: section
     prompt: "Were the project's objectives met? Summarise the outcome per objective — fully met, partially met, or not met. Reference the Final Project Report for detail."
     fills: "## Objectives Met"
     maps_to: pm:hasObjective
@@ -39,6 +41,7 @@ gates:
 
   - id: outstanding_commitments
     order: 3
+    type: section
     prompt: "Are there any commitments, open actions, or known defects that remain unresolved at closure? List each with a named owner and target resolution date, or state 'None'."
     fills: "## Outstanding Commitments"
     maps_to: dct:description
@@ -47,14 +50,17 @@ gates:
 
   - id: benefits_realisation
     order: 4
+    type: prose
     prompt: "What is the current benefits realisation status? If benefits are post-project, state the planned review date and the owner responsible for tracking them."
     fills: "## Benefits Realisation"
     maps_to: dct:description
     required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
     guidance: "If benefits have already been realised, state this clearly. If they are post-project, the Project Board must confirm that a benefits review is planned."
 
   - id: formal_approval
     order: 5
+    type: prose
     prompt: "Who formally authorises closure of this project? Record the name, role, and organisation of each approver, plus the approval date."
     fills: "## Formal Approval"
     maps_to: pm:approvedBy

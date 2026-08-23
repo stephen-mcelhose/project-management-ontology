@@ -13,6 +13,7 @@ document: deliverable-status-report
 gates:
   - id: work_package_reference
     order: 1
+    type: string
     prompt: "Which Work Package does this report cover? Provide the Work Package ID and title (e.g. WP-003 — Backend API Integration)."
     fills: "# Deliverable Status Report: {{work_package_reference}}"
     maps_to: dct:title
@@ -21,6 +22,7 @@ gates:
 
   - id: report_date
     order: 2
+    type: date
     prompt: "What is the date of this Deliverable Status Report?"
     fills: "## Report Date"
     maps_to: dct:created
@@ -29,6 +31,7 @@ gates:
 
   - id: reporting_period
     order: 3
+    type: prose
     prompt: "What reporting period does this report cover? State the start date and end date of the period."
     fills: "## Reporting Period"
     maps_to: dct:description
@@ -37,6 +40,7 @@ gates:
 
   - id: deliverables_completed
     order: 4
+    type: section
     prompt: "Which deliverables were completed and accepted in this reporting period? For each, state: deliverable name, ID, completion date, and confirmation of acceptance."
     fills: "## Deliverables Completed This Period"
     maps_to: pm:hasDeliverable
@@ -45,6 +49,7 @@ gates:
 
   - id: deliverables_in_progress
     order: 5
+    type: section
     prompt: "Which deliverables are currently in progress? For each, state: deliverable name, current status, percentage complete, and any issues affecting completion."
     fills: "## Deliverables In Progress"
     maps_to: pm:hasDeliverable
@@ -53,6 +58,7 @@ gates:
 
   - id: deliverables_planned_next_period
     order: 6
+    type: section
     prompt: "What deliverables or significant work activities are planned for the next reporting period? State expected completion dates."
     fills: "## Planned Next Period"
     maps_to: pm:hasDeliverable
@@ -60,6 +66,7 @@ gates:
 
   - id: comparison_to_plan
     order: 7
+    type: prose
     prompt: "How does actual progress compare to the Team Plan for this period? Note any deviations from the planned schedule and explain the cause."
     fills: "## Comparison to Plan"
     maps_to: dct:description
@@ -68,6 +75,7 @@ gates:
 
   - id: issues_and_risks
     order: 8
+    type: section
     prompt: "Are there any issues or risks that need the Project Manager's attention? For each, state: description, potential impact on tolerances, and proposed response."
     fills: "## Issues and Risks"
     maps_to: pm:hasRisk
@@ -76,6 +84,7 @@ gates:
 
   - id: open_actions
     order: 9
+    type: section
     prompt: "List any open actions from previous Deliverable Status Reports that are still outstanding. For each, state the action, assigned owner, original due date, and current status."
     fills: "## Open Actions from Previous Reports"
     maps_to: dct:description

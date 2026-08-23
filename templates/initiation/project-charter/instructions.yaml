@@ -24,6 +24,7 @@ document: project-charter
 gates:
   - id: background
     order: 1
+    type: prose
     prompt: "Provide the background and context for this project: why does it exist, and what came before it (e.g. the approved Project Proposal and Business Case)?"
     fills: "## Project Definition / Background"
     maps_to: dct:description
@@ -31,6 +32,7 @@ gates:
 
   - id: objectives
     order: 2
+    type: list
     prompt: "What are the project's formal objectives, across time, cost, quality, scope, benefits, and risk where relevant?"
     fills: "## Project Definition / Objectives"
     maps_to: proj:hadObjective
@@ -39,6 +41,7 @@ gates:
 
   - id: desired_outcomes
     order: 3
+    type: prose
     prompt: "What practical changes or improvements will users experience once the project's outputs are in use?"
     fills: "## Project Definition / Desired Outcomes"
     maps_to: pm:desiredOutcome
@@ -46,18 +49,21 @@ gates:
 
   - id: project_scope_in
     order: 4
+    type: list
     prompt: "What is explicitly IN scope for this project?"
     fills: "## Project Definition / Scope"
     required: true
 
   - id: project_scope_out
     order: 5
+    type: list
     prompt: "What is explicitly OUT of scope?"
     fills: "## Project Definition / Scope"
     required: true
 
   - id: constraints
     order: 6
+    type: list
     prompt: "What constraints limit this project's options (e.g. fixed deadline, fixed budget, regulatory requirements, mandated technology)?"
     fills: "## Project Definition / Constraints and Assumptions"
     maps_to: pm:hasConstraint
@@ -65,6 +71,7 @@ gates:
 
   - id: assumptions
     order: 7
+    type: list
     prompt: "What assumptions are being made for planning purposes that, if wrong, would affect the project?"
     fills: "## Project Definition / Constraints and Assumptions"
     maps_to: pm:hasAssumption
@@ -72,6 +79,7 @@ gates:
 
   - id: project_approach
     order: 8
+    type: prose
     prompt: "How will the project product be delivered? (e.g. build in-house, buy off-the-shelf, outsource to a third party, hybrid.)"
     fills: "## Project Approach"
     maps_to: pm:projectApproach
@@ -79,6 +87,7 @@ gates:
 
   - id: pm_team_structure
     order: 9
+    type: section
     prompt: "Describe the project management team structure: who is the Sponsor/Executive, Project Manager, and any Team Managers or Project Assurance roles? Provide an org chart or list of reporting lines."
     fills: "## Project Management Team Structure"
     maps_to: pm:RoleAssignment
@@ -86,6 +95,7 @@ gates:
 
   - id: role_descriptions
     order: 10
+    type: section
     prompt: "For each named role above, briefly describe their responsibilities on this project."
     fills: "## Role Descriptions"
     maps_to: pm:assignedRole
@@ -93,6 +103,7 @@ gates:
 
   - id: project_controls
     order: 11
+    type: section
     prompt: "How will the project be monitored and controlled? Define management stages (if any), tolerances (permissible deviation on time, cost, quality, scope, benefit, risk), and the reporting cadence."
     fills: "## Project Controls"
     maps_to: pm:hasTolerance
@@ -101,12 +112,15 @@ gates:
 
   - id: tailoring_statement
     order: 12
+    type: prose
     prompt: "How has your organization's standard project management approach been tailored for this project's size, complexity, and risk profile? (It is acceptable to say 'no tailoring applied — standard approach used'.)"
     fills: "## Tailoring"
     required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
 
   - id: authorization
     order: 13
+    type: prose
     prompt: "Who is formally authorizing this project to proceed, and what authority does the Project Manager have to apply resources (e.g. spending limit, staffing authority)?"
     fills: "## Formal Authorization"
     maps_to: pm:approvedBy

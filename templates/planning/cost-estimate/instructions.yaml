@@ -13,6 +13,7 @@ document: cost-estimate
 gates:
   - id: project_name
     order: 1
+    type: string
     prompt: "What is the name of this project? (Must match the Project Charter and Resource Plan.)"
     fills: "# Cost Estimate: {{project_name}}"
     maps_to: dct:title
@@ -20,6 +21,7 @@ gates:
 
   - id: cost_estimate_description
     order: 2
+    type: prose
     prompt: "Briefly describe the scope of this Cost Estimate. What cost categories are included (labour, materials, licences, contingency, operational costs)?"
     fills: "## Overview"
     maps_to: dct:description
@@ -27,6 +29,7 @@ gates:
 
   - id: cost_breakdown
     order: 3
+    type: table
     prompt: "Provide the cost breakdown by work package or project phase. For each line item: work package or phase name, cost type (labour/material/other), estimated cost, and basis of estimate."
     fills: "## Cost Breakdown"
     required: true
@@ -34,6 +37,7 @@ gates:
 
   - id: labour_costs
     order: 4
+    type: table
     prompt: "What are the total labour costs? Calculate from the Resource Plan: for each role, multiply cost rate × estimated hours. Provide a summary table."
     fills: "## Labour Costs"
     maps_to: pm:costRate
@@ -41,6 +45,7 @@ gates:
 
   - id: total_budget
     order: 5
+    type: string
     prompt: "What is the total approved project budget (sum of all cost categories)? State the currency."
     fills: "## Total Project Budget"
     maps_to: pm:budget
@@ -49,6 +54,7 @@ gates:
 
   - id: contingency_budget
     order: 6
+    type: prose
     prompt: "What contingency or risk reserve has been set aside? State the amount and the percentage of the base estimate it represents. What cost tolerance is permitted before escalation?"
     fills: "## Contingency and Cost Tolerance"
     maps_to: pm:hasTolerance
@@ -57,6 +63,7 @@ gates:
 
   - id: operational_costs
     order: 7
+    type: table
     prompt: "What ongoing operational and maintenance costs will the project create after delivery? (e.g. hosting, licences, support.) These are not project costs but must be declared for the Business Case."
     fills: "## Post-Delivery Operational Costs"
     required: true
@@ -64,6 +71,7 @@ gates:
 
   - id: investment_appraisal
     order: 8
+    type: prose
     prompt: "Provide the investment appraisal summary: compare total project costs against expected benefits. Include the preferred appraisal metric (ROI, payback period, or net present value) and the result."
     fills: "## Investment Appraisal"
     maps_to: pm:investmentAppraisal
@@ -72,6 +80,7 @@ gates:
 
   - id: cost_assumptions
     order: 9
+    type: list
     prompt: "What assumptions underpin the cost estimates? (e.g. exchange rates, day rates fixed at time of estimate, vendor quotes valid for 30 days.)"
     fills: "## Cost Assumptions"
     maps_to: pm:hasAssumption

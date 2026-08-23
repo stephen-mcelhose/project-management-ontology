@@ -13,6 +13,7 @@ document: project-schedule
 gates:
   - id: project_name
     order: 1
+    type: string
     prompt: "What is the name of this project? (Must match the Project Charter and WBS.)"
     fills: "# Project Schedule: {{project_name}}"
     maps_to: dct:title
@@ -20,6 +21,7 @@ gates:
 
   - id: schedule_description
     order: 2
+    type: prose
     prompt: "Briefly describe the scope of this schedule. What work does it cover, and what scheduling method is used (e.g. Gantt chart, critical path method, product checklist)?"
     fills: "## Schedule Overview"
     maps_to: dct:description
@@ -27,6 +29,7 @@ gates:
 
   - id: project_start_date
     order: 3
+    type: date
     prompt: "What is the planned project start date? (Format: YYYY-MM-DD)"
     fills: "## Timeline"
     maps_to: pm:plannedStartDate
@@ -35,6 +38,7 @@ gates:
 
   - id: project_end_date
     order: 4
+    type: date
     prompt: "What is the planned project end date? (Format: YYYY-MM-DD)"
     fills: "## Timeline"
     maps_to: pm:plannedEndDate
@@ -43,6 +47,7 @@ gates:
 
   - id: key_milestones
     order: 5
+    type: table
     prompt: "What are the key project milestones? For each: milestone name, target date, and what deliverable or event triggers it."
     fills: "## Key Milestones"
     maps_to: pm:hasMilestone
@@ -51,6 +56,7 @@ gates:
 
   - id: activity_sequence
     order: 6
+    type: section
     prompt: "List the scheduled activities, drawn from the WBS work packages. For each activity: ID, name, start date, end date, predecessor activities, and responsible role."
     fills: "## Activity Schedule"
     maps_to: pm:hasTask
@@ -59,6 +65,7 @@ gates:
 
   - id: critical_path
     order: 7
+    type: prose
     prompt: "Identify the critical path — the sequence of dependent activities that determines the earliest project completion date. Which activities have zero float?"
     fills: "## Critical Path"
     required: true
@@ -66,6 +73,7 @@ gates:
 
   - id: schedule_assumptions
     order: 8
+    type: list
     prompt: "What assumptions underpin the schedule estimates? (e.g. resource availability, no holidays affecting team, external input received by specific dates.)"
     fills: "## Schedule Assumptions"
     maps_to: pm:hasAssumption
@@ -73,6 +81,7 @@ gates:
 
   - id: schedule_tolerances
     order: 9
+    type: prose
     prompt: "What is the agreed time tolerance for this schedule? (e.g. ±2 weeks per stage.) Beyond what deviation must the project board be informed?"
     fills: "## Schedule Tolerances"
     maps_to: pm:hasTolerance
