@@ -79,3 +79,114 @@
     rdfs:range xsd:date ;
     rdfs:label "planned end date"@en ;
     rdfs:isDefinedBy : .
+
+:investmentAppraisal
+    a owl:DatatypeProperty ;
+    rdfs:domain :Project ;
+    rdfs:range xsd:string ;
+    rdfs:label "investment appraisal"@en ;
+    rdfs:comment "Narrative combining cost and benefit information to demonstrate the project's overall value (e.g. ROI, payback period, net present value), as recorded in the Business Case."@en ;
+    rdfs:isDefinedBy : .
+
+# ── Tolerance ──────────────────────────────────────────────────────────────────
+# PRINCE2 defines tolerance across six variables: time, cost, quality, scope,
+# benefits, risk. Modelled as a reified class so a Project can carry any subset.
+
+:Tolerance
+    a owl:Class ;
+    rdfs:label "Tolerance"@en ;
+    rdfs:comment "The permissible deviation from a plan, on a named dimension (time, cost, quality, scope, benefit, or risk), before the deviation must be escalated."@en ;
+    rdfs:isDefinedBy : .
+
+:hasTolerance
+    a owl:ObjectProperty ;
+    rdfs:domain :Project ;
+    rdfs:range :Tolerance ;
+    rdfs:label "has tolerance"@en ;
+    rdfs:isDefinedBy : .
+
+:toleranceType
+    a owl:DatatypeProperty ;
+    rdfs:domain :Tolerance ;
+    rdfs:range xsd:string ;
+    rdfs:label "tolerance type"@en ;
+    rdfs:comment "The dimension this tolerance applies to: time, cost, quality, scope, benefit, or risk."@en ;
+    rdfs:isDefinedBy : .
+
+:toleranceValue
+    a owl:DatatypeProperty ;
+    rdfs:domain :Tolerance ;
+    rdfs:range xsd:string ;
+    rdfs:label "tolerance value"@en ;
+    rdfs:comment "The permitted deviation, expressed in the unit appropriate to the tolerance type (e.g. '+/- 10% budget', '+/- 2 weeks')."@en ;
+    rdfs:isDefinedBy : .
+
+# ── Assumptions and constraints ─────────────────────────────────────────────────
+
+:Assumption
+    a owl:Class ;
+    rdfs:label "Assumption"@en ;
+    rdfs:comment "A statement taken to be true for planning purposes without proof, which if invalidated may affect the project."@en ;
+    rdfs:isDefinedBy : .
+
+:hasAssumption
+    a owl:ObjectProperty ;
+    rdfs:domain :Project ;
+    rdfs:range :Assumption ;
+    rdfs:label "has assumption"@en ;
+    rdfs:isDefinedBy : .
+
+:Constraint
+    a owl:Class ;
+    rdfs:label "Constraint"@en ;
+    rdfs:comment "A limitation (e.g. time, budget, resource, regulatory) that restricts the project's options."@en ;
+    rdfs:isDefinedBy : .
+
+:hasConstraint
+    a owl:ObjectProperty ;
+    rdfs:domain :Project ;
+    rdfs:range :Constraint ;
+    rdfs:label "has constraint"@en ;
+    rdfs:isDefinedBy : .
+
+# ── Project Charter / Requirement Specification support ─────────────────────
+
+:desiredOutcome
+    a owl:DatatypeProperty ;
+    rdfs:domain :Project ;
+    rdfs:range xsd:string ;
+    rdfs:label "desired outcome"@en ;
+    rdfs:comment "The practical change or improvement expected once the project's outputs are used, as distinct from the outputs themselves."@en ;
+    rdfs:isDefinedBy : .
+
+:projectApproach
+    a owl:DatatypeProperty ;
+    rdfs:domain :Project ;
+    rdfs:range xsd:string ;
+    rdfs:label "project approach"@en ;
+    rdfs:comment "The chosen solution path for delivering the project product (e.g. build in-house, buy off-the-shelf, outsource)."@en ;
+    rdfs:isDefinedBy : .
+
+:productComposition
+    a owl:DatatypeProperty ;
+    rdfs:domain :Project ;
+    rdfs:range xsd:string ;
+    rdfs:label "product composition"@en ;
+    rdfs:comment "A high-level list of the major components that make up the project's final product."@en ;
+    rdfs:isDefinedBy : .
+
+:developmentSkillsRequired
+    a owl:DatatypeProperty ;
+    rdfs:domain :Project ;
+    rdfs:range xsd:string ;
+    rdfs:label "development skills required"@en ;
+    rdfs:comment "The specialist skills, knowledge, or experience needed to create the project's final product."@en ;
+    rdfs:isDefinedBy : .
+
+:qualityExpectations
+    a owl:DatatypeProperty ;
+    rdfs:domain :Project ;
+    rdfs:range xsd:string ;
+    rdfs:label "quality expectations"@en ;
+    rdfs:comment "The customer's high-level quality expectations for the project's final product, from which detailed acceptance criteria are derived."@en ;
+    rdfs:isDefinedBy : .

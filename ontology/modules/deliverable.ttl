@@ -49,7 +49,8 @@
 
 :acceptanceCriteria
     a owl:DatatypeProperty ;
-    rdfs:domain :Deliverable ;
+    rdfs:domain [ owl:unionOf ( :Deliverable :Requirement ) ] ;
     rdfs:range xsd:string ;
     rdfs:label "acceptance criteria"@en ;
+    rdfs:comment "A measurable attribute that a deliverable or requirement must satisfy to be accepted."@en ;
     rdfs:isDefinedBy : .

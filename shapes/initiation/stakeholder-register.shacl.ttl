@@ -1,0 +1,148 @@
+# shapes/initiation/stakeholder-register.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Stakeholder Register is "ingested" (converted from the filled
+# template.md into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:StakeholderRegister
+#     → "these rules apply to any node of type pm:StakeholderRegister"
+#
+#   sh:property [ sh:path dct:title ; sh:minCount 1 ]
+#     → "every StakeholderRegister instance must have at least one dct:title triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s shapes/initiation/stakeholder-register.shacl.ttl \
+#            -d path/to/my-stakeholder-register.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix proj:  <https://linked.data.gov.au/def/project#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/project-management-ontology/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:StakeholderRegisterShape
+    a sh:NodeShape ;
+
+    # Target: applies to any RDF node typed as pm:StakeholderRegister
+    sh:targetClass pm:StakeholderRegister ;
+
+    rdfs:label "Stakeholder Register shape"@en ;
+    rdfs:comment "Validates that a filled Stakeholder Register instance satisfies the minimum information requirements of ISO 21502:2020 §6."@en ;
+
+    # ── Required: title ─────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 3 ;
+        sh:message  "A Stakeholder Register must have a dct:title."@en ;
+    ] ;
+
+    # ── Required: description / scope ────────────────────────────────────────
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Stakeholder Register must have a dct:description (communications scope)."@en ;
+    ] ;
+
+    # ── Required: links to the project it describes ──────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Stakeholder Register must reference the project it describes via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Initiation phase ───────────────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/project-management-ontology/phases/Initiation> ;
+        sh:message  "A Stakeholder Register must be linked to the Initiation phase."@en ;
+    ] ;
+
+    # ── Required: creation date ──────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Stakeholder Register must record the date it was created (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator ─────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Stakeholder Register must identify its author (dct:creator)."@en ;
+    ] .
+
+# ── Shape for the linked Project node ─────────────────────────────────────────
+# A project with a Stakeholder Register must have at least three stakeholder
+# role assignments (PRINCE2 stakeholder analysis minimum).
+
+pm-sh:AnalyzedProjectShape
+    a sh:NodeShape ;
+    sh:targetClass pm:Project ;
+
+    sh:property [
+        sh:path     pm:hasRole ;
+        sh:message  "pm:hasRole, if used at project level, must reference a pm:Role."@en ;
+    ] .
+
+# ── Shape for each stakeholder Role Assignment ────────────────────────────────
+
+pm-sh:StakeholderRoleAssignmentShape
+    a sh:NodeShape ;
+    sh:targetClass pm:RoleAssignment ;
+
+    sh:property [
+        sh:path     pm:assignedAgent ;
+        sh:minCount 1 ;
+        sh:class    foaf:Agent ;
+        sh:message  "A stakeholder Role Assignment must identify pm:assignedAgent."@en ;
+    ] ;
+
+    sh:property [
+        sh:path     pm:assignedRole ;
+        sh:minCount 1 ;
+        sh:class    pm:Role ;
+        sh:message  "A stakeholder Role Assignment must identify pm:assignedRole."@en ;
+    ] ;
+
+    sh:property [
+        sh:path     pm:stakeholderInterest ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A stakeholder Role Assignment must record pm:stakeholderInterest."@en ;
+    ] ;
+
+    sh:property [
+        sh:path     pm:influenceLevel ;
+        sh:minCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 1 ;
+        sh:maxInclusive 3 ;
+        sh:message  "A stakeholder Role Assignment must record pm:influenceLevel (1=Low, 2=Medium, 3=High)."@en ;
+    ] .

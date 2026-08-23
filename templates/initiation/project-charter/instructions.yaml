@@ -1,0 +1,134 @@
+# instructions.yaml — Project Charter
+#
+# Rules for an agent helping a user fill out the Project Charter template.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# Fields are sourced from the "Project Definition", "Project Approach",
+# "Project Management Team Structure", "Role Descriptions", and
+# "Project Controls" sections of the PRINCE2 Project Initiation
+# Documentation (PID) management product:
+# https://prince2.wiki/management-products/baselines/project-initiation-documentation/
+#
+# pm:ProjectCharter formally authorizes the project (see skos:scopeNote in
+# document.ttl: in PRINCE2 this authorization occurs within the PID rather
+# than a standalone charter). Financial justification lives in Business Case;
+# this document covers scope, approach, organization, and controls.
+#
+# This is the INPUT side. The output is validated by:
+#   shapes/initiation/project-charter.shacl.ttl
+
+version: 1
+document: project-charter
+
+gates:
+  - id: background
+    order: 1
+    prompt: "Provide the background and context for this project: why does it exist, and what came before it (e.g. the approved Project Proposal and Business Case)?"
+    fills: "## Project Definition / Background"
+    maps_to: dct:description
+    required: true
+
+  - id: objectives
+    order: 2
+    prompt: "What are the project's formal objectives, across time, cost, quality, scope, benefits, and risk where relevant?"
+    fills: "## Project Definition / Objectives"
+    maps_to: proj:hadObjective
+    required: true
+    validation: "Each objective must be testable — avoid vague language like 'improve' without a measure."
+
+  - id: desired_outcomes
+    order: 3
+    prompt: "What practical changes or improvements will users experience once the project's outputs are in use?"
+    fills: "## Project Definition / Desired Outcomes"
+    maps_to: pm:desiredOutcome
+    required: true
+
+  - id: project_scope_in
+    order: 4
+    prompt: "What is explicitly IN scope for this project?"
+    fills: "## Project Definition / Scope"
+    required: true
+
+  - id: project_scope_out
+    order: 5
+    prompt: "What is explicitly OUT of scope?"
+    fills: "## Project Definition / Scope"
+    required: true
+
+  - id: constraints
+    order: 6
+    prompt: "What constraints limit this project's options (e.g. fixed deadline, fixed budget, regulatory requirements, mandated technology)?"
+    fills: "## Project Definition / Constraints and Assumptions"
+    maps_to: pm:hasConstraint
+    required: true
+
+  - id: assumptions
+    order: 7
+    prompt: "What assumptions are being made for planning purposes that, if wrong, would affect the project?"
+    fills: "## Project Definition / Constraints and Assumptions"
+    maps_to: pm:hasAssumption
+    required: true
+
+  - id: project_approach
+    order: 8
+    prompt: "How will the project product be delivered? (e.g. build in-house, buy off-the-shelf, outsource to a third party, hybrid.)"
+    fills: "## Project Approach"
+    maps_to: pm:projectApproach
+    required: true
+
+  - id: pm_team_structure
+    order: 9
+    prompt: "Describe the project management team structure: who is the Sponsor/Executive, Project Manager, and any Team Managers or Project Assurance roles? Provide an org chart or list of reporting lines."
+    fills: "## Project Management Team Structure"
+    maps_to: pm:RoleAssignment
+    required: true
+
+  - id: role_descriptions
+    order: 10
+    prompt: "For each named role above, briefly describe their responsibilities on this project."
+    fills: "## Role Descriptions"
+    maps_to: pm:assignedRole
+    required: true
+
+  - id: project_controls
+    order: 11
+    prompt: "How will the project be monitored and controlled? Define management stages (if any), tolerances (permissible deviation on time, cost, quality, scope, benefit, risk), and the reporting cadence."
+    fills: "## Project Controls"
+    maps_to: pm:hasTolerance
+    required: true
+    guidance: "Each tolerance statement becomes a pm:Tolerance instance with pm:toleranceType and pm:toleranceValue."
+
+  - id: tailoring_statement
+    order: 12
+    prompt: "How has your organization's standard project management approach been tailored for this project's size, complexity, and risk profile? (It is acceptable to say 'no tailoring applied — standard approach used'.)"
+    fills: "## Tailoring"
+    required: false
+
+  - id: authorization
+    order: 13
+    prompt: "Who is formally authorizing this project to proceed, and what authority does the Project Manager have to apply resources (e.g. spending limit, staffing authority)?"
+    fills: "## Formal Authorization"
+    maps_to: pm:approvedBy
+    required: true
+    validation: "Must name a specific person or board with authority to approve, not a department name alone."
+
+# Completion rule: all required gates must be filled before the document
+# is considered draft-complete. The agent MUST NOT mark the document complete
+# if any required gate is empty or contains only a placeholder.
+completion:
+  required_gates:
+    - background
+    - objectives
+    - desired_outcomes
+    - project_scope_in
+    - project_scope_out
+    - constraints
+    - assumptions
+    - project_approach
+    - pm_team_structure
+    - role_descriptions
+    - project_controls
+    - authorization
+  output_status: draft
+  next_document: stakeholder-register

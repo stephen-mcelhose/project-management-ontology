@@ -1,0 +1,56 @@
+@prefix : <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+# ── Requirement Module ─────────────────────────────────────────────────────────
+# Supports the Requirement Specification document (ISO 21502:2020 §6 /
+# PRINCE2 Project Product Description management product).
+
+:Requirement
+    a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Requirement"@en ;
+    rdfs:comment "A single need, expectation, or constraint that the project's deliverables must satisfy."@en ;
+    rdfs:isDefinedBy : .
+
+:hasRequirement
+    a owl:ObjectProperty ;
+    rdfs:domain :Project ;
+    rdfs:range :Requirement ;
+    rdfs:label "has requirement"@en ;
+    rdfs:isDefinedBy : .
+
+:RequirementType
+    a owl:Class ;
+    rdfs:label "Requirement Type"@en ;
+    rdfs:comment "Controlled vocabulary distinguishing functional from non-functional requirements."@en ;
+    rdfs:isDefinedBy : .
+
+:requirement-type-functional      a :RequirementType ; rdfs:label "Functional"@en .
+:requirement-type-non-functional  a :RequirementType ; rdfs:label "Non-Functional"@en .
+
+:requirementType
+    a owl:ObjectProperty ;
+    rdfs:domain :Requirement ;
+    rdfs:range :RequirementType ;
+    rdfs:label "requirement type"@en ;
+    rdfs:isDefinedBy : .
+
+:acceptanceMethod
+    a owl:DatatypeProperty ;
+    rdfs:domain :Requirement ;
+    rdfs:range xsd:string ;
+    rdfs:label "acceptance method"@en ;
+    rdfs:comment "The technique used to prove the requirement has been met (e.g. demonstration, inspection, test, audit)."@en ;
+    rdfs:isDefinedBy : .
+
+:acceptanceResponsibility
+    a owl:ObjectProperty ;
+    rdfs:domain :Requirement ;
+    rdfs:range :Role ;
+    rdfs:label "acceptance responsibility"@en ;
+    rdfs:comment "The role responsible for confirming that this requirement's acceptance criteria have been met."@en ;
+    rdfs:isDefinedBy : .

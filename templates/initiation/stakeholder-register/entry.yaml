@@ -1,0 +1,30 @@
+id: stakeholder-register
+title: Stakeholder Register
+phase: initiation
+phase_order: 4         # fourth document produced in a project lifecycle
+
+ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/StakeholderRegister
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+din_69901:
+  phase: Initiation
+  part: DIN 69901-2:2009
+  url: https://www.beuth.de/en/standard/din-69901-2/119948897
+prince2_equivalent:
+  name: Communication Management Approach
+  url: https://prince2.wiki/management-products/baselines/management-approaches/communication/
+package: pkgs:InitiationPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - project-charter          # Stakeholder identification follows formal authorization
+required_before:
+  - requirement-specification   # this document is a hard dependency for Requirement Specification
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/initiation/stakeholder-register.shacl.ttl
