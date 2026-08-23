@@ -1,0 +1,62 @@
+@prefix : <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+# ── Workflow Module ────────────────────────────────────────────────────────────
+# Workflows capture ordered sequences of Steps with guard conditions and
+# transitions — derived from project tasks, roles, and deliverables.
+
+:Workflow
+    a owl:Class ;
+    rdfs:label "Workflow"@en ;
+    rdfs:comment "An ordered sequence of steps that operationalizes a process derived from the project ontology."@en ;
+    rdfs:isDefinedBy : .
+
+:WorkflowStep
+    a owl:Class ;
+    rdfs:subClassOf prov:Activity ;
+    rdfs:label "Workflow Step"@en ;
+    rdfs:comment "A single step within a workflow."@en ;
+    rdfs:isDefinedBy : .
+
+:hasStep
+    a owl:ObjectProperty ;
+    rdfs:domain :Workflow ;
+    rdfs:range :WorkflowStep ;
+    rdfs:label "has step"@en ;
+    rdfs:isDefinedBy : .
+
+:nextStep
+    a owl:ObjectProperty ;
+    rdfs:domain :WorkflowStep ;
+    rdfs:range :WorkflowStep ;
+    rdfs:label "next step"@en ;
+    rdfs:comment "The step that follows this step when its guard condition is satisfied."@en ;
+    rdfs:isDefinedBy : .
+
+:guardCondition
+    a owl:DatatypeProperty ;
+    rdfs:domain :WorkflowStep ;
+    rdfs:range xsd:string ;
+    rdfs:label "guard condition"@en ;
+    rdfs:comment "A condition (expressed as a string rule) that must be true for this step's transition to fire."@en ;
+    rdfs:isDefinedBy : .
+
+:responsibleRole
+    a owl:ObjectProperty ;
+    rdfs:domain :WorkflowStep ;
+    rdfs:range :Role ;
+    rdfs:label "responsible role"@en ;
+    rdfs:isDefinedBy : .
+
+:derivedFrom
+    a owl:ObjectProperty ;
+    rdfs:domain :Workflow ;
+    rdfs:range [ owl:unionOf ( :Project :Phase :Task ) ] ;
+    rdfs:subPropertyOf prov:wasDerivedFrom ;
+    rdfs:label "derived from"@en ;
+    rdfs:comment "The project artifact from which this workflow was generated."@en ;
+    rdfs:isDefinedBy : .

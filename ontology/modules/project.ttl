@@ -1,0 +1,85 @@
+@prefix : <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix schema: <https://schema.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+# ── Project Module ─────────────────────────────────────────────────────────────
+
+# :Project — a planned undertaking with defined scope, time-box, and deliverables.
+# Extends doap:Project and prov:Activity for provenance compatibility.
+
+:Project
+    a owl:Class ;
+    rdfs:subClassOf doap:Project, prov:Activity ;
+    rdfs:label "Project"@en ;
+    rdfs:comment "A bounded, planned undertaking with defined scope, schedule, budget, and deliverables."@en ;
+    rdfs:isDefinedBy : .
+
+:hasStatus
+    a owl:ObjectProperty ;
+    rdfs:domain :Project ;
+    rdfs:range :ProjectStatus ;
+    rdfs:label "has status"@en ;
+    rdfs:comment "The current lifecycle status of the project."@en ;
+    rdfs:isDefinedBy : .
+
+:ProjectStatus
+    a owl:Class ;
+    rdfs:label "Project Status"@en ;
+    rdfs:comment "Controlled vocabulary for project lifecycle states."@en ;
+    rdfs:isDefinedBy : .
+
+:status-proposed    a :ProjectStatus ; rdfs:label "Proposed"@en .
+:status-active      a :ProjectStatus ; rdfs:label "Active"@en .
+:status-on-hold     a :ProjectStatus ; rdfs:label "On Hold"@en .
+:status-completed   a :ProjectStatus ; rdfs:label "Completed"@en .
+:status-cancelled   a :ProjectStatus ; rdfs:label "Cancelled"@en .
+
+:hasPhase
+    a owl:ObjectProperty ;
+    rdfs:domain :Project ;
+    rdfs:range :Phase ;
+    rdfs:label "has phase"@en ;
+    rdfs:isDefinedBy : .
+
+:Phase
+    a owl:Class ;
+    rdfs:label "Phase"@en ;
+    rdfs:comment "A named stage within a project lifecycle (e.g., Initiation, Planning, Execution, Closure)."@en ;
+    rdfs:isDefinedBy : .
+
+:hasSponsor
+    a owl:ObjectProperty ;
+    rdfs:domain :Project ;
+    rdfs:range foaf:Agent ;
+    rdfs:subPropertyOf prov:wasAssociatedWith ;
+    rdfs:label "has sponsor"@en ;
+    rdfs:isDefinedBy : .
+
+:budget
+    a owl:DatatypeProperty ;
+    rdfs:domain :Project ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "budget"@en ;
+    rdfs:comment "Approved budget for the project in the account's base currency."@en ;
+    rdfs:isDefinedBy : .
+
+:plannedStartDate
+    a owl:DatatypeProperty ;
+    rdfs:domain :Project ;
+    rdfs:range xsd:date ;
+    rdfs:label "planned start date"@en ;
+    rdfs:isDefinedBy : .
+
+:plannedEndDate
+    a owl:DatatypeProperty ;
+    rdfs:domain :Project ;
+    rdfs:range xsd:date ;
+    rdfs:label "planned end date"@en ;
+    rdfs:isDefinedBy : .

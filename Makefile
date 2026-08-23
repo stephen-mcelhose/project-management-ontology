@@ -1,0 +1,33 @@
+.PHONY: validate visualize wiki-lint install clean
+
+PYTHON := python3
+VENV   := .venv
+PIP    := $(VENV)/bin/pip
+PY     := $(VENV)/bin/python
+
+# ── Setup ──────────────────────────────────────────────────────────────────────
+
+install:
+	$(PYTHON) -m venv $(VENV)
+	$(PIP) install --upgrade pip
+	$(PIP) install -r requirements.txt
+	@echo "✓ Dependencies installed in $(VENV)"
+
+# ── Ontology ───────────────────────────────────────────────────────────────────
+
+validate:
+	$(PY) tools/validate/validate.py
+
+visualize:
+	$(PY) tools/visualize/visualize.py
+	@echo "Output → docs/generated/"
+
+# ── Wiki ───────────────────────────────────────────────────────────────────────
+
+wiki-lint:
+	@echo "Run: /llm-wiki lint  (in csgdaa-code)"
+
+# ── Clean ──────────────────────────────────────────────────────────────────────
+
+clean:
+	rm -rf docs/generated __pycache__ .pytest_cache

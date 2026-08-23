@@ -1,0 +1,60 @@
+@prefix : <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+# ── Role Module ────────────────────────────────────────────────────────────────
+
+:Role
+    a owl:Class ;
+    rdfs:subClassOf prov:Role ;
+    rdfs:label "Role"@en ;
+    rdfs:comment "A named function or responsibility held by an agent within a project."@en ;
+    rdfs:isDefinedBy : .
+
+# Standard project management roles as named individuals
+:role-project-manager     a :Role ; rdfs:label "Project Manager"@en .
+:role-sponsor             a :Role ; rdfs:label "Project Sponsor"@en .
+:role-team-member         a :Role ; rdfs:label "Team Member"@en .
+:role-stakeholder         a :Role ; rdfs:label "Stakeholder"@en .
+:role-subject-matter-expert a :Role ; rdfs:label "Subject Matter Expert"@en .
+:role-qa-lead             a :Role ; rdfs:label "QA Lead"@en .
+:role-tech-lead           a :Role ; rdfs:label "Tech Lead"@en .
+:role-product-owner       a :Role ; rdfs:label "Product Owner"@en .
+
+:hasRole
+    a owl:ObjectProperty ;
+    rdfs:domain foaf:Agent ;
+    rdfs:range :Role ;
+    rdfs:label "has role"@en ;
+    rdfs:isDefinedBy : .
+
+:RoleAssignment
+    a owl:Class ;
+    rdfs:label "Role Assignment"@en ;
+    rdfs:comment "Reification of an agent holding a role within a specific project or task."@en ;
+    rdfs:isDefinedBy : .
+
+:assignedAgent
+    a owl:ObjectProperty ;
+    rdfs:domain :RoleAssignment ;
+    rdfs:range foaf:Agent ;
+    rdfs:label "assigned agent"@en ;
+    rdfs:isDefinedBy : .
+
+:assignedRole
+    a owl:ObjectProperty ;
+    rdfs:domain :RoleAssignment ;
+    rdfs:range :Role ;
+    rdfs:label "assigned role"@en ;
+    rdfs:isDefinedBy : .
+
+:assignedTo
+    a owl:ObjectProperty ;
+    rdfs:domain :RoleAssignment ;
+    rdfs:range [ owl:unionOf ( :Project :Task ) ] ;
+    rdfs:label "assigned to"@en ;
+    rdfs:isDefinedBy : .

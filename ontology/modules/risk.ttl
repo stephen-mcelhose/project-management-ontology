@@ -1,0 +1,61 @@
+@prefix : <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# ── Risk Module ────────────────────────────────────────────────────────────────
+
+:Risk
+    a owl:Class ;
+    rdfs:label "Risk"@en ;
+    rdfs:comment "An uncertain event or condition that, if it occurs, has a positive or negative effect on project objectives."@en ;
+    rdfs:isDefinedBy : .
+
+:hasRisk
+    a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf ( :Project :Phase :Task ) ] ;
+    rdfs:range :Risk ;
+    rdfs:label "has risk"@en ;
+    rdfs:isDefinedBy : .
+
+:likelihood
+    a owl:DatatypeProperty ;
+    rdfs:domain :Risk ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "likelihood"@en ;
+    rdfs:comment "Probability of the risk occurring (0.0–1.0)."@en ;
+    rdfs:isDefinedBy : .
+
+:impact
+    a owl:DatatypeProperty ;
+    rdfs:domain :Risk ;
+    rdfs:range xsd:integer ;
+    rdfs:label "impact"@en ;
+    rdfs:comment "Impact severity (1 = Low, 2 = Medium, 3 = High, 4 = Critical)."@en ;
+    rdfs:isDefinedBy : .
+
+:RiskResponse
+    a owl:Class ;
+    rdfs:label "Risk Response"@en ;
+    rdfs:comment "A planned response strategy to address a risk."@en ;
+    rdfs:isDefinedBy : .
+
+:risk-avoid     a :RiskResponse ; rdfs:label "Avoid"@en .
+:risk-mitigate  a :RiskResponse ; rdfs:label "Mitigate"@en .
+:risk-transfer  a :RiskResponse ; rdfs:label "Transfer"@en .
+:risk-accept    a :RiskResponse ; rdfs:label "Accept"@en .
+
+:hasResponse
+    a owl:ObjectProperty ;
+    rdfs:domain :Risk ;
+    rdfs:range :RiskResponse ;
+    rdfs:label "has response"@en ;
+    rdfs:isDefinedBy : .
+
+:riskOwner
+    a owl:ObjectProperty ;
+    rdfs:domain :Risk ;
+    rdfs:range :Role ;
+    rdfs:label "risk owner"@en ;
+    rdfs:isDefinedBy : .

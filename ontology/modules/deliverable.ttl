@@ -1,0 +1,55 @@
+@prefix : <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+# ── Deliverable Module ─────────────────────────────────────────────────────────
+
+:Deliverable
+    a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Deliverable"@en ;
+    rdfs:comment "A tangible or intangible artifact produced as a result of project work."@en ;
+    rdfs:isDefinedBy : .
+
+:hasDeliverable
+    a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf ( :Project :Phase :Task :Milestone ) ] ;
+    rdfs:range :Deliverable ;
+    rdfs:label "has deliverable"@en ;
+    rdfs:isDefinedBy : .
+
+:producedBy
+    a owl:ObjectProperty ;
+    rdfs:domain :Deliverable ;
+    rdfs:range :Task ;
+    rdfs:subPropertyOf prov:wasGeneratedBy ;
+    rdfs:label "produced by"@en ;
+    rdfs:isDefinedBy : .
+
+:DeliverableStatus
+    a owl:Class ;
+    rdfs:label "Deliverable Status"@en ;
+    rdfs:isDefinedBy : .
+
+:deliverable-draft      a :DeliverableStatus ; rdfs:label "Draft"@en .
+:deliverable-review     a :DeliverableStatus ; rdfs:label "In Review"@en .
+:deliverable-approved   a :DeliverableStatus ; rdfs:label "Approved"@en .
+:deliverable-released   a :DeliverableStatus ; rdfs:label "Released"@en .
+
+:deliverableStatus
+    a owl:ObjectProperty ;
+    rdfs:domain :Deliverable ;
+    rdfs:range :DeliverableStatus ;
+    rdfs:label "deliverable status"@en ;
+    rdfs:isDefinedBy : .
+
+:acceptanceCriteria
+    a owl:DatatypeProperty ;
+    rdfs:domain :Deliverable ;
+    rdfs:range xsd:string ;
+    rdfs:label "acceptance criteria"@en ;
+    rdfs:isDefinedBy : .

@@ -1,0 +1,40 @@
+@prefix : <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix schema: <https://schema.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+
+# ── Ontology Declaration ───────────────────────────────────────────────────────
+
+<https://stephen-mcelhose.github.io/project-management-ontology/>
+    a owl:Ontology ;
+    owl:versionIRI <https://stephen-mcelhose.github.io/project-management-ontology/0.1.0/> ;
+    owl:versionInfo "0.1.0" ;
+    rdfs:label "Project Management Ontology"@en ;
+    rdfs:comment "A formal ontology for project management concepts, built on PROV-O, DOAP, schema.org, Dublin Core, and FOAF."@en ;
+    dct:title "Project Management Ontology"@en ;
+    dct:description "Formalizes concepts including projects, tasks, milestones, risks, roles, deliverables, and workflows as linked data."@en ;
+    dct:created "2024-01-01"^^xsd:date ;
+    dct:license <https://creativecommons.org/licenses/by/4.0/> ;
+    vann:preferredNamespacePrefix "pm" ;
+    vann:preferredNamespaceUri "https://stephen-mcelhose.github.io/project-management-ontology/" ;
+    owl:imports <http://www.w3.org/ns/prov-o#> ;
+    owl:imports <http://usefulinc.com/ns/doap#> .
+
+# ── Module imports (local) ─────────────────────────────────────────────────────
+# Each module is maintained as a separate TTL file and imported here.
+
+owl:imports <../modules/project.ttl> .
+owl:imports <../modules/task.ttl> .
+owl:imports <../modules/milestone.ttl> .
+owl:imports <../modules/risk.ttl> .
+owl:imports <../modules/resource.ttl> .
+owl:imports <../modules/role.ttl> .
+owl:imports <../modules/deliverable.ttl> .
+owl:imports <../modules/workflow.ttl> .
