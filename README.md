@@ -17,6 +17,58 @@ knowing anything about project management specifically.
 
 ---
 
+## The Two-Layer Pattern
+
+The core insight behind this repository is that a structured process —
+any structured process — is built from two distinct and separable layers:
+
+**Layer 1 — the domain** answers *"what are things?"*
+
+An ontology defines the vocabulary: what a `Risk` is, what properties a
+`ProjectCharter` has, what `pm:hasSponsor` means, how a `Gate` relates to a
+`Phase`. It is a schema for concepts, not a script for behaviour. The OWL/Turtle
+files in `ontology/` are this layer.
+
+**Layer 2 — the steps** answers *"what happens, and when?"*
+
+A workflow layer defines the process: which gates must be completed before a
+document is draft-complete, what format is required for each answer, who must
+approve before the next phase begins, what triggers the transition. The
+`instructions.yaml` and `_manifest.yaml` files in `templates/` are this layer.
+
+These two layers are complementary. The ontology does not know about sequence.
+The workflow does not know about semantics. Together they define a
+domain-specific process assistant.
+
+### A concrete illustration
+
+Once you see the layers separately, you see that the workflow layer can be
+expressed in many ways. The `_manifest.yaml` gate sequences are structurally
+identical to a GitHub Actions workflow:
+
+| Concept in `templates/`              | Concept in GitHub Actions               |
+| ------------------------------------ | --------------------------------------- |
+| `pm:Phase`                           | A workflow file                         |
+| `pm:Document`                        | A job                                   |
+| Gate in `instructions.yaml`          | A step within a job                     |
+| `dependencies: [doc-a]`              | `needs: [job-a]`                        |
+| `required: true`                     | Step failure blocks the job             |
+| `required: false`                    | `continue-on-error: true`               |
+| `shared_context:`                    | Workflow-level `env:` / job `outputs:`  |
+| `completion.transition_condition`    | Phase-gate job + environment approval   |
+| `next_phase: planning`               | `createWorkflowDispatch` at the end     |
+
+The ontology layer (`ontology/*.ttl`) has no equivalent in GitHub Actions —
+it holds the semantic meaning that the workflow engine operates on but does
+not understand. That is the point: the engine is generic; the domain is
+pluggable.
+
+See [`docs/examples/pm-github-actions/`](docs/examples/pm-github-actions/)
+for a full illustration, including a worked example simulating a PM completing
+the Project Proposal gate sequence via GitHub Issue comments.
+
+---
+
 ## Goals
 
 1. **Formalize** project management concepts (projects, tasks, milestones, risks, roles, deliverables, workflows) as a linked-data ontology
