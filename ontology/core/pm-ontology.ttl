@@ -41,4 +41,6 @@ conceptual model informed by ProjectCO v2.0."""@en ;
     owl:imports <../modules/resource.ttl> ;
     owl:imports <../modules/role.ttl> ;
     owl:imports <../modules/deliverable.ttl> ;
-    owl:imports <../modules/workflow.ttl> .
+    owl:imports <../modules/workflow.ttl> ;
+    owl:imports <../modules/benefit.ttl> ;
+    owl:imports <../modules/requirement.ttl> .
