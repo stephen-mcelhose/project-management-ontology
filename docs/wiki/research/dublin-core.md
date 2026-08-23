@@ -9,7 +9,7 @@ tags: [vocabulary, rdf, metadata, dcmi]
 
 # Dublin Core Terms (DCTERMS)
 
-The **Dublin Core Terms** (DCTERMS) represent the most widely used vocabulary for describing digital and physical artifacts. In a project management ontology, these terms provide the foundational metadata for all project-related [[prov-o:Entity]] instances, such as documents, reports, and deliverables.
+The **Dublin Core Terms** (DCTERMS) represent the most widely used vocabulary for describing digital and physical artifacts. In a project management ontology, these terms provide the foundational metadata for all project-related `prov:Entity` instances, such as documents, reports, and deliverables.
 
 ## Core Metadata Properties
 
@@ -17,7 +17,7 @@ The following properties are essential for artifact metadata:
 
 - **`dcterms:title`**: The name of the artifact.
 - **`dcterms:description`**: A summary or account of the artifact.
-- **`dcterms:creator`**: The [[foaf:Agent]] (person or organization) responsible for creating the artifact.
+- **`dcterms:creator`**: The `foaf:Agent` (person or organization) responsible for creating the artifact.
 - **`dcterms:created`**: The date of the artifact's initial creation (using ISO 8601).
 - **`dcterms:modified`**: The date of the artifact's most recent revision.
 - **`dcterms:format`**: The file format (e.g., `application/pdf`) or physical medium.
@@ -33,17 +33,17 @@ DCTERMS provides powerful properties for modeling relationships between artifact
 
 ## Relevance to Project Management
 
-Dublin Core provides the "who, what, when, and where" for project deliverables. While [[prov-o]] models the *process* of how an artifact was created, Dublin Core models the *identity* and *characteristics* of the artifact itself.
+Dublin Core provides the "who, what, when, and where" for project deliverables. While [PROV-O](prov-o.md) models the *process* of how an artifact was created, Dublin Core models the *identity* and *characteristics* of the artifact itself.
 
 - **Artifact Organization**: Using `dcterms:isPartOf` to structure project documentation.
-- **Search & Discovery**: Using `dcterms:subject` to categorize deliverables across different [[doap]] projects.
+- **Search & Discovery**: Using `dcterms:subject` to categorize deliverables across different [DOAP](doap.md) projects.
 - **Compliance & Audit**: Using `dcterms:created` and `dcterms:modified` to maintain a timeline of project outputs.
 
 ## Related Vocabularies
-- [[prov-o]]: Complements DCTERMS by providing process-oriented provenance.
-- [[foaf]]: Used for the agents linked via `dcterms:creator`.
-- [[doap]]: Used to describe the projects that produce these artifacts.
+- [PROV-O](prov-o.md): Complements DCTERMS by providing process-oriented provenance.
+- [FOAF](foaf.md): Used for the agents linked via `dcterms:creator`.
+- [DOAP](doap.md): Used to describe the projects that produce these artifacts.
 
 ## Sources
 - [DCMI Metadata Terms Specification](https://www.dublincore.org/specifications/dublin-core/dcmi-terms/)
-- [[raw/from-url-dublin-core]]
+- [raw source](../raw/from-url-dublin-core.md)

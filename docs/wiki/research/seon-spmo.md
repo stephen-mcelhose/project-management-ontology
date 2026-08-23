@@ -81,12 +81,12 @@ This makes SEON/SPMO highly relevant to our goal of creating OKF-annotated docum
 
 ## Relationship to Other Candidates
 
-- More document-oriented than [[promont-ontology]] or [[proj-ontology]]
-- Stronger foundational grounding (UFO) than [[projectco-ontology]]
-- SW-specific scope narrows general applicability vs [[proj-ontology]]
-- Bridging to [[prov-o]] needed for provenance tracking
+- More document-oriented than [PROMONT Ontology](promont-ontology.md) or [PROJ Ontology](proj-ontology.md)
+- Stronger foundational grounding (UFO) than [ProjectCO v2.0](projectco-ontology.md)
+- SW-specific scope narrows general applicability vs [PROJ Ontology](proj-ontology.md)
+- Bridging to [PROV-O](prov-o.md) needed for provenance tracking
 
 ## Sources
 
-- [[from-url-seon-spmo]] — http://nemo.inf.ufes.br/seon/
-- [[initial-research-user]]
+- [raw source](../raw/from-url-seon-spmo.md) — http://nemo.inf.ufes.br/seon/
+- [initial research](../raw/initial-research-user.md)

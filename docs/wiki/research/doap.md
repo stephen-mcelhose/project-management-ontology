@@ -24,7 +24,7 @@ tags: [vocabulary, rdf, software, project-management]
 - **`doap:description`**: A detailed description of the project.
 - **`doap:shortdesc`**: A brief, one-sentence summary.
 - **`doap:homepage`**: The official web presence for the project.
-- **`doap:maintainer`**: The agent ([[foaf:Person]] or [[foaf:Organization]]) responsible for project management and maintenance.
+- **`doap:maintainer`**: The agent (`foaf:Person` or `foaf:Organization`) responsible for project management and maintenance.
 - **`doap:developer`**: An agent responsible for code contribution.
 - **`doap:repository`**: Link to the structured repository information.
 - **`doap:release`**: Link to a specific `doap:Version`.
@@ -34,20 +34,20 @@ tags: [vocabulary, rdf, software, project-management]
 
 While both define a "Project" type, they serve different purposes:
 - **DOAP** is technical and granular, focusing on software-specific metadata like version control systems and specific release versions.
-- **[[schema-org-project]]** treats a Project as a subtype of an Organization, focusing more on social, corporate, and funding aspects suitable for search engine discovery.
+- **[schema.org Project](schema-org-project.md)** treats a Project as a subtype of an Organization, focusing more on social, corporate, and funding aspects suitable for search engine discovery.
 
 ## Relevance to Project Management
 
 DOAP is critical for:
 - **Technical Resource Management**: Linking project tasks to specific source code repositories.
 - **Release Tracking**: Modeling the evolution of a project through discrete versions.
-- **Role Definition**: Distinguishing between maintainers, developers, documenters, and testers (complementing [[foaf]] and [[prov-o]]).
+- **Role Definition**: Distinguishing between maintainers, developers, documenters, and testers (complementing [FOAF](foaf.md) and [PROV-O](prov-o.md)).
 
 ## Related Vocabularies
-- [[foaf]]: Used for agents (maintainers, developers).
-- [[dublin-core]]: Used for broader metadata (creation dates, subjects).
-- [[prov-o]]: Used to model the provenance of project deliverables.
+- [FOAF](foaf.md): Used for agents (maintainers, developers).
+- [Dublin Core](dublin-core.md): Used for broader metadata (creation dates, subjects).
+- [PROV-O](prov-o.md): Used to model the provenance of project deliverables.
 
 ## Sources
 - [DOAP Wiki](https://github.com/ewilderj/doap/wiki)
-- [[raw/from-url-doap]]
+- [raw source](../raw/from-url-doap.md)

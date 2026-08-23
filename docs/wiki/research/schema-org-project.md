@@ -59,7 +59,7 @@ https://schema.org/   (prefix: schema:)
 
 ## Comparison: schema.org vs DOAP vs PROJ
 
-| Concern               | [[schema-org-project]]   | [[doap]]                  | [[proj-ontology]]         |
+| Concern               | [schema.org Project](schema-org-project.md)   | [DOAP](doap.md)                  | [PROJ Ontology](proj-ontology.md)         |
 | --------------------- | ------------------------ | ------------------------- | ------------------------- |
 | General project type  | ✅ Yes (broad)           | ❌ Software only          | ✅ Yes (domain-neutral)   |
 | Roles & team          | ⚠️ Via Organization      | ✅ Named dev roles        | ✅ Via PROV-O Agent       |
@@ -75,6 +75,6 @@ schema.org/Project is best used as a **bridge layer** for public discoverability
 
 ## Sources
 
-- [[from-url-schema-org-project]] — https://schema.org/Project
-- [[doap]] — comparison vocabulary
-- [[proj-ontology]] — comparison vocabulary
+- [raw source](../raw/from-url-schema-org-project.md) — https://schema.org/Project
+- [DOAP](doap.md) — comparison vocabulary
+- [PROJ Ontology](proj-ontology.md) — comparison vocabulary

@@ -39,14 +39,14 @@ PROV-O allows for various levels of granularity in modeling history:
 In a project management ontology, PROV-O is essential for:
 - **Audit Trails**: Tracking who changed what and when.
 - **Deliverable Lineage**: Understanding how a final product relates to initial requirements.
-- **Responsibility Mapping**: Connecting [[foaf]] agents to project [[doap]] activities.
+- **Responsibility Mapping**: Connecting [FOAF](foaf.md) agents to project [DOAP](doap.md) activities.
 - **Change Management**: Modeling how one version of an entity was derived from another.
 
 ## Related Vocabularies
-- [[doap]]: Description of a Project
-- [[dublin-core]]: Metadata for artifacts (Entities)
-- [[foaf]]: Modeling Agents and Organizations
+- [DOAP](doap.md): Description of a Project
+- [Dublin Core](dublin-core.md): Metadata for artifacts (Entities)
+- [FOAF](foaf.md): Modeling Agents and Organizations
 
 ## Sources
 - [PROV-O Specification](https://www.w3.org/TR/prov-o/)
-- [[raw/from-url-prov-o]]
+- [raw source](../raw/from-url-prov-o.md)

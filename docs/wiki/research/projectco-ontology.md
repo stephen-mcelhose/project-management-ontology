@@ -63,7 +63,7 @@ The architecture has three tiers:
 
 ## WBS Support
 
-ProjectCO explicitly supports **Work Breakdown Structure** decomposition: a `Task` can contain sub-tasks recursively, and the hierarchy maps to standard WBS numbering schemes. This is more explicit than [[proj-ontology]] and [[promont-ontology]].
+ProjectCO explicitly supports **Work Breakdown Structure** decomposition: a `Task` can contain sub-tasks recursively, and the hierarchy maps to standard WBS numbering schemes. This is more explicit than [PROJ Ontology](proj-ontology.md) and [PROMONT Ontology](promont-ontology.md).
 
 ## Suitability as a Base
 
@@ -77,16 +77,16 @@ ProjectCO explicitly supports **Work Breakdown Structure** decomposition: a `Tas
 | Foundational grounding   | ⚠️ Uses generic upper ontology concepts, not UFO or BFO               |
 | Active maintenance       | ⚠️ Academic publication; no known active community                    |
 
-**Verdict**: The most operationally complete of the four candidates. Its explicit WBS, Assignment reification, and Risk model align well with standard PM practice. Primary gap is the absence of a [[prov-o]] or foundational ontology anchor, which would need to be bridged for linked-data compatibility.
+**Verdict**: The most operationally complete of the four candidates. Its explicit WBS, Assignment reification, and Risk model align well with standard PM practice. Primary gap is the absence of a [PROV-O](prov-o.md) or foundational ontology anchor, which would need to be bridged for linked-data compatibility.
 
 ## Relationship to Other Candidates
 
-- More complete operationally than [[proj-ontology]] (publication-only)
-- More domain-neutral than [[seon-spmo]] (SW-specific)
-- Similar operational scope to [[promont-ontology]] but with cleaner published documentation
-- Needs explicit [[prov-o]] bridge for provenance/linked-data interop
+- More complete operationally than [PROJ Ontology](proj-ontology.md) (publication-only)
+- More domain-neutral than [SEON/SPMO](seon-spmo.md) (SW-specific)
+- Similar operational scope to [PROMONT Ontology](promont-ontology.md) but with cleaner published documentation
+- Needs explicit [PROV-O](prov-o.md) bridge for provenance/linked-data interop
 
 ## Sources
 
-- [[from-url-projectco-ontology]] — https://www.researchgate.net
-- [[initial-research-user]]
+- [raw source](../raw/from-url-projectco-ontology.md) — https://www.researchgate.net
+- [initial research](../raw/initial-research-user.md)

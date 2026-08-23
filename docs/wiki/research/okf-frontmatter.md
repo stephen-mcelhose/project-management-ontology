@@ -9,7 +9,7 @@ tags: [okf, frontmatter, metadata, wiki, convention]
 
 # OKF Frontmatter
 
-**OKF frontmatter** is a YAML metadata block placed at the top of Markdown files (between `---` delimiters) following the conventions of the Open Knowledge Foundation and the [[llm-wiki]] skill pattern. Every document template and wiki page in this project uses it.
+**OKF frontmatter** is a YAML metadata block placed at the top of Markdown files (between `---` delimiters) following the conventions of the Open Knowledge Foundation and the [llm-wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) skill pattern. Every document template and wiki page in this project uses it.
 
 ## Required Fields
 
@@ -54,7 +54,7 @@ tags: [vocabulary, rdf, provenance, w3c]
 
 ## Relationship to Dublin Core
 
-OKF frontmatter fields map closely to [[dublin-core]] properties:
+OKF frontmatter fields map closely to [Dublin Core](dublin-core.md) properties:
 
 | OKF field     | Dublin Core equivalent      |
 | ------------- | --------------------------- |
@@ -71,5 +71,5 @@ All files under `docs/wiki/*.md` and `docs/templates/*.md` carry OKF frontmatter
 
 ## Sources
 
-- [[from-url-pmbok-owl-ip]] (OKF referenced tangentially)
+- [raw source](../raw/from-url-pmbok-owl-ip.md) (OKF referenced tangentially)
 - llm-wiki skill definition — `~/.config/csgdaa-code/skills/llm-wiki/skill.md`

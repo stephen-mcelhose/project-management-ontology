@@ -30,8 +30,8 @@ tags: [vocabulary, rdf, social, agent]
 
 While FOAF provides the basic link between people and projects, it does not natively define specific "roles" (like Scrum Master or Lead Developer). Instead, it is designed to be extended by other vocabularies:
 
-- **[[doap]]**: Provides specific properties like `doap:maintainer` and `doap:developer` that refine the general `foaf:maker` relationship.
-- **[[prov-o]]**: Uses `prov:Agent` (a superclass of `foaf:Agent`) to connect people to specific activities and their outcomes.
+- **[DOAP](doap.md)**: Provides specific properties like `doap:maintainer` and `doap:developer` that refine the general `foaf:maker` relationship.
+- **[PROV-O](prov-o.md)**: Uses `prov:Agent` (a superclass of `foaf:Agent`) to connect people to specific activities and their outcomes.
 
 ## Relevance to Project Management
 
@@ -41,10 +41,10 @@ FOAF is essential for:
 - **Communication Mapping**: Providing the contact information and organizational context for project participants.
 
 ## Related Vocabularies
-- [[doap]]: Refines FOAF agent links with software-specific roles.
-- [[prov-o]]: Models the responsibility of FOAF agents for project activities.
-- [[dublin-core]]: Connects FOAF agents to the artifacts they create (`dcterms:creator`).
+- [DOAP](doap.md): Refines FOAF agent links with software-specific roles.
+- [PROV-O](prov-o.md): Models the responsibility of FOAF agents for project activities.
+- [Dublin Core](dublin-core.md): Connects FOAF agents to the artifacts they create (`dcterms:creator`).
 
 ## Sources
 - [FOAF Specification](http://xmlns.com/foaf/spec/)
-- [[raw/from-url-foaf]]
+- [raw source](../raw/from-url-foaf.md)

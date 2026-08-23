@@ -47,7 +47,7 @@ Several open, non-IP-restricted standards provide the same conceptual coverage a
 
 | Standard        | Body    | Key strengths                                    | OWL available |
 | --------------- | ------- | ------------------------------------------------ | ------------- |
-| **DIN 69901**   | DIN     | Comprehensive German PM standard; basis for [[promont-ontology]] | Via PROMONT |
+| **DIN 69901**   | DIN     | Comprehensive German PM standard; basis for [PROMONT Ontology](promont-ontology.md) | Via PROMONT |
 | **ISO 21500**   | ISO     | International PM standard aligned with PMBOK    | No official OWL |
 | **PM²**         | EU      | European Commission open PM methodology          | No official OWL |
 | **PRINCE2**     | Axelos  | UK process-based PM; partially open concepts     | No official OWL |
@@ -57,10 +57,10 @@ Several open, non-IP-restricted standards provide the same conceptual coverage a
 
 Researchers have produced PMBOK-inspired ontologies by abstracting concepts rather than transcribing text:
 
-- **[[promont-ontology]]** — grounds concepts in DIN 69901 (IP-safe alternative to PMBOK)
-- **[[projectco-ontology]]** — original academic work, not derived from PMBOK text
-- **[[seon-spmo]]** — grounded in software engineering literature, not PMBOK
-- **[[proj-ontology]]** — PROV-O profile; domain-neutral, no PMBOK reference
+- **[PROMONT Ontology](promont-ontology.md)** — grounds concepts in DIN 69901 (IP-safe alternative to PMBOK)
+- **[ProjectCO v2.0](projectco-ontology.md)** — original academic work, not derived from PMBOK text
+- **[SEON/SPMO](seon-spmo.md)** — grounded in software engineering literature, not PMBOK
+- **[PROJ Ontology](proj-ontology.md)** — PROV-O profile; domain-neutral, no PMBOK reference
 
 ## Implication for This Project
 
@@ -70,6 +70,6 @@ Referencing PMBOK as an *informative* source (not normative) in documentation is
 
 ## Sources
 
-- [[from-url-pmbok-owl-ip]] — https://keet.wordpress.com (referenced, 404 at time of access)
-- [[initial-research-user]]
-- [[promont-ontology]] — DIN 69901 as safe alternative
+- [raw source](../raw/from-url-pmbok-owl-ip.md) — https://keet.wordpress.com (referenced, 404 at time of access)
+- [initial research](../raw/initial-research-user.md)
+- [PROMONT Ontology](promont-ontology.md) — DIN 69901 as safe alternative

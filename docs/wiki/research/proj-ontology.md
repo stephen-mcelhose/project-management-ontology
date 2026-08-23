@@ -9,7 +9,7 @@ tags: [ontology, project-management, prov-o, candidate-base]
 
 # PROJ Ontology
 
-**PROJ** is a profile of [[prov-o]] developed by Simon Cox (CSIRO Australia) and registered on [BioPortal](https://bioportal.bioontology.org/ontologies/PROJ). It is one of the most mature open ontologies expressly designed to describe *project information* — as opposed to managing projects operationally.
+**PROJ** is a profile of [PROV-O](prov-o.md) developed by Simon Cox (CSIRO Australia) and registered on [BioPortal](https://bioportal.bioontology.org/ontologies/PROJ). It is one of the most mature open ontologies expressly designed to describe *project information* — as opposed to managing projects operationally.
 
 ## Key Facts
 
@@ -18,7 +18,7 @@ tags: [ontology, project-management, prov-o, candidate-base]
 | Namespace      | `http://linked.data.gov.au/def/project`                |
 | BioPortal      | https://bioportal.bioontology.org/ontologies/PROJ      |
 | Version        | 2020 (uploaded BioPortal 2021)                         |
-| Extends        | [[prov-o]] (W3C PROV Ontology)                         |
+| Extends        | [PROV-O](prov-o.md) (W3C PROV Ontology)                         |
 | Classes        | 46                                                     |
 | Properties     | 58                                                     |
 | Individuals    | 109                                                    |
@@ -40,7 +40,7 @@ This makes it an excellent **upper layer** to build a more operational PM ontolo
 
 ## Relationship to PROV-O
 
-PROJ is built directly on [[prov-o]]'s tripartite model:
+PROJ is built directly on [PROV-O](prov-o.md)'s tripartite model:
 
 ```
 prov:Entity      → project deliverables, documents, datasets
@@ -65,5 +65,5 @@ Provenance chains (`wasGeneratedBy`, `used`, `wasDerivedFrom`) naturally express
 
 ## Sources
 
-- [[from-url-proj-ontology]] — https://bioportal.bioontology.org/ontologies/PROJ
-- [[initial-research-user]]
+- [raw source](../raw/from-url-proj-ontology.md) — https://bioportal.bioontology.org/ontologies/PROJ
+- [initial research](../raw/initial-research-user.md)
