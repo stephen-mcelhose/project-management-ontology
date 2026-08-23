@@ -1,0 +1,25 @@
+id: change-log
+title: Change Log
+phase: monitoring-control
+phase_order: 5         # depends on Change Request existing; fifth in monitoring sequence
+
+ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/ChangeLog
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Issue Management Approach
+  url: https://prince2.wiki/management-products/baselines/management-approaches/issue/
+package: pkgs:MonitoringControlPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - change-request              # from document.ttl: :ChangeLog :hasHardDependency :ChangeRequest
+required_before: []             # from document.ttl: no document has :hasHardDependency :ChangeLog
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/monitoring-control/change-log.shacl.ttl

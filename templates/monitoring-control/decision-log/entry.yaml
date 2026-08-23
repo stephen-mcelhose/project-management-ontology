@@ -1,0 +1,25 @@
+id: decision-log
+title: Decision Log
+phase: monitoring-control
+phase_order: 4         # opened at project start, maintained throughout; fourth in monitoring sequence
+
+ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/DecisionLog
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Daily Log
+  url: https://prince2.wiki/management-products/project-log/daily-log/
+package: pkgs:MonitoringControlPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - project-management-plan     # from document.ttl: :DecisionLog :hasHardDependency :ProjectManagementPlan
+required_before: []             # from document.ttl: no document has :hasHardDependency :DecisionLog
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/monitoring-control/decision-log.shacl.ttl

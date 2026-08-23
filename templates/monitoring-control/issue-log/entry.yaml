@@ -1,0 +1,26 @@
+id: issue-log
+title: Issue Log
+phase: monitoring-control
+phase_order: 3         # opened at initiation, maintained throughout; third in monitoring sequence
+
+ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/IssueLog
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Issue Register
+  url: https://prince2.wiki/management-products/project-log/issue-register/
+package: pkgs:MonitoringControlPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - project-management-plan     # from document.ttl: :IssueLog :hasHardDependency :ProjectManagementPlan
+required_before:
+  - lessons-learned-report      # from document.ttl: :LessonsLearnedReport :hasHardDependency :IssueLog
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/monitoring-control/issue-log.shacl.ttl

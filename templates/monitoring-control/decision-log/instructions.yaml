@@ -1,0 +1,115 @@
+# instructions.yaml — Decision Log
+#
+# Rules for an agent helping a project manager log a Decision Log entry.
+# Each gate captures one field of a SINGLE DECISION ENTRY.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# PRINCE2 basis: Daily Log
+#   The Daily Log captures informal decisions and actions. The Decision Log
+#   extends this with formal decision tracking aligned to ISO 21502:2020
+#   transparency principles — recording context, alternatives considered,
+#   and rationale so decisions remain auditable and reversible.
+#
+# This is the INPUT side. The output is validated by:
+#   shapes/monitoring-control/decision-log.shacl.ttl
+
+version: 1
+document: decision-log
+
+gates:
+  - id: entry_id
+    order: 1
+    prompt: "What is the unique identifier for this decision? (e.g. DEC-001, DEC-002)"
+    fills: "## Decision Entry"
+    maps_to: dct:identifier
+    required: true
+    validation: "Must follow a consistent scheme (e.g. DEC-NNN). Never reuse an ID."
+
+  - id: decision_date
+    order: 2
+    prompt: "On what date was this decision made? (YYYY-MM-DD)"
+    fills: "## Decision Date"
+    maps_to: dct:created
+    required: true
+
+  - id: decision_maker
+    order: 3
+    prompt: "Who made or authorised this decision? (Named individual or governance body — e.g. 'Project Board', 'Project Manager', 'Change Authority')"
+    fills: "## Decision Maker"
+    maps_to: dct:creator
+    required: true
+
+  - id: decision_title
+    order: 4
+    prompt: "What is the brief title of this decision? (e.g. 'Defer Phase 2 integration to next stage', 'Approve use of open-source library X')"
+    fills: "## Decision Title"
+    maps_to: dct:title
+    required: true
+    validation: "Should be a short noun phrase summarising the decision, not the reasoning."
+
+  - id: context
+    order: 5
+    prompt: "What is the context for this decision? Describe the situation that required a decision to be made."
+    fills: "## Context"
+    maps_to: dct:description
+    required: true
+
+  - id: alternatives_considered
+    order: 6
+    prompt: "What alternatives were considered before this decision was made? List at least two options (including 'do nothing' where applicable)."
+    fills: "## Alternatives Considered"
+    maps_to: dct:description
+    required: true
+    guidance: "Recording alternatives is essential for transparency and future audit. A decision with no documented alternatives is a red flag."
+
+  - id: decision
+    order: 7
+    prompt: "What decision was made? State it clearly and unambiguously."
+    fills: "## Decision Made"
+    maps_to: dct:description
+    required: true
+
+  - id: rationale
+    order: 8
+    prompt: "Why was this option chosen over the alternatives? State the reasoning."
+    fills: "## Rationale"
+    maps_to: dct:description
+    required: true
+
+  - id: impact
+    order: 9
+    prompt: "What is the impact of this decision on the project baseline (time, cost, scope, benefits, or risk)? If none, state 'No baseline impact'."
+    fills: "## Impact"
+    maps_to: dct:description
+    required: false
+    guidance: "Decisions that affect the baseline must also trigger a Change Request. Cross-reference here if applicable."
+
+  - id: decision_status
+    order: 10
+    prompt: "What is the current status of this decision? (Active — currently in effect; Superseded — replaced by a later decision; Reversed — formally rescinded)"
+    fills: "## Status"
+    maps_to: pm:documentStatus
+    required: true
+
+  - id: related_items
+    order: 11
+    prompt: "Are there related Issue Log entries, Change Requests, or Risk Register entries? List their IDs, or state 'None'."
+    fills: "## Related Items"
+    maps_to: dct:references
+    required: false
+
+# Completion rule: all required gates must be filled before the entry
+# is considered draft-complete.
+completion:
+  required_gates:
+    - entry_id
+    - decision_date
+    - decision_maker
+    - decision_title
+    - context
+    - alternatives_considered
+    - decision
+    - rationale
+    - decision_status
+  output_status: draft
+  next_document: null

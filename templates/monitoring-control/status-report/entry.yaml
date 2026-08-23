@@ -1,0 +1,26 @@
+id: status-report
+title: Status Report
+phase: monitoring-control
+phase_order: 1         # first document produced in the monitoring & control phase
+
+ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/StatusReport
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Highlight Report
+  url: https://prince2.wiki/management-products/reports/highlight-report/
+package: pkgs:MonitoringControlPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - project-management-plan     # from document.ttl: :StatusReport :hasHardDependency :ProjectManagementPlan
+required_before:
+  - final-project-report        # from document.ttl: :FinalProjectReport :hasHardDependency :StatusReport
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/monitoring-control/status-report.shacl.ttl
