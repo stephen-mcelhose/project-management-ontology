@@ -5,18 +5,17 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix doap: <http://usefulinc.com/ns/doap#> .
-@prefix schema: <https://schema.org/> .
+@prefix proj: <https://linked.data.gov.au/def/project#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
 # ── Project Module ─────────────────────────────────────────────────────────────
-
-# :Project — a planned undertaking with defined scope, time-box, and deliverables.
-# Extends doap:Project and prov:Activity for provenance compatibility.
+# :Project extends proj:Project (PROV-O profile, CSIRO) which itself extends
+# prov:Activity. This gives us full provenance tracking for free.
+# See ADR-001 for the base ontology selection rationale.
 
 :Project
     a owl:Class ;
-    rdfs:subClassOf doap:Project, prov:Activity ;
+    rdfs:subClassOf proj:Project ;
     rdfs:label "Project"@en ;
     rdfs:comment "A bounded, planned undertaking with defined scope, schedule, budget, and deliverables."@en ;
     rdfs:isDefinedBy : .
@@ -41,24 +40,21 @@
 :status-completed   a :ProjectStatus ; rdfs:label "Completed"@en .
 :status-cancelled   a :ProjectStatus ; rdfs:label "Cancelled"@en .
 
+# :hasPhase links to the phase lifecycle — see phase.ttl for :Phase definition
 :hasPhase
     a owl:ObjectProperty ;
+    rdfs:subPropertyOf proj:hadSubActivity ;
     rdfs:domain :Project ;
     rdfs:range :Phase ;
     rdfs:label "has phase"@en ;
     rdfs:isDefinedBy : .
 
-:Phase
-    a owl:Class ;
-    rdfs:label "Phase"@en ;
-    rdfs:comment "A named stage within a project lifecycle (e.g., Initiation, Planning, Execution, Closure)."@en ;
-    rdfs:isDefinedBy : .
-
+# :hasSponsor refines proj:hadSponsor with FOAF typing
 :hasSponsor
     a owl:ObjectProperty ;
+    rdfs:subPropertyOf proj:hadSponsor ;
     rdfs:domain :Project ;
     rdfs:range foaf:Agent ;
-    rdfs:subPropertyOf prov:wasAssociatedWith ;
     rdfs:label "has sponsor"@en ;
     rdfs:isDefinedBy : .
 

@@ -1,4 +1,4 @@
-@prefix pm:   <https://stephen-mcelhose.github.io/project-management-ontology#> .
+@prefix pm:   <https://stephen-mcelhose.github.io/project-management-ontology/> .
 @prefix owl:  <http://www.w3.org/2002/07/owl#> .
 @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -26,7 +26,7 @@ conceptual model informed by ProjectCO v2.0."""@en ;
     dct:created "2024-08-22"^^xsd:date ;
     dct:license <https://creativecommons.org/licenses/by/4.0/> ;
     vann:preferredNamespacePrefix "pm" ;
-    vann:preferredNamespaceUri "https://stephen-mcelhose.github.io/project-management-ontology#" ;
+    vann:preferredNamespaceUri "https://stephen-mcelhose.github.io/project-management-ontology/" ;
     # Upper layer: PROJ Ontology (CC-BY 4.0, CSIRO/Simon Cox)
     # Vendored at ontology/vendor/proj.ttl — see ADR-001
     owl:imports <https://linked.data.gov.au/def/project> ;
