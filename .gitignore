@@ -20,6 +20,10 @@ target/
 # Generated docs
 docs/generated/
 
+# Agent
+.env
+output/
+
 # OS
 .DS_Store
 Thumbs.db
