@@ -64,7 +64,7 @@ SPMO's distinguishing feature is its explicit mapping between formal ontology cl
 | Resource plan             | `Resource`, `Allocation`            |
 | Cost estimate             | `CostEstimatedProcess`              |
 
-This makes SEON/SPMO highly relevant to our goal of creating OKF-annotated document templates that map to ontology terms.
+This makes SEON/SPMO highly relevant to our goal of creating [OKF-annotated document templates](okf-frontmatter.md) that map to ontology terms.
 
 ## Suitability as a Base
 

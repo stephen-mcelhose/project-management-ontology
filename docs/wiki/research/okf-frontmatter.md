@@ -3,22 +3,26 @@ type: concept
 title: OKF Frontmatter
 description: The Open Knowledge Format frontmatter convention for annotating Markdown documents with structured metadata fields used by the llm-wiki skill.
 timestamp: 2024-08-22T00:00:00Z
-resource: https://okfn.org
+resource: https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing
 tags: [okf, frontmatter, metadata, wiki, convention]
 ---
 
 # OKF Frontmatter
 
-**OKF frontmatter** is a YAML metadata block placed at the top of Markdown files (between `---` delimiters) following the conventions of the Open Knowledge Foundation and the [llm-wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) skill pattern. Every document template and wiki page in this project uses it.
+**OKF frontmatter** is a YAML metadata block placed at the top of Markdown files (between `---` delimiters) following the [Open Knowledge Format specification](okf-spec.md) and the [llm-wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) skill pattern. Every document template and wiki page in this project uses it.
+
+The OKF v0.1 spec (published June 2026 by Google Cloud) formally defines this convention — see [OKF Specification](okf-spec.md) for full details. The spec designates only `type` as strictly required; this project applies a stricter local policy requiring `title`, `description`, and `timestamp` as well for knowledge quality.
 
 ## Required Fields
 
-| Field         | Type            | Description                                              | Example                              |
-| ------------- | --------------- | -------------------------------------------------------- | ------------------------------------ |
-| `type`        | controlled vocab | The kind of document this page is                       | `concept`                            |
-| `title`       | string          | Human-readable name of the page                         | `"Project Charter"`                  |
-| `description` | string          | One-sentence summary                                     | `"Authorizes a project..."`          |
-| `timestamp`   | ISO-8601 UTC    | Creation or last-updated time                            | `2024-08-22T00:00:00Z`               |
+The [OKF v0.1 spec](okf-spec.md) only mandates `type`. This project requires four fields for knowledge quality:
+
+| Field         | Type             | Description                                              | Example                              |
+| ------------- | ---------------- | -------------------------------------------------------- | ------------------------------------ |
+| `type`        | controlled vocab | The kind of document this page is (**spec required**)    | `concept`                            |
+| `title`       | string           | Human-readable name of the page (**project required**)   | `"Project Charter"`                  |
+| `description` | string           | One-sentence summary (**project required**)              | `"Authorizes a project..."`          |
+| `timestamp`   | ISO-8601 UTC     | Creation or last-updated time (**project required**)     | `2024-08-22T00:00:00Z`               |
 
 ## Optional Fields
 
@@ -67,9 +71,10 @@ OKF frontmatter fields map closely to [Dublin Core](dublin-core.md) properties:
 
 ## Usage in This Project
 
-All files under `docs/wiki/*.md` and `docs/templates/*.md` carry OKF frontmatter. The `llm-wiki` skill enforces its presence during lint passes and ingestion.
+All concept and research pages in `docs/wiki/` and templates in `docs/templates/` carry OKF frontmatter. Structural files (`AGENTS.md`, `log.md`) are exempt. The `llm-wiki` skill enforces its presence during lint passes and ingestion.
 
 ## Sources
 
-- [raw source](../raw/from-url-pmbok-owl-ip.md) (OKF referenced tangentially)
+- [raw source](../raw/from-url-okf-google-blog.md) — https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing
 - llm-wiki skill definition — `~/.config/csgdaa-code/skills/llm-wiki/skill.md`
+- [OKF Specification](okf-spec.md) — full spec page with field details and reference implementations

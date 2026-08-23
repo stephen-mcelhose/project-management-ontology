@@ -6,7 +6,7 @@ description: >
   document class. Follow this process every time you fill a GitHub issue that
   defines a template.
 tags: [process, templates, ontology, shacl]
-updated: 2026-08-22
+timestamp: 2026-08-22T00:00:00Z
 ---
 
 # Process: Defining Document Templates

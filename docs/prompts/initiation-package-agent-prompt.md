@@ -1,3 +1,11 @@
+---
+type: runbook
+title: Initiation Package Agent Prompt
+description: Agent instructions for building the Initiation Package template packs (Issues #9–#12).
+timestamp: 2026-08-23T00:00:00Z
+tags: [prompt, agent, initiation]
+---
+
 ## Task: Build Initiation Package template packs — Issues #9–#12
 
 **Repo:** `/Users/stephen.mcelhose.ext/repos/project-management-ontology`

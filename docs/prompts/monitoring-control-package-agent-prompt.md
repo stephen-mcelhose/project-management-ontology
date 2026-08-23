@@ -1,3 +1,11 @@
+---
+type: runbook
+title: Monitoring & Control Package Agent Prompt
+description: Agent instructions for building the Monitoring & Control Package template packs (Issues #25–#29).
+timestamp: 2026-08-23T00:00:00Z
+tags: [prompt, agent, monitoring-control]
+---
+
 ## Task: Build Monitoring & Control Package template packs — Issues #25–#29
 
 **Repo:** `/Users/stephen.mcelhose.ext/repos/project-management-ontology`

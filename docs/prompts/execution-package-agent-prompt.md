@@ -1,3 +1,11 @@
+---
+type: runbook
+title: Execution Package Agent Prompt
+description: Agent instructions for building the Execution Package template packs (Issues #21–#24).
+timestamp: 2026-08-23T00:00:00Z
+tags: [prompt, agent, execution]
+---
+
 ## Task: Build Execution Package template packs — Issues #21–#24
 
 **Repo:** `/Users/stephen.mcelhose.ext/repos/project-management-ontology`
