@@ -17,11 +17,26 @@ Topics covered:
 - Workflow generation from ontology instances
 - Lessons learned / ADRs
 
+## Directory Layout
+
+```
+docs/wiki/
+  AGENTS.md          ← this file
+  index.md           ← catalog of all pages
+  log.md             ← append-only operation log
+  raw/               ← immutable source files (URLs, notes, paste)
+  research/          ← concept pages distilled from research sources
+  decisions/         ← ADRs and architectural decisions
+  how-to/            ← step-by-step procedural guides
+```
+
+New pages go in the subdirectory matching their `type`. Fall back to the wiki root only if no subdirectory fits.
+
 ## Conventions
 
-- **Page slugs**: kebab-case, flat — all pages live directly in `docs/wiki/`, never in subdirectories
+- **Page slugs**: kebab-case filenames placed in the appropriate subdirectory (e.g., `research/prov-o.md`, `decisions/adr-001-base-ontology.md`)
 - **Frontmatter**: OKF — `type` (default `concept`), `title`, `description`, `timestamp` (ISO-8601 UTC); optional `resource`, `tags`
-- **Cross-references**: `[[slug]]` wikilinks — slug is the filename without `.md`. Never use directory prefixes.
+- **Cross-references**: standard relative markdown links — `[Title](relative/path/to/page.md)`. Paths are relative to the linking file. Never use `[[wikilinks]]`.
 - **Sources section**: every page ends with `## Sources` listing its raw inputs
 
 ## Operations
@@ -34,11 +49,11 @@ Run these via the `llm-wiki` skill:
 
 ## Raw Sources
 
-Raw source files live in `docs/wiki/raw/`. They are immutable — the LLM reads them but never writes to them.
+Raw source files live in `raw/`. They are immutable — the LLM reads them but never writes to them.
 
 ## index.md
 
-Structured catalog of all wiki pages. Updated on every write operation.
+Structured catalog of all wiki pages. Links use paths relative to the wiki root. Updated on every write operation.
 
 ## log.md
 
