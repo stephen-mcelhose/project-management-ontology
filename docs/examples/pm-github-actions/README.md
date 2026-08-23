@@ -13,14 +13,14 @@
 >   runs that corrupt the label-based state machine.
 > - **NO AUTHORIZATION** — any commenter can advance a gate.
 >
-> This is a teaching artefact. GitHub only executes workflows under
+> This is an illustrative artifact. GitHub only executes workflows under
 > `.github/workflows/` — files here are inert.
 
 ---
 
 ## The point of this example
 
-**Ontology** defines what things *are*. **GitHub Actions** defines what things *do*.
+**Ontology** defines what things *are*. **GitHub Actions** are acting as the workflow engine, defines what things *do*.
 They are complementary layers, not alternatives.
 
 | Concept in `ontology/` + `templates/`     | Concept in `pm-01-initiation.yml`                     |
