@@ -430,3 +430,53 @@
     dct:source <https://www.iso.org/standard/74947.html> ;
     rdfs:seeAlso <https://prince2.wiki/management-products/reports/end-project-report/> ;
     rdfs:isDefinedBy : .
+
+# ── Gate Output Type (artifact-layer controlled vocabulary) ───────────────────
+# Controlled vocabulary for the type: field in instructions.yaml gate
+# definitions. Describes the rendering shape of a gate's output so an agent
+# knows what to produce without inferring it from prompt text.
+# See: ADR-004, docs/adrs/adr-004-gate-output-type-system.md
+
+:GateOutputType
+    a owl:Class ;
+    rdfs:label "Gate Output Type"@en ;
+    rdfs:comment "Controlled vocabulary for the rendering shape of a gate output. Used in the type: field of instructions.yaml gate definitions."@en ;
+    rdfs:isDefinedBy : .
+
+# Scalar — fills a {{placeholder}} token; single atomic value
+:gate-type-string
+    a :GateOutputType ;
+    rdfs:label "string"@en ;
+    skos:definition "Free-form inline text filling a {{placeholder}} token (e.g. project name, role name)."@en .
+
+:gate-type-date
+    a :GateOutputType ;
+    rdfs:label "date"@en ;
+    skos:definition "ISO 8601 calendar date (YYYY-MM-DD)."@en .
+
+:gate-type-identifier
+    a :GateOutputType ;
+    rdfs:label "identifier"@en ;
+    skos:definition "Unique code following a naming convention (e.g. CR-001, RISK-001)."@en .
+
+# Block — fills an entire ## Section with structured Markdown content
+:gate-type-prose
+    a :GateOutputType ;
+    rdfs:label "prose"@en ;
+    skos:definition "Narrative paragraph(s) with no required internal structure."@en .
+
+:gate-type-list
+    a :GateOutputType ;
+    rdfs:label "list"@en ;
+    skos:definition "Ordered or unordered enumeration of discrete items."@en .
+
+:gate-type-table
+    a :GateOutputType ;
+    rdfs:label "table"@en ;
+    skos:definition "Markdown table with defined column headers."@en .
+
+# Section — structured prose with its own internal organisation
+:gate-type-section
+    a :GateOutputType ;
+    rdfs:label "section"@en ;
+    skos:definition "Prose that has its own internal sub-structure: headings, nested blocks, or embedded tables. Free-form prose with no sub-structure is gate-type-prose."@en .
