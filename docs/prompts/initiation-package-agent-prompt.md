@@ -8,8 +8,8 @@ tags: [prompt, agent, initiation]
 
 ## Task: Build Initiation Package template packs — Issues #9–#12
 
-**Repo:** `/Users/stephen.mcelhose.ext/repos/project-management-ontology`
-**GitHub:** `stephen-mcelhose/project-management-ontology`
+**Repo:** `/Users/stephen.mcelhose.ext/repos/process-assistant`
+**GitHub:** `stephen-mcelhose/process-assistant`
 
 ---
 
@@ -41,10 +41,10 @@ Build template packs for the four remaining Initiation Package issues. **Paralle
 
 | Issue | Document | Ontology class | PRINCE2 source |
 | ----- | -------- | -------------- | -------------- |
-| [#9](https://github.com/stephen-mcelhose/project-management-ontology/issues/9) | Business Case | `pm:BusinessCase` | https://prince2.wiki/management-products/baselines/business-case/ |
-| [#10](https://github.com/stephen-mcelhose/project-management-ontology/issues/10) | Project Charter | `pm:ProjectCharter` | https://prince2.wiki/management-products/baselines/project-initiation-documentation/ |
-| [#11](https://github.com/stephen-mcelhose/project-management-ontology/issues/11) | Stakeholder Register | `pm:StakeholderRegister` | https://prince2.wiki/management-products/baselines/management-approaches/communication/ |
-| [#12](https://github.com/stephen-mcelhose/project-management-ontology/issues/12) | Requirement Specification | `pm:RequirementSpecification` | https://prince2.wiki/management-products/baselines/project-product-description/ |
+| [#9](https://github.com/stephen-mcelhose/process-assistant/issues/9) | Business Case | `pm:BusinessCase` | https://prince2.wiki/management-products/baselines/business-case/ |
+| [#10](https://github.com/stephen-mcelhose/process-assistant/issues/10) | Project Charter | `pm:ProjectCharter` | https://prince2.wiki/management-products/baselines/project-initiation-documentation/ |
+| [#11](https://github.com/stephen-mcelhose/process-assistant/issues/11) | Stakeholder Register | `pm:StakeholderRegister` | https://prince2.wiki/management-products/baselines/management-approaches/communication/ |
+| [#12](https://github.com/stephen-mcelhose/process-assistant/issues/12) | Requirement Specification | `pm:RequirementSpecification` | https://prince2.wiki/management-products/baselines/project-product-description/ |
 
 Output paths follow this pattern:
 ```

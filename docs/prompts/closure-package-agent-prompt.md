@@ -8,8 +8,8 @@ tags: [prompt, agent, closure]
 
 ## Task: Build Closure Package template packs — Issues #30–#34
 
-**Repo:** `/Users/stephen.mcelhose.ext/repos/project-management-ontology`
-**GitHub:** `stephen-mcelhose/project-management-ontology`
+**Repo:** `/Users/stephen.mcelhose.ext/repos/process-assistant`
+**GitHub:** `stephen-mcelhose/process-assistant`
 
 ---
 
@@ -42,11 +42,11 @@ Build template packs for all five Closure Package issues. **Parallelize research
 
 | Issue | Document | Ontology class | PRINCE2 source |
 | ----- | -------- | -------------- | -------------- |
-| [#30](https://github.com/stephen-mcelhose/project-management-ontology/issues/30) | Handover Document | `pm:HandoverDocument` | https://prince2.wiki/management-products/reports/end-project-report/ |
-| [#31](https://github.com/stephen-mcelhose/project-management-ontology/issues/31) | Final Project Report | `pm:FinalProjectReport` | https://prince2.wiki/management-products/reports/end-project-report/ |
-| [#32](https://github.com/stephen-mcelhose/project-management-ontology/issues/32) | Lessons Learned Report | `pm:LessonsLearnedReport` | https://prince2.wiki/management-products/reports/lessons-report/ |
-| [#33](https://github.com/stephen-mcelhose/project-management-ontology/issues/33) | Archive Index | `pm:ArchiveIndex` | https://prince2.wiki/management-products/project-log/product-register/ |
-| [#34](https://github.com/stephen-mcelhose/project-management-ontology/issues/34) | Project Closure Statement | `pm:ProjectClosureStatement` | https://prince2.wiki/management-products/reports/end-project-report/ |
+| [#30](https://github.com/stephen-mcelhose/process-assistant/issues/30) | Handover Document | `pm:HandoverDocument` | https://prince2.wiki/management-products/reports/end-project-report/ |
+| [#31](https://github.com/stephen-mcelhose/process-assistant/issues/31) | Final Project Report | `pm:FinalProjectReport` | https://prince2.wiki/management-products/reports/end-project-report/ |
+| [#32](https://github.com/stephen-mcelhose/process-assistant/issues/32) | Lessons Learned Report | `pm:LessonsLearnedReport` | https://prince2.wiki/management-products/reports/lessons-report/ |
+| [#33](https://github.com/stephen-mcelhose/process-assistant/issues/33) | Archive Index | `pm:ArchiveIndex` | https://prince2.wiki/management-products/project-log/product-register/ |
+| [#34](https://github.com/stephen-mcelhose/process-assistant/issues/34) | Project Closure Statement | `pm:ProjectClosureStatement` | https://prince2.wiki/management-products/reports/end-project-report/ |
 
 > **Note:** Issues #30, #31, and #34 all cite the PRINCE2 End Project Report — read the page once, then use the relevant section for each document (handover evidence, performance summary, formal closure statement). They are distinct documents despite sharing a source.
 

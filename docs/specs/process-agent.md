@@ -6,7 +6,7 @@ description: >
   The agent drives a user through the ontology-encoded project lifecycle,
   gate by gate, document by document, phase by phase.
 status: draft
-issue: "https://github.com/stephen-mcelhose/project-management-ontology/issues/39"
+issue: "https://github.com/stephen-mcelhose/process-assistant/issues/39"
 timestamp: 2026-08-23T00:00:00Z
 tags: [spec, agent, process-agent, adk]
 ---
@@ -14,7 +14,7 @@ tags: [spec, agent, process-agent, adk]
 # Process Agent — Normative Specification
 
 **Status:** Draft  
-**Issue:** [#39](https://github.com/stephen-mcelhose/project-management-ontology/issues/39)  
+**Issue:** [#39](https://github.com/stephen-mcelhose/process-assistant/issues/39)  
 **RFC 2119 keywords apply throughout:** MUST, MUST NOT, SHOULD, MAY
 
 ---

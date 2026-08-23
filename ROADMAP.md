@@ -1,6 +1,6 @@
 # Roadmap
 
-Implementation scorecard for the Project Management Ontology.
+Implementation scorecard for Process Assistant (PM is the first domain pack).
 Updated manually — one row per milestone, one tick per issue closed.
 
 ---
