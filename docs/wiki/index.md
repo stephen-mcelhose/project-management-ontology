@@ -25,3 +25,4 @@ Links are relative to this file (`docs/wiki/`).
 | [ProjectCO v2.0](research/projectco-ontology.md)              | ProjectCO v2.0                 | Multi-tier core PM ontology by Olsina, Becker, Papa (candidate base)            |
 | [PMBOK & OWL — IP Landscape](research/pmbok-owl-ip.md)        | PMBOK & OWL — IP Landscape     | Why there's no open PMBOK OWL and what safe alternatives exist                 |
 | [OKF Frontmatter](research/okf-frontmatter.md)                | OKF Frontmatter                | Frontmatter convention used in wiki pages and document templates                |
+| [OKF Specification](research/okf-spec.md)                     | OKF Specification              | OKF v0.1 formal spec by Google Cloud — structure, fields, and reference tools  |

@@ -31,3 +31,17 @@ Fixed:
 Advisory (human judgment required):
 - schema-org-project.md Sources section lists cross-reference pages alongside raw sources — minor convention deviation
 - okf-frontmatter.md resource field (https://okfn.org) is loose; OKF frontmatter as used here is a project-level convention, not an official OKFN standard
+
+## [2026-08-23] ingest | Open Knowledge Format (OKF) Specification — Google Cloud Blog
+
+Source: https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing
+
+New pages:
+- raw/from-url-okf-google-blog.md — raw source saved
+- research/okf-spec.md — new concept page for OKF v0.1 formal specification
+
+Updated pages:
+- research/okf-frontmatter.md — corrected resource field (was https://okfn.org, now Google Cloud URL),
+  added spec cross-reference, clarified required-vs-optional fields (spec requires only `type`;
+  project policy additionally requires `title`, `description`, `timestamp`), updated sources section
+- index.md — added okf-spec.md row
