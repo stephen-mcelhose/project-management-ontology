@@ -116,18 +116,10 @@ make wiki-lint
 
 ```bash
 make agent-run
-# or via ADK directly:
-adk run agent/
+# or directly:
+set -a && source .env && set +a
+python -m agent --templates-dir templates/ --output-dir output/
 ```
-
-### UI — ADK web interface
-
-```bash
-adk web agent/
-# then open http://localhost:8000
-```
-
-The web UI lets you chat with the agent in a browser. The agent reads `templates/` and writes completed documents to `output/`.
 
 Start with the phase and document you want — e.g. *"I want to create a Project Proposal"* — and the agent walks you through the gates, capturing anything you volunteer along the way.
 
