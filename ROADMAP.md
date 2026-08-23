@@ -88,6 +88,19 @@ Developed from patterns discovered in the Closure Package.
 | 56  | Skill: author a SHACL NodeShape from references    | ⏳ Open |
 | 57  | Skill: author an OWL class into a Turtle module    | ⏳ Open |
 
+### M8 · Generic Process Framework _(stretch goal)_
+
+Extract the domain-agnostic core so any structured process — compliance
+audits, clinical trials, procurement, HR onboarding — can plug in its own
+OWL ontology + gate-based template packs and get the same AI-guided
+document generation that PM gets today.
+
+| #  | Issue                                                          | Status      |
+| -- | -------------------------------------------------------------- | ----------- |
+| —  | Define domain-pack spec (ontology + templates + manifest contract) | 🔮 Future |
+| —  | Extract domain-agnostic process agent core from PM impl        | 🔮 Future   |
+| —  | Pilot: second domain (e.g. compliance audit or software delivery) | 🔮 Future |
+
 ---
 
 ## Sequencing
@@ -104,6 +117,9 @@ M5 · Process Agent
          │
          ▼
 M6 · Process Agent: Control & State
+         │
+         ▼
+M8 · Generic Process Framework  (stretch — depends on M6)
 
 M7 · Skills & Automation  (parallel — no hard dependency)
 ```
@@ -111,6 +127,7 @@ M7 · Skills & Automation  (parallel — no hard dependency)
 M7 can run in parallel with any other milestone.
 M5 depends on M3 (interface contract) and M4 (manifests complete) — both now done.
 M6 depends on M5.
+M8 depends on M6 — the PM agent must be stable before extracting a generic core.
 
 ---
 

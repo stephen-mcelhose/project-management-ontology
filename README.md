@@ -2,6 +2,21 @@
 
 A formal ontology for project management concepts expressed in [Turtle (TTL)](https://www.w3.org/TR/turtle/) and [OWL 2](https://www.w3.org/TR/owl2-overview/), with document templates annotated using [OKF frontmatter](https://okfn.org/) and workflow generation tooling.
 
+## Vision
+
+Project management is the first use case. The deeper goal is a **generic
+ontology-based process assistant** — a pattern where any structured process
+domain (compliance audits, clinical trial management, procurement, HR
+onboarding, software delivery) can bring its own OWL ontology and gate-based
+template packs and get the same AI-guided document generation for free.
+
+The PM implementation is the proof of concept. The process agent (M5) is
+designed from the start to be domain-agnostic: it reads a manifest, follows
+gates, validates against SHACL shapes, and advances a lifecycle — without
+knowing anything about project management specifically.
+
+---
+
 ## Goals
 
 1. **Formalize** project management concepts (projects, tasks, milestones, risks, roles, deliverables, workflows) as a linked-data ontology
