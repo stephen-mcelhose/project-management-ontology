@@ -23,10 +23,11 @@ from agent.tools.record_answer import record_answer as _record_answer
 from agent.tools.validate_document import validate_document as _validate_document
 from agent.tools.write_document import write_document as _write_document
 
-_SYSTEM_INSTRUCTION = """\
-You are the PM Process Agent. You help users produce complete project
-management documents by walking them through a structured gate-by-gate process.
-
+# ── Layer 1: base mechanics (ADR-007) ────────────────────────────────────────
+# Describes only the tool loop. Never changes regardless of domain.
+# Domain expertise lives in _project-manifest.yaml agent_instructions (Layer 2)
+# and gate guidance returned by get_next_gate() (Layer 3).
+_BASE_INSTRUCTION = """\
 Your workflow for each document:
 1. Call get_progress() to orient yourself.
 2. Call get_next_gate(document_id) to find the next question to ask.
@@ -39,11 +40,22 @@ Your workflow for each document:
 
 Rules:
 - Ask one gate at a time. Do not ask multiple questions in one turn.
-- When a gate has guidance, use it to push back on vague answers.
+- When a gate has a guidance field, use it to challenge vague or incomplete answers.
 - Never invent answers — always ask the user.
 - When all required documents in a phase are complete, announce this and
   ask before advancing to the next phase.
 """
+
+
+def compose_instruction(domain_instructions: str = "") -> str:
+    """Compose the full system instruction from domain + base layers (ADR-007).
+
+    If domain_instructions is non-empty it is prepended to the base mechanics,
+    giving the model its domain identity before it reads the loop rules.
+    """
+    if domain_instructions.strip():
+        return domain_instructions.strip() + "\n\n" + _BASE_INSTRUCTION
+    return _BASE_INSTRUCTION
 
 
 def build_agent(
@@ -52,11 +64,16 @@ def build_agent(
     templates_dir: str,
     output_dir: str,
     model: str = "gemini-2.0-flash",
+    domain_instructions: str = "",
     gate_reader=None,
     document_writer=None,
     validator=None,
 ) -> LlmAgent:
     """Construct the LlmAgent with all five tools wired to session/filesystem.
+
+    domain_instructions is prepended to the base system instruction (ADR-007).
+    Loaded from _project-manifest.yaml agent_instructions by the caller;
+    defaults to "" so the agent is functional before that file exists.
 
     gate_reader, document_writer, and validator can be injected for testing.
     """
@@ -120,7 +137,7 @@ def build_agent(
     return LlmAgent(
         name="pm_process_agent",
         model=model,
-        instruction=_SYSTEM_INSTRUCTION,
+        instruction=compose_instruction(domain_instructions),
         tools=[
             FunctionTool(get_progress),
             FunctionTool(get_next_gate),
