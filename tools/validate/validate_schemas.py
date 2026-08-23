@@ -1,12 +1,22 @@
 #!/usr/bin/env python3
-"""
-Validate all instructions.yaml files against tools/schemas/instructions-schema.json.
+"""Validate the artifact layer against schema, ontology, and manifest contracts.
 
-Also checks that every gate's maps_to CURIE resolves to a term that exists in
-the loaded OWL ontology graph.  This catches drift between the artifact layer
-(templates/*/instructions.yaml) and the ontology (ontology/**/*.ttl).
+Two validation passes:
 
-Exits 0 if every file is valid, 1 if any file fails.
+1. instructions.yaml — validates every gate file against
+   tools/schemas/instructions-schema.json and checks that maps_to CURIEs
+   resolve in the OWL ontology graph.
+
+2. Manifest consistency — validates templates/_project-manifest.yaml and the
+   five phase _manifest.yaml files for internal cross-references:
+   - Every phases[].id has a _manifest.yaml on disk.
+   - Every _manifest.yaml on disk is listed in phases (no missing registrations).
+   - Every cross_phase_context[].field is a real gate id in the named document.
+   - Every cross_phase_context[].first_captured_in resolves to an existing
+     instructions.yaml.
+   - Every phase _manifest.yaml completion block has transition_condition.
+
+Exits 0 if every check passes, 1 if any check fails.
 """
 
 import json
@@ -198,6 +208,144 @@ def validate_all(
     return passed, failed
 
 
+# ── Manifest consistency ──────────────────────────────────────────────────────
+
+
+def _gate_ids_for(instructions_path: Path) -> set[str] | None:
+    """Return the set of gate ids in an instructions.yaml, or None on parse error."""
+    try:
+        doc = yaml.safe_load(instructions_path.read_text())
+    except yaml.YAMLError:
+        return None
+    return {
+        g["id"]
+        for g in doc.get("gates", [])
+        if isinstance(g, dict) and "id" in g
+    }
+
+
+def validate_project_manifest() -> tuple[int, int]:
+    """Validate _project-manifest.yaml and phase _manifest.yaml files.
+
+    Checks (all are blocking failures):
+    1. _project-manifest.yaml exists and parses.
+    2. Every phases[].id has a _manifest.yaml on disk.
+    3. Every _manifest.yaml on disk is listed in phases (no missing phases).
+    4. Every cross_phase_context[].first_captured_in resolves to an
+       instructions.yaml that exists.
+    5. Every cross_phase_context[].field is a real gate id in that file.
+    6. Every phase _manifest.yaml completion block has transition_condition.
+
+    Returns (passed, failed) where each "item" is one file checked.
+    """
+    passed = 0
+    failed = 0
+
+    project_path = TEMPLATES_DIR / "_project-manifest.yaml"
+    rel = project_path.relative_to(REPO_ROOT)
+
+    # ── Check 1: file exists and parses ──────────────────────────────────────
+    if not project_path.exists():
+        print(f"  ✗ {rel}  NOT FOUND", file=sys.stderr)
+        return 0, 1
+
+    try:
+        data = yaml.safe_load(project_path.read_text())
+    except yaml.YAMLError as exc:
+        print(f"  ✗ {rel}  YAML parse error: {exc}", file=sys.stderr)
+        return 0, 1
+
+    errors: list[str] = []
+
+    # ── Check 2: every declared phase has a _manifest.yaml on disk ───────────
+    declared_ids: list[str] = [
+        entry.get("id", "") for entry in data.get("phases", [])
+    ]
+    for phase_id in declared_ids:
+        manifest = TEMPLATES_DIR / phase_id / "_manifest.yaml"
+        if not manifest.exists():
+            errors.append(
+                f"phases: '{phase_id}' declared but "
+                f"{manifest.relative_to(REPO_ROOT)} not found"
+            )
+
+    # ── Check 3: every _manifest.yaml on disk is listed in phases ────────────
+    on_disk = {p.parent.name for p in TEMPLATES_DIR.glob("*/_manifest.yaml")}
+    for phase_id in sorted(on_disk - set(declared_ids)):
+        errors.append(
+            f"phases: '{phase_id}' has a _manifest.yaml on disk "
+            f"but is not listed in phases"
+        )
+
+    # ── Checks 4 & 5: cross_phase_context fields resolve to real gate ids ────
+    for i, entry in enumerate(data.get("cross_phase_context", [])):
+        field = entry.get("field", "")
+        captured_in = entry.get("first_captured_in", "")
+
+        if "/" not in captured_in:
+            errors.append(
+                f"cross_phase_context[{i}] ({field}): first_captured_in "
+                f"'{captured_in}' must be {{phase}}/{{document}}"
+            )
+            continue
+
+        phase_id, doc_id = captured_in.split("/", 1)
+        instructions = TEMPLATES_DIR / phase_id / doc_id / "instructions.yaml"
+
+        if not instructions.exists():
+            errors.append(
+                f"cross_phase_context[{i}] ({field}): "
+                f"{instructions.relative_to(REPO_ROOT)} not found"
+            )
+            continue
+
+        gate_ids = _gate_ids_for(instructions)
+        if gate_ids is None:
+            errors.append(
+                f"cross_phase_context[{i}] ({field}): "
+                f"could not parse {instructions.relative_to(REPO_ROOT)}"
+            )
+            continue
+
+        if field not in gate_ids:
+            errors.append(
+                f"cross_phase_context[{i}]: field '{field}' is not a gate id "
+                f"in {instructions.relative_to(REPO_ROOT)}"
+            )
+
+    if errors:
+        print(f"  ✗ {rel}", file=sys.stderr)
+        for msg in errors:
+            print(f"      {msg}", file=sys.stderr)
+        failed += 1
+    else:
+        print(f"  ✓ {rel}")
+        passed += 1
+
+    # ── Check 6: every phase _manifest.yaml has transition_condition ──────────
+    for phase_manifest in sorted(TEMPLATES_DIR.glob("*/_manifest.yaml")):
+        rel_pm = phase_manifest.relative_to(REPO_ROOT)
+        try:
+            pm_data = yaml.safe_load(phase_manifest.read_text())
+        except yaml.YAMLError as exc:
+            print(f"  ✗ {rel_pm}  YAML parse error: {exc}", file=sys.stderr)
+            failed += 1
+            continue
+
+        if "transition_condition" not in pm_data.get("completion", {}):
+            print(f"  ✗ {rel_pm}", file=sys.stderr)
+            print(
+                f"      completion: missing transition_condition",
+                file=sys.stderr,
+            )
+            failed += 1
+        else:
+            print(f"  ✓ {rel_pm}")
+            passed += 1
+
+    return passed, failed
+
+
 def main() -> None:
     schema = load_schema()
 
@@ -208,12 +356,19 @@ def main() -> None:
 
     files = sorted(TEMPLATES_DIR.rglob("instructions.yaml"))
     print(f"── Schema + ontology validation ({len(files)} files) ────────────────")
-
     passed, failed = validate_all(schema, graph, curie_prefixes)
     print(f"\n  {passed}/{passed + failed} passed\n")
 
-    if failed:
-        print(f"  {failed} file(s) failed validation. Fix before proceeding.", file=sys.stderr)
+    print("── Manifest consistency validation ──────────────────────────────────")
+    m_passed, m_failed = validate_project_manifest()
+    print(f"\n  {m_passed}/{m_passed + m_failed} passed\n")
+
+    if failed or m_failed:
+        total = failed + m_failed
+        print(
+            f"  {total} check(s) failed. Fix before proceeding.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 
