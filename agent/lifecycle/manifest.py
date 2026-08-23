@@ -1,4 +1,18 @@
-"""Load phase and project manifests from the template artifact layer."""
+"""Load phase and project manifests from the template artifact layer.
+
+Ontology mapping
+----------------
+PhaseManifest  → pm:Phase      (ontology/modules/phase.ttl)
+DocumentEntry  → pm:Document   (ontology/modules/document.ttl)
+ProjectManifest → pm:Project   (ontology/modules/project.ttl)
+
+These Python dataclasses mirror the artifact-layer YAML schema, not the
+full OWL model — the OWL classes carry richer semantics (prov:Activity
+subclassing, phase ordering, etc.) that are not needed at runtime.
+If you add fields here, check whether a corresponding OWL property already
+exists before inventing a new one.  Run make validate-schemas to check
+any maps_to CURIEs you introduce in instructions.yaml files.
+"""
 
 from __future__ import annotations
 
@@ -12,6 +26,7 @@ import yaml
 
 @dataclass
 class DocumentEntry:
+    # Ontology: pm:Document (ontology/modules/document.ttl)
     id: str
     phase_local_order: int
     title: str
@@ -22,11 +37,13 @@ class DocumentEntry:
 
 @dataclass
 class PhaseEntry:
+    # Ontology: pm:Phase (ontology/modules/phase.ttl)
     id: str
 
 
 @dataclass
 class PhaseManifest:
+    # Ontology: pm:Phase (ontology/modules/phase.ttl)
     phase: str
     phase_label: str
     documents: list[DocumentEntry]
@@ -36,6 +53,7 @@ class PhaseManifest:
 
 @dataclass
 class ProjectManifest:
+    # Ontology: pm:Project (ontology/modules/project.ttl)
     phases: list[PhaseEntry]
 
 

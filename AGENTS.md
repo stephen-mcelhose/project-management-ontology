@@ -129,6 +129,30 @@ templates/{phase}/{document}/
 shapes/{phase}/{document}.shacl.ttl  ← SHACL validation shape
 ```
 
+### Ontology drift — keep templates and code in sync
+
+Every gate in `instructions.yaml` has a `maps_to` field that must be a CURIE
+referencing a real OWL property (e.g. `pm:hasSponsor`, `dct:title`).
+
+**Rule: before adding or renaming a `maps_to` value, verify the property exists
+in the ontology (`ontology/modules/*.ttl`).** If it doesn't, add it there first.
+
+`make validate-schemas` resolves every `maps_to` CURIE against the loaded
+ontology graph and fails if a `pm:` property is missing. Run it after any
+change to `instructions.yaml` or `ontology/`.
+
+Python lifecycle dataclasses in `agent/lifecycle/` map to OWL classes — the
+mapping is documented in each module's docstring and inline comments. If you
+add a field to a dataclass, check whether a corresponding OWL property already
+exists before inventing one. The classes are:
+
+| Python class    | OWL class       | File                            |
+| --------------- | --------------- | ------------------------------- |
+| `Gate`          | `pm:WorkflowStep` | `ontology/modules/workflow.ttl` |
+| `PhaseManifest` | `pm:Phase`      | `ontology/modules/phase.ttl`    |
+| `DocumentEntry` | `pm:Document`   | `ontology/modules/document.ttl` |
+| `ProjectManifest` | `pm:Project`  | `ontology/modules/project.ttl`  |
+
 ### Phase manifests
 
 Every phase directory must have a `_manifest.yaml`. This is the single-read
