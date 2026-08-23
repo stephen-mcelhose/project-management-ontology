@@ -7,9 +7,8 @@
 
 ### Prerequisite
 
-The Execution Package (Milestone #3) must be complete before committing these templates.
+The Execution Package (Milestone #3) is recommended but not strictly required. Templates are independent files — the only risk of parallel execution is ontology merge conflicts if multiple agents edit document.ttl simultaneously.
 Closure documents synthesise the full project record — templates must reference prior phase documents correctly.
-Verify: `templates/execution/` should contain four subdirectories, each with `entry.yaml`, `instructions.yaml`, and `template.md`.
 
 ---
 

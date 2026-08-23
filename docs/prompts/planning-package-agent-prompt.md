@@ -7,8 +7,7 @@
 
 ### Prerequisite
 
-The Initiation Package (Milestone #1) must be complete before committing these templates.
-Verify: `templates/initiation/` should contain five subdirectories, each with `entry.yaml`, `instructions.yaml`, and `template.md`.
+The Initiation Package (Milestone #1) is recommended but not strictly required. Templates are independent files — the only risk of parallel execution is ontology merge conflicts if multiple agents edit document.ttl simultaneously.
 
 ---
 

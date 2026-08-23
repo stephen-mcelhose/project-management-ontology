@@ -7,8 +7,7 @@
 
 ### Prerequisite
 
-The Planning Package (Milestone #2) must be complete before committing these templates.
-Verify: `templates/planning/` should contain eight subdirectories, each with `entry.yaml`, `instructions.yaml`, and `template.md`.
+The Planning Package (Milestone #2) is recommended but not strictly required. Templates are independent files — the only risk of parallel execution is ontology merge conflicts if multiple agents edit document.ttl simultaneously.
 
 ---
 
