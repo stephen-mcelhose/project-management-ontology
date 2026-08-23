@@ -24,6 +24,7 @@ docs/generated/
 .env
 output/
 .agents/issues/
+agent/.adk/
 
 # OS
 .DS_Store

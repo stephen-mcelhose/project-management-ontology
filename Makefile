@@ -43,6 +43,9 @@ tool-test:
 agent-run:
 	$(PY) -m agent --templates-dir templates/ --output-dir output/
 
+agent-web:
+	TEMPLATES_DIR=$(or $(TEMPLATES_DIR),templates/) OUTPUT_DIR=$(or $(OUTPUT_DIR),output/) $(VENV)/bin/adk web agent/
+
 agent-eval:
 	$(PY) -m pytest agent/evals/ --run-evals -v
 
