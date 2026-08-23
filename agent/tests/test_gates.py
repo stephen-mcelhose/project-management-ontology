@@ -3,7 +3,7 @@
 import pytest
 import yaml
 
-from agent.lifecycle.gates import Gate, load_gates, next_unfilled_required
+from agent.lifecycle.gates import Gate, load_gates, next_unfilled_gate
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -77,10 +77,10 @@ class TestLoadGates:
             load_gates(str(tmp_path / "nonexistent"))
 
 
-# ── next_unfilled_required ────────────────────────────────────────────────────
+# ── next_unfilled_gate ───────────────────────────────────────────────────────
 
 
-class TestNextUnfilledRequired:
+class TestNextUnfilledGate:
     def _gates(self):
         return [
             Gate(id="a", order=1, type="prose", prompt="A?", fills="## A", required=True),
@@ -89,30 +89,30 @@ class TestNextUnfilledRequired:
             Gate(id="d", order=4, type="prose", prompt="D?", fills="## D", required=True),
         ]
 
-    def test_returns_first_unanswered_required(self):
+    def test_returns_first_unanswered(self):
         gates = self._gates()
-        result = next_unfilled_required(gates, answers={"a": "answer-a"})
+        result = next_unfilled_gate(gates, answers={"a": "answer-a"})
         assert result is not None
         assert result.id == "b"
 
-    def test_returns_none_when_all_required_answered(self):
+    def test_returns_none_when_all_answered(self):
         gates = self._gates()
-        answers = {"a": "x", "b": "y", "d": "z"}
-        assert next_unfilled_required(gates, answers) is None
+        answers = {"a": "x", "b": "y", "c": "z", "d": "w"}
+        assert next_unfilled_gate(gates, answers) is None
 
-    def test_skips_optional_gaps(self):
+    def test_walks_into_optional_gate(self):
         gates = self._gates()
-        # a, b answered; c is optional (unanswered); d is next required
+        # a, b answered — next is c (optional), not d
         answers = {"a": "x", "b": "y"}
-        result = next_unfilled_required(gates, answers)
+        result = next_unfilled_gate(gates, answers)
         assert result is not None
-        assert result.id == "d"
+        assert result.id == "c"
 
-    def test_no_answers_returns_first_required(self):
+    def test_no_answers_returns_first_gate(self):
         gates = self._gates()
-        result = next_unfilled_required(gates, answers={})
+        result = next_unfilled_gate(gates, answers={})
         assert result is not None
         assert result.id == "a"
 
     def test_empty_gates_returns_none(self):
-        assert next_unfilled_required([], answers={}) is None
+        assert next_unfilled_gate([], answers={}) is None

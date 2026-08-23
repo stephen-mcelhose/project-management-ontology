@@ -37,9 +37,7 @@ status: draft
 <!-- maps to: proj:purpose -->
 <!-- 2–5 specific, measurable objectives. Start each with a verb. -->
 
-{{#each objectives}}
-- {{this}}
-{{/each}}
+{{objectives}}
 
 ---
 
@@ -68,17 +66,14 @@ status: draft
 <!-- maps to: pm:hasSponsor -->
 <!-- A named individual with authority to approve resources. -->
 
-**Name:** {{sponsor_name}}
-**Role / Title:** {{sponsor_role}}
+{{sponsor}}
 
 ---
 
 ## Key Stakeholders
 <!-- maps to: pm:RoleAssignment -->
 
-| Name / Team | Role | Interest |
-| ----------- | ---- | -------- |
-| {{stakeholder_1_name}} | {{stakeholder_1_role}} | {{stakeholder_1_interest}} |
+{{stakeholders}}
 
 ---
 
@@ -102,10 +97,7 @@ status: draft
 <!-- maps to: pm:Risk -->
 <!-- Top 2–3 risks or assumptions. Each: "If [X], then [consequence]." -->
 
-| # | Risk / Assumption | Consequence |
-| - | ----------------- | ----------- |
-| 1 | {{risk_1}} | {{risk_1_consequence}} |
-| 2 | {{risk_2}} | {{risk_2_consequence}} |
+{{risks_assumptions}}
 
 ---
 

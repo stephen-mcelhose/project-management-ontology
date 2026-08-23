@@ -114,7 +114,7 @@ def main(argv=None) -> None:
     print(f"Output:       {output_dir}", file=sys.stderr)
 
     from agent.agent import build_agent, build_runner
-    from agent.lifecycle.manifest import load_project_manifest
+    from agent.lifecycle.manifest import load_phase_manifest, load_project_manifest
     from agent.lifecycle.state import SessionState
 
     session = SessionState.load(session_path)
@@ -125,6 +125,20 @@ def main(argv=None) -> None:
     try:
         project_manifest = load_project_manifest(args.templates_dir)
         domain_instructions = project_manifest.agent_instructions
+
+        # Seed a fresh session with the first phase/document so get_progress()
+        # always returns a valid document_id — without this the model hallucinates
+        # a document_id when calling get_next_gate() on first run.
+        if not session.current_phase and project_manifest.phases:
+            first_phase = project_manifest.phases[0]
+            session.current_phase = first_phase.id
+            phase_manifest = load_phase_manifest(args.templates_dir, first_phase.id)
+            if phase_manifest.documents:
+                session.current_document = phase_manifest.documents[0].id
+            print(
+                f"New session: starting at {session.current_phase}/{session.current_document}",
+                file=sys.stderr,
+            )
         if domain_instructions:
             print("Domain instructions: loaded from _project-manifest.yaml", file=sys.stderr)
         else:
