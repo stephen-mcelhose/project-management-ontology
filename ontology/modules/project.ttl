@@ -190,3 +190,17 @@
     rdfs:label "quality expectations"@en ;
     rdfs:comment "The customer's high-level quality expectations for the project's final product, from which detailed acceptance criteria are derived."@en ;
     rdfs:isDefinedBy : .
+
+:Objective
+    a owl:Class ;
+    rdfs:label "Objective"@en ;
+    rdfs:comment "A specific, measurable outcome that a project is expected to achieve. Derived from ISO 21502:2020 s.6.2."@en ;
+    rdfs:isDefinedBy : .
+
+:hasObjective
+    a owl:ObjectProperty ;
+    rdfs:domain :Project ;
+    rdfs:range :Objective ;
+    rdfs:label "has objective"@en ;
+    rdfs:comment "Links a project to one of its stated objectives."@en ;
+    rdfs:isDefinedBy : .

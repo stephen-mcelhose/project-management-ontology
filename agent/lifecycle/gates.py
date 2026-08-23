@@ -1,4 +1,18 @@
-"""Load gate sequences from instructions.yaml."""
+"""Load gate sequences from instructions.yaml.
+
+Ontology mapping
+----------------
+Gate is the Python representation of one entry in instructions.yaml.
+Conceptually it corresponds to pm:WorkflowStep in the OWL model
+(ontology/modules/workflow.ttl), but carries extra artifact-layer
+fields (fills, guidance, deferred_value) that are template concerns,
+not ontology concerns.
+
+The maps_to field holds a CURIE (e.g. pm:hasSponsor, dct:title) that
+names the OWL property the gate's answer is recorded against.
+make validate-schemas checks every maps_to CURIE against the loaded
+ontology graph — add that check to CI if you add new gates.
+"""
 
 from __future__ import annotations
 
@@ -11,13 +25,14 @@ import yaml
 
 @dataclass
 class Gate:
+    # Ontology: pm:WorkflowStep (ontology/modules/workflow.ttl)
     id: str
     order: int
     type: str
     prompt: str
     fills: str
     required: bool
-    maps_to: str | None = None
+    maps_to: str | None = None      # CURIE — must resolve in ontology; see make validate-schemas
     validation: str | None = None
     guidance: str | None = None
     validation_rules: dict[str, Any] = field(default_factory=dict)
