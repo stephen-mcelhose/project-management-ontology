@@ -1,0 +1,29 @@
+# Normalise line endings to LF on commit
+* text=auto eol=lf
+
+# Explicitly text files
+*.md        text eol=lf
+*.markdown  text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf
+*.ttl       text eol=lf
+*.rdf       text eol=lf
+*.owl       text eol=lf
+*.json      text eol=lf
+*.py        text eol=lf
+*.sh        text eol=lf
+*.toml      text eol=lf
+*.ini       text eol=lf
+*.cfg       text eol=lf
+
+# Diff drivers — improve diffs for these types
+*.md        diff=markdown
+*.py        diff=python
+
+# Binary — never convert
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.pdf       binary
+*.zip       binary

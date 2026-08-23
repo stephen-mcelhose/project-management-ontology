@@ -1,0 +1,25 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Markdown: preserve trailing spaces (two spaces = hard line break)
+[*.md]
+trim_trailing_whitespace = false
+
+# Python standard: 4-space indent
+[*.py]
+indent_size = 4
+
+# Turtle / RDF: 4-space indent by convention
+[*.ttl]
+indent_size = 4
+
+# Shell scripts
+[*.sh]
+indent_size = 2
