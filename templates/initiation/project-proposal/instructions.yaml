@@ -1,0 +1,117 @@
+# instructions.yaml — Project Proposal
+#
+# Rules for an agent helping a user fill out the Project Proposal template.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# This is the INPUT side. The output is validated by:
+#   shapes/initiation/project-proposal.shacl.ttl
+
+version: 1
+document: project-proposal
+
+gates:
+  - id: project_name
+    order: 1
+    prompt: "What is the name of this project? (Be specific — avoid generic names like 'New System'.)"
+    fills: "## Project Name"
+    maps_to: dct:title
+    required: true
+    validation: "Must be a proper noun phrase, not a verb phrase or question."
+
+  - id: problem_statement
+    order: 2
+    prompt: "What problem or opportunity is this project addressing? Describe the current situation and why it is unsatisfactory or why acting now is worth it."
+    fills: "## Problem / Opportunity"
+    maps_to: dct:description
+    required: true
+    validation: "Must describe a specific observable problem, not a solution."
+
+  - id: objectives
+    order: 3
+    prompt: "What are the 2–5 specific, measurable objectives this project must achieve? Each objective should start with a verb (e.g. 'Reduce', 'Deliver', 'Enable')."
+    fills: "## Objectives"
+    maps_to: proj:purpose
+    required: true
+    validation: "Each objective must be testable — avoid vague language like 'improve' without a measure."
+
+  - id: expected_benefits
+    order: 4
+    prompt: "What tangible benefits will the organization gain if this project succeeds? (These will become the Business Case — be concrete: cost savings, time savings, revenue, risk reduction.)"
+    fills: "## Expected Benefits"
+    maps_to: proj:purpose
+    required: true
+
+  - id: scope_in
+    order: 5
+    prompt: "What is explicitly IN scope? List the work, deliverables, or capabilities this project will produce."
+    fills: "## Scope / In Scope"
+    required: true
+
+  - id: scope_out
+    order: 6
+    prompt: "What is explicitly OUT of scope? Name things a stakeholder might assume are included but are not."
+    fills: "## Scope / Out of Scope"
+    required: true
+    guidance: "An empty 'out of scope' is a red flag — push the user to name at least two things."
+
+  - id: sponsor
+    order: 7
+    prompt: "Who is the proposed project sponsor? (A named individual who has authority to approve resources and owns the business outcome.)"
+    fills: "## Proposed Sponsor"
+    maps_to: pm:hasSponsor
+    required: true
+    validation: "Must be a named person, not a team, department, or job title alone."
+
+  - id: stakeholders
+    order: 8
+    prompt: "Who are the key stakeholders? (Teams, roles, or named individuals who will be affected by or influence this project.)"
+    fills: "## Key Stakeholders"
+    maps_to: pm:RoleAssignment
+    required: true
+
+  - id: rough_budget
+    order: 9
+    prompt: "What is the rough budget estimate or order of magnitude? (e.g. '<€50k', '€100–200k', 'TBD — requires scoping'). It is acceptable to say TBD here."
+    fills: "## Rough Budget Estimate"
+    maps_to: pm:budget
+    required: false
+
+  - id: rough_timeline
+    order: 10
+    prompt: "What is the rough desired timeline? (e.g. 'Complete by Q3 2026', '6-month duration starting now'). It is acceptable to say TBD."
+    fills: "## Rough Timeline"
+    maps_to: pm:plannedEndDate
+    required: false
+
+  - id: risks_assumptions
+    order: 11
+    prompt: "List the top 2–3 risks or assumptions that could invalidate this proposal. (These will seed the Risk Register later.)"
+    fills: "## Key Risks and Assumptions"
+    maps_to: pm:Risk
+    required: true
+    guidance: "Each item should be phrased as 'If [assumption is wrong / risk materialises], then [consequence].'"
+
+  - id: authorization_request
+    order: 12
+    prompt: "What decision or authorization are you requesting? (e.g. 'Approval to proceed to Business Case', 'Approval to allocate 2 weeks of analyst time for scoping'.)"
+    fills: "## Authorization Request"
+    required: true
+
+# Completion rule: all required gates must be filled before the document
+# is considered draft-complete. The agent MUST NOT mark the document complete
+# if any required gate is empty or contains only a placeholder.
+completion:
+  required_gates:
+    - project_name
+    - problem_statement
+    - objectives
+    - expected_benefits
+    - scope_in
+    - scope_out
+    - sponsor
+    - stakeholders
+    - risks_assumptions
+    - authorization_request
+  output_status: draft
+  next_document: business-case

@@ -1,0 +1,28 @@
+id: project-proposal
+title: Project Proposal
+phase: initiation
+phase_order: 1         # first document produced in a project lifecycle
+
+ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/ProjectProposal
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+din_69901:
+  phase: Initiation
+  part: DIN 69901-2:2009
+  url: https://www.beuth.de/en/standard/din-69901-2/119948897
+prince2_equivalent:
+  name: Project Brief
+  url: https://prince2.wiki/project-brief/
+
+# Dependency chain (pm:hasHardDependency)
+dependencies: []           # first document — nothing must exist before this
+required_before:
+  - business-case          # this document is a hard dependency for Business Case
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/initiation/project-proposal.shacl.ttl
