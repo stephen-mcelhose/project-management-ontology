@@ -76,5 +76,5 @@ All concept and research pages in `docs/wiki/` and templates in `docs/templates/
 ## Sources
 
 - [raw source](../raw/from-url-okf-google-blog.md) — https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing
-- llm-wiki skill definition — `~/.config/csgdaa-code/skills/llm-wiki/skill.md`
+- llm-wiki skill definition — local skill config (`skills/llm-wiki/skill.md`)
 - [OKF Specification](okf-spec.md) — full spec page with field details and reference implementations

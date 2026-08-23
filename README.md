@@ -110,6 +110,56 @@ make visualize
 make wiki-lint
 ```
 
+## Agent
+
+### CLI — interactive terminal
+
+```bash
+make agent-run
+# or via ADK directly:
+adk run agent/
+```
+
+### UI — ADK web interface
+
+```bash
+adk web agent/
+# then open http://localhost:8000
+```
+
+The web UI lets you chat with the agent in a browser. The agent reads `templates/` and writes completed documents to `output/`.
+
+Start with the phase and document you want — e.g. *"I want to create a Project Proposal"* — and the agent walks you through the gates, capturing anything you volunteer along the way.
+
+### Tests
+
+```bash
+make agent-test          # unit tests — no network, always runs in CI
+```
+
+### Evals
+
+Evals drive the real model through scripted scenarios and assert on captured gate answers, tool call sequences, and rendered output.
+
+```bash
+# Scripted mode — deterministic, no Vertex AI credentials needed.
+# Cases without scripted_responses are skipped.
+.venv/bin/python -m pytest agent/evals/ -v
+
+# Real-model mode — requires Vertex AI credentials (GOOGLE_CLOUD_PROJECT etc.).
+# Gate answer assertions use an LLM judge (semantic equivalence, not exact match).
+make agent-eval
+# or:
+.venv/bin/python -m pytest agent/evals/ --run-evals -v
+
+# Run a single case:
+.venv/bin/python -m pytest "agent/evals/test_eval_cases.py::test_eval_case[initiation-freeform]" --run-evals -v
+```
+
+Eval cases live in `agent/evals/cases/`. Each YAML file is a self-contained scenario with turns, scripted responses, and assertions.
+
+---
+
 ## Base Ontologies
 
 | Ontology      | Namespace                                    | Purpose                            |
