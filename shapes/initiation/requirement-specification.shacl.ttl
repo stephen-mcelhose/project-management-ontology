@@ -1,0 +1,154 @@
+# shapes/initiation/requirement-specification.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Requirement Specification is "ingested" (converted from the filled
+# template.md into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:RequirementSpecification
+#     → "these rules apply to any node of type pm:RequirementSpecification"
+#
+#   sh:property [ sh:path dct:title ; sh:minCount 1 ]
+#     → "every RequirementSpecification instance must have at least one dct:title triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s shapes/initiation/requirement-specification.shacl.ttl \
+#            -d path/to/my-requirement-specification.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix proj:  <https://linked.data.gov.au/def/project#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/project-management-ontology/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:RequirementSpecificationShape
+    a sh:NodeShape ;
+
+    # Target: applies to any RDF node typed as pm:RequirementSpecification
+    sh:targetClass pm:RequirementSpecification ;
+
+    rdfs:label "Requirement Specification shape"@en ;
+    rdfs:comment "Validates that a filled Requirement Specification instance satisfies the minimum information requirements of ISO 21502:2020 §6."@en ;
+
+    # ── Required: title ─────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 3 ;
+        sh:message  "A Requirement Specification must have a dct:title (the product name)."@en ;
+    ] ;
+
+    # ── Required: description / purpose ──────────────────────────────────────
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Requirement Specification must have a dct:description (purpose)."@en ;
+    ] ;
+
+    # ── Required: links to the project it describes ──────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Requirement Specification must reference the project it describes via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Initiation phase ───────────────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/project-management-ontology/phases/Initiation> ;
+        sh:message  "A Requirement Specification must be linked to the Initiation phase."@en ;
+    ] ;
+
+    # ── Required: creation date ──────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Requirement Specification must record the date it was created (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator ─────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Requirement Specification must identify its author (dct:creator)."@en ;
+    ] .
+
+# ── Shape for the linked Project node ─────────────────────────────────────────
+# A project with a Requirement Specification must record quality expectations
+# and at least one requirement.
+
+pm-sh:SpecifiedProjectShape
+    a sh:NodeShape ;
+    sh:targetClass pm:Project ;
+
+    sh:property [
+        sh:path     pm:qualityExpectations ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Project with a Requirement Specification must record pm:qualityExpectations."@en ;
+    ] ;
+
+    sh:property [
+        sh:path     pm:hasRequirement ;
+        sh:minCount 1 ;
+        sh:class    pm:Requirement ;
+        sh:message  "A Project with a Requirement Specification must have at least one pm:hasRequirement."@en ;
+    ] .
+
+# ── Shape for each Requirement ────────────────────────────────────────────────
+
+pm-sh:RequirementShape
+    a sh:NodeShape ;
+    sh:targetClass pm:Requirement ;
+
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:message  "A Requirement must have a dct:description."@en ;
+    ] ;
+
+    sh:property [
+        sh:path     pm:acceptanceCriteria ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Requirement must record pm:acceptanceCriteria."@en ;
+    ] ;
+
+    sh:property [
+        sh:path     pm:acceptanceMethod ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Requirement must record pm:acceptanceMethod."@en ;
+    ] ;
+
+    sh:property [
+        sh:path     pm:acceptanceResponsibility ;
+        sh:minCount 1 ;
+        sh:class    pm:Role ;
+        sh:message  "A Requirement must record pm:acceptanceResponsibility."@en ;
+    ] .
