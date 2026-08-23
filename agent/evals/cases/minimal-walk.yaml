@@ -1,0 +1,48 @@
+# Eval case: minimal-walk
+# Two-gate walk used for fast integration testing with the scripted fake model.
+# Also serves as the harness smoke-test for the real eval runner (#67).
+
+id: minimal-walk
+description: >
+  Two required gates (name, summary), three user turns, then write and validate.
+  Verifies the full agent loop: get_next_gate → record_answer → write → validate.
+
+phase: initiation
+document: proposal
+
+turns:
+  - user: "Let's start on the project proposal."
+  - user: "Acme Platform."
+  - user: "Modernise the legacy ETL stack."
+
+expect_document_written: true
+expect_content_contains:
+  - "Acme Platform"
+  - "Modernise the legacy ETL stack"
+
+expect_tool_calls:
+  - get_next_gate
+  - record_answer
+  - get_next_gate
+  - record_answer
+  - write_document
+  - validate_document
+
+# Scripted model responses — one entry per model invocation.
+# Used by test_agent_loop.py with ScriptedModel. Ignored by real evals.
+scripted_responses:
+  # Turn 1: "Let's start on the project proposal."
+  - tool_call: {name: get_progress, args: {}}
+  - tool_call: {name: get_next_gate, args: {document_id: proposal}}
+  - text: "What is the project name?"
+
+  # Turn 2: "Acme Platform."
+  - tool_call: {name: record_answer, args: {document_id: proposal, gate_id: name, answer: "Acme Platform."}}
+  - tool_call: {name: get_next_gate, args: {document_id: proposal}}
+  - text: "What is the project summary?"
+
+  # Turn 3: "Modernise the legacy ETL stack."
+  - tool_call: {name: record_answer, args: {document_id: proposal, gate_id: summary, answer: "Modernise the legacy ETL stack."}}
+  - tool_call: {name: write_document, args: {document_id: proposal}}
+  - tool_call: {name: validate_document, args: {document_id: proposal}}
+  - text: "Your proposal is complete."
