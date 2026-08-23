@@ -75,9 +75,7 @@ pm-sh:ProjectProposalShape
     # which must carry hasSponsor. This shape checks the proposal carries a
     # pm:describesProject link and that linked project has a sponsor.
     #
-    # NOTE: pm:describesProject does not exist in the ontology yet.
-    # This shape documents the intent — the property will be added when
-    # ingest tooling is built (Issue to be filed).
+    # pm:describesProject is defined in ontology/modules/document.ttl.
     sh:property [
         sh:path     pm:describesProject ;
         sh:minCount 1 ;

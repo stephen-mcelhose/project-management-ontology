@@ -119,4 +119,4 @@ status: draft
 
 *This document was produced in the Initiation phase per ISO 21502:2020 §6
 and corresponds to the PRINCE2® Project Brief management product
-([prince2.wiki/project-brief](https://prince2.wiki/project-brief/)).*
+([prince2.wiki — Project Brief](https://prince2.wiki/management-products/baselines/project-brief/)).*

@@ -15,7 +15,8 @@ din_69901:
   url: https://www.beuth.de/en/standard/din-69901-2/119948897
 prince2_equivalent:
   name: Project Brief
-  url: https://prince2.wiki/project-brief/
+  url: https://prince2.wiki/management-products/baselines/project-brief/
+package: pkgs:InitiationPackage
 
 # Dependency chain (pm:hasHardDependency)
 dependencies: []           # first document — nothing must exist before this
