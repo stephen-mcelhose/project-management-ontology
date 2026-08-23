@@ -1,10 +1,10 @@
-"""Tool: get_next_gate — return next unfilled required gate for a document."""
+"""Tool: get_next_gate — return next unfilled gate for a document."""
 
 from __future__ import annotations
 
 from typing import Any, Protocol
 
-from agent.lifecycle.gates import Gate, next_unfilled_required
+from agent.lifecycle.gates import Gate, next_unfilled_gate
 from agent.lifecycle.state import SessionState
 
 
@@ -18,7 +18,7 @@ def get_next_gate(
     templates_dir: str,
     gate_reader: GateReaderProtocol,
 ) -> dict[str, Any] | None:
-    """Return the next unfilled required gate, or None if all required are done.
+    """Return the next unfilled gate (required or optional), or None when all done.
 
     Does not modify session state.
     """
@@ -27,7 +27,7 @@ def get_next_gate(
 
     doc_dir = f"{templates_dir}/{session.current_phase}/{document_id}"
     gates = gate_reader.load_gates(doc_dir)
-    gate = next_unfilled_required(gates, answers)
+    gate = next_unfilled_gate(gates, answers)
     if gate is None:
         return None
     return {

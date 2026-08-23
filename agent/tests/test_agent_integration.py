@@ -126,7 +126,20 @@ class TestFreshSessionToolPipeline:
         )
         assert result["all_required_complete"] is True
 
-        # 6. get_next_gate now returns None (optional gate not counted as required)
+        # 6. get_next_gate returns the optional gate next (not None)
+        gate = get_next_gate(
+            session=session, document_id="proposal",
+            templates_dir="/fake", gate_reader=reader,
+        )
+        assert gate is not None
+        assert gate["id"] == "optional_note"
+
+        # 6b. record optional gate; now all gates answered → None
+        record_answer(
+            session=session, session_path=session_path, document_id="proposal",
+            gate_id="optional_note", answer="Just a note.",
+            templates_dir="/fake", gate_reader=reader,
+        )
         gate = get_next_gate(
             session=session, document_id="proposal",
             templates_dir="/fake", gate_reader=reader,
@@ -211,10 +224,9 @@ class TestResumeSession:
             current_document="proposal",
         )
         for gate in _gates():
-            if gate.required:
-                pre_session.document("proposal").gates[gate.id] = GateState(
-                    gate_id=gate.id, answer="answered"
-                )
+            pre_session.document("proposal").gates[gate.id] = GateState(
+                gate_id=gate.id, answer="answered"
+            )
         pre_session.save(session_path)
 
         session = SessionState.load(session_path)

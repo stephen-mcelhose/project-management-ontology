@@ -5,7 +5,12 @@ import os
 
 
 def make_settings(monkeypatch, **env):
-    """Instantiate Settings with a clean env."""
+    """Instantiate Settings with a clean env.
+
+    Patches load_dotenv to a no-op AFTER reload so that a local .env
+    file cannot repopulate env vars that monkeypatch cleared.
+    (Patching before reload is undone by the reload itself.)
+    """
     # Clear all relevant vars first
     for key in [
         "GOOGLE_GENAI_USE_VERTEXAI",
@@ -18,9 +23,11 @@ def make_settings(monkeypatch, **env):
         monkeypatch.delenv(key, raising=False)
     for key, val in env.items():
         monkeypatch.setenv(key, val)
-    # Import fresh each time
+    # Reload first, then patch — reload re-imports load_dotenv so the
+    # patch must come after to survive into Settings.__init__.
     import agent.settings as mod
     importlib.reload(mod)
+    monkeypatch.setattr(mod, "load_dotenv", lambda **_: None)
     return mod.Settings()
 
 

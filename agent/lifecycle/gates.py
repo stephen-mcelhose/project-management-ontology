@@ -70,9 +70,15 @@ def load_gates(document_dir: str) -> list[Gate]:
     return sorted(gates, key=lambda g: g.order)
 
 
-def next_unfilled_required(gates: list[Gate], answers: dict[str, str]) -> Gate | None:
-    """Return the next required gate with no recorded answer, or None if all done."""
+def next_unfilled_gate(gates: list[Gate], answers: dict[str, str]) -> Gate | None:
+    """Return the next gate (required or optional) with no recorded answer.
+
+    Gates are walked in order. Optional gates are asked just like required
+    ones — the user can skip them, but any answer they volunteer is recorded.
+    The required flag only controls whether the document can be written
+    (required gates must be present; optional ones may be blank).
+    """
     for gate in gates:
-        if gate.required and gate.id not in answers:
+        if gate.id not in answers:
             return gate
     return None
