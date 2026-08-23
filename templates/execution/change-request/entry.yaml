@@ -1,0 +1,26 @@
+id: change-request
+title: Change Request
+phase: execution
+phase_order: 3         # raised during execution when a deviation from the baseline is proposed
+
+ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/ChangeRequest
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Issue Report
+  url: https://prince2.wiki/management-products/reports/issue-report/
+package: pkgs:ExecutionPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - project-management-plan     # baselines against which the change is assessed must exist
+required_before:
+  - change-log                  # the Change Log aggregates all submitted change requests
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/execution/change-request.shacl.ttl

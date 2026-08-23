@@ -1,0 +1,121 @@
+# shapes/execution/change-request.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Change Request is "ingested" (converted from the filled template.md
+# into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:ChangeRequest
+#     → "these rules apply to any node of type pm:ChangeRequest"
+#
+#   sh:property [ sh:path dct:identifier ; sh:minCount 1 ]
+#     → "every ChangeRequest instance must have at least one dct:identifier triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s shapes/execution/change-request.shacl.ttl \
+#            -d path/to/my-change-request.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix proj:  <https://linked.data.gov.au/def/project#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/project-management-ontology/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:ChangeRequestShape
+    a sh:NodeShape ;
+
+    # Target: applies to any RDF node typed as pm:ChangeRequest
+    sh:targetClass pm:ChangeRequest ;
+
+    rdfs:label "Change Request shape"@en ;
+    rdfs:comment "Validates that a filled Change Request instance satisfies the minimum information requirements of ISO 21502:2020 §8 and PRINCE2® Issue Report quality criteria."@en ;
+
+    # ── Required: title (change request ID as display title) ───────────────
+    # Maps to the {{change_request_id}} slot rendered in the document H1.
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 2 ;
+        sh:message  "A Change Request must have a dct:title (the change request identifier, e.g. CR-001)."@en ;
+    ] ;
+
+    # ── Required: unique identifier (Issue Register reference) ─────────────
+    # Maps to the {{change_request_id}} slot — must be consistent with the
+    # project Issue Register.
+    sh:property [
+        sh:path     dct:identifier ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Change Request must have a dct:identifier (the unique CR/Issue number consistent with the Issue Register)."@en ;
+    ] ;
+
+    # ── Required: description (issue description + impact analysis) ─────────
+    # The description field captures both the problem statement and the impact
+    # analysis narrative — both mandatory per PRINCE2 Issue Report quality criteria.
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Change Request must have a dct:description (the issue description and impact analysis)."@en ;
+    ] ;
+
+    # ── Required: at least one tolerance impact assessed ────────────────────
+    # The six-dimension impact analysis must be recorded.
+    sh:property [
+        sh:path     pm:hasTolerance ;
+        sh:minCount 1 ;
+        sh:class    pm:Tolerance ;
+        sh:message  "A Change Request must record at least one tolerance impact dimension (pm:hasTolerance) from the six-variable impact analysis."@en ;
+    ] ;
+
+    # ── Required: project link ──────────────────────────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Change Request must reference the project it belongs to via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Execution phase ───────────────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/project-management-ontology/phases/Execution> ;
+        sh:message  "A Change Request must be linked to the Execution phase."@en ;
+    ] ;
+
+    # ── Required: date raised ───────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Change Request must record the date it was raised (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator (person who raised the change request) ────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Change Request must identify the person who raised it (dct:creator)."@en ;
+    ] .
