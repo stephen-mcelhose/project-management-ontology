@@ -51,6 +51,25 @@ problems:
 
 ## Decision
 
+### Manifest hierarchy
+
+The artifact layer uses a three-tier manifest hierarchy. Each level can be read
+independently; a consumer reads only as far up the tree as its scope requires.
+
+```
+templates/_project-manifest.yaml          ← project level  (phase order, domain instructions)
+templates/{phase}/_manifest.yaml          ← phase level    (document sequence, shared context, completion)
+templates/{phase}/{document}/entry.yaml   ← document level (dependencies, ontology class, template paths)
+```
+
+`_project-manifest.yaml` is the single-read entry point for an orchestrator
+starting a new project run. It defines the canonical phase sequence,
+carries the agent's domain instruction text (ADR-007 Layer 2), and declares
+the cross-phase shared context fields that persist across the entire lifecycle.
+It does **not** duplicate the document-level detail held in phase manifests.
+
+### Phase manifests
+
 Every phase directory gets a `_manifest.yaml`:
 
 ```
@@ -155,4 +174,5 @@ agent repo (or revisit when issue #39 is worked), not against this artifact laye
 - `templates/initiation/_manifest.yaml` — first manifest following this pattern
 - Issue #39: Build Python ADK agent
 - `docs/adrs/adr-002-phase-agent-prompts.md`
+- `docs/adrs/adr-008-project-manifest.md` — project-level layer above this one; formalises the three-tier hierarchy
 - `docs/processes/defining-document-templates.md`

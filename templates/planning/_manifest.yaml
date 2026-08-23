@@ -111,5 +111,6 @@ completion:
     - quality-management-plan
     - communication-plan
   output_status: draft
+  transition_condition: "all required_documents at output_status: draft"
   next_phase: execution
   first_document_in_next_phase: work-package-description

@@ -81,5 +81,6 @@ completion:
     - archive-index
     - project-closure-statement
   output_status: draft
+  transition_condition: "all required_documents at output_status: draft"
   next_phase: null              # Closure is the terminal phase
   first_document_in_next_phase: null
