@@ -28,14 +28,21 @@ import yaml
 import tools.validate.validate_schemas as vs
 
 # Load the real schema once — tests for validate_all() need it.
-_SCHEMA_PATH = Path(__file__).resolve().parents[2] / "tools" / "schemas" / "instructions-schema.json"
+_SCHEMA_PATH = (
+    Path(__file__).resolve().parents[2]
+    / "tools"
+    / "schemas"
+    / "instructions-schema.json"
+)
 SCHEMA = json.loads(_SCHEMA_PATH.read_text())
 
 
 # ── Write helpers ─────────────────────────────────────────────────────────────
 
 
-def _write_project_manifest(templates_dir: Path, *, phases=None, cross_phase_context=None) -> None:
+def _write_project_manifest(
+    templates_dir: Path, *, phases=None, cross_phase_context=None
+) -> None:
     data = {
         "type": "project-manifest",
         "phases": phases or [],
@@ -54,7 +61,9 @@ def _write_phase_manifest(phase_dir: Path, *, with_transition: bool = True) -> N
     (phase_dir / "_manifest.yaml").write_text(yaml.dump(data))
 
 
-def _write_instructions(doc_dir: Path, gate_ids: list[str], *, required_gates: list[str] | None = None) -> None:
+def _write_instructions(
+    doc_dir: Path, gate_ids: list[str], *, required_gates: list[str] | None = None
+) -> None:
     """Write a schema-valid instructions.yaml with the given gate ids."""
     doc_dir.mkdir(parents=True, exist_ok=True)
     gates = [
@@ -132,19 +141,19 @@ class TestGateIdsFor:
 
 class TestCheck1FileExistence:
     def test_missing_manifest_returns_one_failure(self, td):
-        passed, failed = vs.validate_project_manifest()
-        assert (passed, failed) == (0, 1)
+        _passed, failed = vs.validate_project_manifest()
+        assert (_passed, failed) == (0, 1)
 
     def test_invalid_yaml_returns_one_failure(self, td):
         (td / "_project-manifest.yaml").write_text(": bad: yaml: [")
-        passed, failed = vs.validate_project_manifest()
-        assert (passed, failed) == (0, 1)
+        _passed, failed = vs.validate_project_manifest()
+        assert (_passed, failed) == (0, 1)
 
     def test_empty_file_treated_as_empty_manifest(self, td):
         # Empty file → `or {}` guard → no phases, no cross_phase_context → passes.
         # Check 6 finds no phase manifests on disk → no additional files.
         (td / "_project-manifest.yaml").write_text("")
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 0
 
 
@@ -155,7 +164,7 @@ class TestCheck2DeclaredPhasesOnDisk:
     def test_declared_phase_without_manifest_on_disk_fails(self, td):
         _write_project_manifest(td, phases=[{"id": "initiation"}])
         # No initiation/_manifest.yaml created.
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 1  # project manifest ✗
 
     def test_declared_phase_with_manifest_passes(self, td):
@@ -163,7 +172,7 @@ class TestCheck2DeclaredPhasesOnDisk:
         phase_dir.mkdir()
         _write_phase_manifest(phase_dir)
         _write_project_manifest(td, phases=[{"id": "initiation"}])
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 0
 
     def test_multiple_phases_one_missing_fails(self, td):
@@ -171,7 +180,7 @@ class TestCheck2DeclaredPhasesOnDisk:
         _write_phase_manifest(td / "initiation")
         # planning declared but no manifest on disk
         _write_project_manifest(td, phases=[{"id": "initiation"}, {"id": "planning"}])
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 1  # project manifest ✗ (one error inside it)
 
 
@@ -184,7 +193,7 @@ class TestCheck3UndeclaredPhasesOnDisk:
         phase_dir.mkdir()
         _write_phase_manifest(phase_dir)
         _write_project_manifest(td, phases=[])  # initiation not listed
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         # project manifest ✗ (check 3) + initiation phase ✓ (check 6)
         assert failed >= 1
 
@@ -194,7 +203,7 @@ class TestCheck3UndeclaredPhasesOnDisk:
             d.mkdir()
             _write_phase_manifest(d)
         _write_project_manifest(td, phases=[{"id": "initiation"}, {"id": "planning"}])
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 0
 
 
@@ -205,27 +214,33 @@ class TestCheck4FirstCapturedInResolves:
     def test_path_not_found_fails(self, td):
         _write_project_manifest(
             td,
-            cross_phase_context=[{"field": "sponsor", "first_captured_in": "initiation/proposal"}],
+            cross_phase_context=[
+                {"field": "sponsor", "first_captured_in": "initiation/proposal"}
+            ],
         )
         # instructions.yaml not created
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 1
 
     def test_missing_slash_in_first_captured_in_fails(self, td):
         _write_project_manifest(
             td,
-            cross_phase_context=[{"field": "sponsor", "first_captured_in": "no-slash-here"}],
+            cross_phase_context=[
+                {"field": "sponsor", "first_captured_in": "no-slash-here"}
+            ],
         )
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 1
 
     def test_valid_path_passes(self, td):
         _write_instructions(td / "initiation" / "proposal", ["sponsor"])
         _write_project_manifest(
             td,
-            cross_phase_context=[{"field": "sponsor", "first_captured_in": "initiation/proposal"}],
+            cross_phase_context=[
+                {"field": "sponsor", "first_captured_in": "initiation/proposal"}
+            ],
         )
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 0
 
 
@@ -234,21 +249,27 @@ class TestCheck4FirstCapturedInResolves:
 
 class TestCheck5FieldIsRealGateId:
     def test_field_not_in_gate_ids_fails(self, td):
-        _write_instructions(td / "initiation" / "proposal", ["project_name", "objectives"])
+        _write_instructions(
+            td / "initiation" / "proposal", ["project_name", "objectives"]
+        )
         _write_project_manifest(
             td,
-            cross_phase_context=[{"field": "sponsor", "first_captured_in": "initiation/proposal"}],
+            cross_phase_context=[
+                {"field": "sponsor", "first_captured_in": "initiation/proposal"}
+            ],
         )
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 1
 
     def test_field_matches_gate_id_passes(self, td):
         _write_instructions(td / "initiation" / "proposal", ["project_name", "sponsor"])
         _write_project_manifest(
             td,
-            cross_phase_context=[{"field": "sponsor", "first_captured_in": "initiation/proposal"}],
+            cross_phase_context=[
+                {"field": "sponsor", "first_captured_in": "initiation/proposal"}
+            ],
         )
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 0
 
     def test_multiple_context_entries_one_bad_fails(self, td):
@@ -260,7 +281,7 @@ class TestCheck5FieldIsRealGateId:
                 {"field": "nonexistent", "first_captured_in": "initiation/proposal"},
             ],
         )
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 1
 
 
@@ -273,7 +294,7 @@ class TestCheck6TransitionCondition:
         phase_dir.mkdir()
         _write_phase_manifest(phase_dir, with_transition=False)
         _write_project_manifest(td, phases=[{"id": "initiation"}])
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 1  # initiation phase manifest ✗
 
     def test_empty_phase_manifest_file_fails(self, td):
@@ -282,7 +303,7 @@ class TestCheck6TransitionCondition:
         phase_dir.mkdir()
         (phase_dir / "_manifest.yaml").write_text("")
         _write_project_manifest(td, phases=[{"id": "initiation"}])
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 1
 
     def test_present_transition_condition_passes(self, td):
@@ -290,7 +311,7 @@ class TestCheck6TransitionCondition:
         phase_dir.mkdir()
         _write_phase_manifest(phase_dir, with_transition=True)
         _write_project_manifest(td, phases=[{"id": "initiation"}])
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 0
 
     def test_multiple_phases_one_missing_transition_fails(self, td):
@@ -299,7 +320,7 @@ class TestCheck6TransitionCondition:
             d.mkdir()
             _write_phase_manifest(d, with_transition=has_tc)
         _write_project_manifest(td, phases=[{"id": "initiation"}, {"id": "planning"}])
-        passed, failed = vs.validate_project_manifest()
+        _passed, failed = vs.validate_project_manifest()
         assert failed == 1  # only planning ✗
 
 
@@ -319,7 +340,9 @@ class TestValidateAllCrossRefChecks:
             "required": True,
         }
 
-    def _doc(self, gate_ids: list[str], *, required_gates: list[str] | None = None) -> dict:
+    def _doc(
+        self, gate_ids: list[str], *, required_gates: list[str] | None = None
+    ) -> dict:
         return {
             "version": 1,
             "document": "test-doc",
@@ -339,23 +362,23 @@ class TestValidateAllCrossRefChecks:
     def test_valid_instructions_passes(self, td, empty_ontology):
         self._write(td, self._doc(["sponsor"]))
         graph, prefixes = empty_ontology
-        passed, failed = vs.validate_all(SCHEMA, graph, prefixes)
+        _passed, failed = vs.validate_all(SCHEMA, graph, prefixes)
         assert failed == 0
-        assert passed == 1
+        assert _passed == 1
 
     def test_duplicate_gate_ids_fails(self, td, empty_ontology):
         doc = self._doc(["sponsor"])
         doc["gates"].append(self._gate("sponsor", order=2))  # duplicate id
         self._write(td, doc)
         graph, prefixes = empty_ontology
-        passed, failed = vs.validate_all(SCHEMA, graph, prefixes)
+        _passed, failed = vs.validate_all(SCHEMA, graph, prefixes)
         assert failed == 1
 
     def test_required_gates_references_nonexistent_gate_fails(self, td, empty_ontology):
         doc = self._doc(["sponsor"], required_gates=["ghost_gate"])
         self._write(td, doc)
         graph, prefixes = empty_ontology
-        passed, failed = vs.validate_all(SCHEMA, graph, prefixes)
+        _passed, failed = vs.validate_all(SCHEMA, graph, prefixes)
         assert failed == 1
 
     def test_no_instructions_files_raises_systemexit(self, td, empty_ontology):
