@@ -21,8 +21,13 @@ templates/             ← Document template packs (entry.yaml, instructions.yam
     _manifest.yaml     ← Phase index (single-read entry point for an agent)
     {document}/
       entry.yaml
-      instructions.yaml
+      instructions.yaml  ← gate sequence; validated by tools/schemas/instructions-schema.json
       template.md
+tools/
+  schemas/             ← JSON Schema files for artifact-layer files
+    instructions-schema.json
+  validate/            ← Validation scripts (make validate, make validate-schemas)
+  visualize/           ← Ontology visualisation
 docs/
   adrs/                ← Architectural Decision Records
   processes/           ← How-to guides for contributors

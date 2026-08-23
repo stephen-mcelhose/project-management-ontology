@@ -33,27 +33,27 @@ Each package delivers one template pack per PM document in that phase:
 
 ## Infrastructure Milestones
 
-| Milestone                       | Issues | Done | Status          | Blocked by           |
-| ------------------------------- | :----: | :--: | --------------- | -------------------- |
-| M3 · Artifact Hygiene           |   9    |  0   | ⏳ Not started  | —                    |
-| M4 · Phase Manifests & Prompts  |   5    |  5   | ✅ Complete     | —                    |
-| M5 · Process Agent              |   1    |  0   | ⏳ Not started  | M3, M4               |
-| M6 · Process Agent: Control & State |  1  |  0   | ⏳ Not started  | M5                   |
-| M7 · Skills & Automation        |   3    |  0   | ⏳ Not started  | —                    |
+| Milestone                           | Issues | Done | Status          | Blocked by           |
+| ----------------------------------- | :----: | :--: | --------------- | -------------------- |
+| M3 · Artifact Hygiene               |   9    |  4   | 🔄 In progress  | —                    |
+| M4 · Phase Manifests & Prompts      |   5    |  5   | ✅ Complete     | —                    |
+| M5 · Process Agent                  |   1    |  0   | ⏳ Not started  | M3, M4               |
+| M6 · Process Agent: Control & State |   1    |  0   | ⏳ Not started  | M5                   |
+| M7 · Skills & Automation            |   3    |  0   | ⏳ Not started  | —                    |
 
 ### M3 · Artifact Hygiene
 
-| #   | Issue                                                          | Status  |
-| --- | -------------------------------------------------------------- | ------- |
-| 44  | Artifact layer: annotate gate output type                      | ⏳ Open |
-| 45  | Artifact layer: define deferred_value convention               | ⏳ Open |
-| 46  | Artifact layer: add structured validation rules to gates       | ⏳ Open |
-| 47  | Tooling: add instructions-schema.json                          | ⏳ Open |
-| 50  | Artifact layer: define orchestrator interface contract         | ⏳ Open |
-| 51  | wiki: update PROMONT URL                                       | ⏳ Open |
-| 52  | wiki: verify SNOMED CT member country count                    | ⏳ Open |
-| 53  | wiki: audit foaf:currentProject usage in ontology             | ⏳ Open |
-| 54  | ontology: full audit — correctness, PROV-O grounding, SHACL   | ⏳ Open |
+| #   | Issue                                                          | Status       |
+| --- | -------------------------------------------------------------- | ------------ |
+| 44  | Artifact layer: annotate gate output type                      | ✅ Closed    |
+| 45  | Artifact layer: define deferred_value convention               | ✅ Closed    |
+| 46  | Artifact layer: add structured validation rules to gates       | ✅ Closed    |
+| 47  | Tooling: add instructions-schema.json                          | ✅ Closed    |
+| 50  | Artifact layer: define orchestrator interface contract         | ⏳ Open      |
+| 51  | wiki: update PROMONT URL                                       | ⏳ Open      |
+| 52  | wiki: verify SNOMED CT member country count                    | ⏳ Open      |
+| 53  | wiki: audit foaf:currentProject usage in ontology             | ⏳ Open      |
+| 54  | ontology: full audit — correctness, PROV-O grounding, SHACL   | ⏳ Open      |
 
 ### M4 · Phase Manifests & Prompts
 
@@ -131,8 +131,20 @@ M8 depends on M6 — the PM agent must be stable before extracting a generic cor
 
 ---
 
+## Exploratory Spikes
+
+Time-boxed investigations. Each produces a written recommendation or go/no-go — not direct deliverables.
+
+| #  | Issue                                                  | Emerged from | Status  |
+| -- | ------------------------------------------------------ | ------------ | ------- |
+| 62 | Spike: conditional gate branching in instructions.yaml | #47 / M3     | ⏳ Open |
+| 63 | Spike: auto-generate SHACL shapes from pm: ontology   | #47 / M3     | ⏳ Open |
+
+---
+
 ## Open issues without a milestone
 
-| #  | Issue                              |
-| -- | ---------------------------------- |
-| 1  | Ingest base ontologies into llm-wiki |
+| #  | Issue                                |
+| -- | ------------------------------------ |
+|  1 | Ingest base ontologies into llm-wiki |
+| 61 | chore: consider renaming the repository |

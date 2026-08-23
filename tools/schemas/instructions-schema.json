@@ -1,0 +1,173 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://stephen-mcelhose.github.io/project-management-ontology/schemas/instructions-schema.json",
+  "title": "instructions.yaml",
+  "description": "JSON Schema for instructions.yaml gate files. Defines the structure of a document's gate sequence, validation rules, and completion condition. See ADR-004 (type vocabulary) and ADR-005 (validation_rules vocabulary).",
+  "type": "object",
+  "required": ["version", "document", "gates", "completion"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "description": "Schema version. Always 1.",
+      "type": "integer",
+      "const": 1
+    },
+    "document": {
+      "description": "Kebab-case document identifier matching the template pack folder name.",
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    },
+    "gates": {
+      "description": "Ordered sequence of gates. Each gate is a question or check the agent must complete before moving on.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/gate" }
+    },
+    "completion": {
+      "description": "Completion condition for the document.",
+      "$ref": "#/definitions/completion"
+    }
+  },
+  "definitions": {
+    "gate": {
+      "description": "A single gate — one question or elicitation step in the document-filling sequence.",
+      "type": "object",
+      "required": ["id", "order", "type", "prompt", "fills", "required"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "description": "Snake-case identifier for this gate. Must be unique within the document.",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "order": {
+          "description": "Execution order. Gates run in ascending order; earlier gates must be resolved before later ones.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "type": {
+          "description": "Gate output type from the ADR-004 controlled vocabulary. Declares the rendering shape of the gate's output.",
+          "type": "string",
+          "enum": ["string", "date", "identifier", "prose", "list", "table", "section"]
+        },
+        "prompt": {
+          "description": "The question or instruction the agent presents to the user.",
+          "type": "string",
+          "minLength": 1
+        },
+        "fills": {
+          "description": "The template section or placeholder this gate populates (e.g. '## Project Definition / Background').",
+          "type": "string",
+          "minLength": 1
+        },
+        "maps_to": {
+          "description": "Ontology property this gate's output maps to, as a CURIE (e.g. dct:title, pm:hasSponsor).",
+          "type": "string",
+          "minLength": 1
+        },
+        "required": {
+          "description": "Whether this gate must be filled before the document is considered draft-complete.",
+          "type": "boolean"
+        },
+        "deferred_value": {
+          "description": "Placeholder text inserted when the gate is skipped. Required when required is false.",
+          "type": "string",
+          "minLength": 1
+        },
+        "validation": {
+          "description": "Human-readable rule the agent checks before accepting the user's answer.",
+          "type": "string",
+          "minLength": 1
+        },
+        "validation_rules": {
+          "description": "Machine-readable constraint block supplementing the prose validation field. See ADR-005.",
+          "$ref": "#/definitions/validation_rules"
+        },
+        "guidance": {
+          "description": "Extra instruction to the agent that is not shown to the user.",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "if": {
+        "properties": { "required": { "const": false } },
+        "required": ["required"]
+      },
+      "then": {
+        "required": ["deferred_value"],
+        "errorMessage": "Gates with required: false must include a deferred_value placeholder."
+      }
+    },
+    "validation_rules": {
+      "description": "Programmatically checkable constraint keys. At least one key must be present. See ADR-005.",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "unique": {
+          "description": "Value must not be reused across entries in the same register.",
+          "type": "boolean",
+          "const": true
+        },
+        "allowed_values": {
+          "description": "Value must be exactly one of the listed options.",
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "min_items": {
+          "description": "Output must contain at least this many discrete, enumerable items.",
+          "type": "integer",
+          "minimum": 1
+        },
+        "named_individual": {
+          "description": "Value must be a specific named person; a role, team, or department name alone is insufficient.",
+          "type": "boolean",
+          "const": true
+        },
+        "required_parts": {
+          "description": "Structured output must explicitly address each named part (e.g. [cause, event, impact]).",
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "format": {
+          "description": "Format constraint on the gate value.",
+          "type": "string",
+          "enum": ["currency"]
+        },
+        "references_document": {
+          "description": "Output must reference or be consistent with this sibling document (kebab-case document ID).",
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*$"
+        }
+      }
+    },
+    "completion": {
+      "description": "Completion condition: the agent must not mark a document draft-complete until all required_gates are filled.",
+      "type": "object",
+      "required": ["required_gates", "output_status", "next_document"],
+      "additionalProperties": false,
+      "properties": {
+        "required_gates": {
+          "description": "Gate ids that must be non-empty for the document to be draft-complete.",
+          "type": "array",
+          "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "minItems": 1
+        },
+        "output_status": {
+          "description": "Status assigned to the document when all required gates are filled.",
+          "type": "string",
+          "enum": ["draft"]
+        },
+        "next_document": {
+          "description": "Kebab-case id of the document to produce next, or null if this is the last document in the phase.",
+          "oneOf": [
+            { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+            { "type": "null" }
+          ]
+        }
+      }
+    }
+  }
+}
