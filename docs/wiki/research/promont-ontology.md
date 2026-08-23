@@ -68,6 +68,8 @@ Based on DIN 69901 alignment, PROMONT covers:
 
 **Verdict**: Strong candidate for operational PM concepts (scheduling, resource allocation, process groups). Complements [PROJ Ontology](proj-ontology.md) which focuses on publication/description. May need to import selectively rather than adopt wholesale.
 
+> **Decision**: PROMONT was not imported directly (no stable import URI). Instead, its DIN 69901 process group structure was adopted as the **phase taxonomy** for this project (`phases:Initiation`, `phases:Planning`, etc.), and its operational class model informed the `pm:` namespace design. See [ADR-001: Base Ontology Selection](../../adrs/adr-001-base-ontology.md) and [Glossary — Phase](../glossary.md#phase).
+
 ## Relationship to Other Candidates
 
 - More operationally complete than [PROJ Ontology](proj-ontology.md) (which is publication-focused)

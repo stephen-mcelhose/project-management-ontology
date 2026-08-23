@@ -45,3 +45,23 @@ Updated pages:
   added spec cross-reference, clarified required-vs-optional fields (spec requires only `type`;
   project policy additionally requires `title`, `description`, `timestamp`), updated sources section
 - index.md — added okf-spec.md row
+
+## [2026-08-23] ingest | Glossary — canonical term definitions
+
+New pages:
+- glossary.md — canonical definitions for phase, package, agent, orchestrator, gate, manifest, shared context, template pack, phase transition, document class, SHACL shape, phase local order, package agent prompt, phase agent prompt
+
+Updated pages:
+- index.md — added Reference section with glossary entry; added Decisions section with ADR-001, ADR-002, ADR-003
+
+## [2026-08-23] lint | 14 pages checked, 6 issues found, 5 fixed
+
+Fixed:
+1. proj-ontology.md — added Decision callout noting PROJ was selected (ADR-001); stale "verdict" now has follow-through
+2. promont-ontology.md — added Decision callout noting DIN 69901 adopted as phase taxonomy (ADR-001); glossary cross-reference added
+3. schema-org-project.md — separated comparison vocabulary links into a ## See Also section; Sources now contains only raw sources (convention fix from prior lint advisory)
+4. seon-spmo.md — added Decision callout noting document-to-phase mapping pattern adopted; glossary cross-references added
+5. index.md — ADR-001, ADR-002, ADR-003 added to Decisions section (were index gaps)
+
+Advisory (no fix needed):
+- glossary.md uses `type: reference` which is not in the project's documented type vocabulary (`concept | how-to | decision | runbook | proposal | spike`). `reference` is a reasonable extension and not a spec violation; document as an accepted type in AGENTS.md if the pattern recurs.

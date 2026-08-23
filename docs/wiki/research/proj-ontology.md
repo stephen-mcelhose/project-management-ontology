@@ -63,6 +63,8 @@ Provenance chains (`wasGeneratedBy`, `used`, `wasDerivedFrom`) naturally express
 
 **Verdict**: Strong candidate as an *upper ontology layer* to inherit from. Needs extension with operational PM concepts (task status, risk, RACI, etc.).
 
+> **Decision**: PROJ was selected as the provenance backbone for this project. A bespoke `pm:` operational namespace was added on top, structured by DIN 69901 process groups. See [ADR-001: Base Ontology Selection](../../adrs/adr-001-base-ontology.md).
+
 ## Sources
 
 - [raw source](../raw/from-url-proj-ontology.md) — https://bioportal.bioontology.org/ontologies/PROJ

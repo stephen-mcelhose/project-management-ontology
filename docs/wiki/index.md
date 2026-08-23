@@ -10,6 +10,12 @@ tags: [meta, index]
 
 Links are relative to this file (`docs/wiki/`).
 
+## Reference
+
+| Page                          | Title    | Description                                                                              |
+| ----------------------------- | -------- | ---------------------------------------------------------------------------------------- |
+| [Glossary](glossary.md)       | Glossary | Canonical definitions for phase, package, agent, orchestrator, gate, manifest, and more |
+
 ## Research
 
 | Page                                                          | Title                          | Description                                                                     |
@@ -26,3 +32,11 @@ Links are relative to this file (`docs/wiki/`).
 | [PMBOK & OWL — IP Landscape](research/pmbok-owl-ip.md)        | PMBOK & OWL — IP Landscape     | Why there's no open PMBOK OWL and what safe alternatives exist                 |
 | [OKF Frontmatter](research/okf-frontmatter.md)                | OKF Frontmatter                | Frontmatter convention used in wiki pages and document templates                |
 | [OKF Specification](research/okf-spec.md)                     | OKF Specification              | OKF v0.1 formal spec by Google Cloud — structure, fields, and reference tools  |
+
+## Decisions
+
+| Page                                                                   | Title                           | Description                                                                              |
+| ---------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------------------------------- |
+| [ADR-001: Base Ontology Selection](../adrs/adr-001-base-ontology.md)   | ADR-001: Base Ontology          | Selects PROJ + bespoke `pm:` namespace + DIN 69901 phase taxonomy                       |
+| [ADR-002: Phase Agent Prompts](../adrs/adr-002-phase-agent-prompts.md) | ADR-002: Phase Agent Prompts    | Phase prompts are scaffolds; defer mechanics to ADK agent build (issue #39)              |
+| [ADR-003: Phase Manifest Pattern](../adrs/adr-003-phase-manifest.md)   | ADR-003: Phase Manifest Pattern | `_manifest.yaml` required per phase; single-read index for agents and orchestrators     |

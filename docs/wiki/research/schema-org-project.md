@@ -76,5 +76,9 @@ schema.org/Project is best used as a **bridge layer** for public discoverability
 ## Sources
 
 - [raw source](../raw/from-url-schema-org-project.md) — https://schema.org/Project
+- [initial research](../raw/initial-research-user.md)
+
+## See Also
+
 - [DOAP](doap.md) — comparison vocabulary
 - [PROJ Ontology](proj-ontology.md) — comparison vocabulary

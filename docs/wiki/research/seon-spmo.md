@@ -79,6 +79,8 @@ This makes SEON/SPMO highly relevant to our goal of creating [OKF-annotated docu
 
 **Verdict**: The most directly relevant to our *document template* goal among all candidates. The document-to-ontology mapping work already done in SPMO is directly reusable. However, its software engineering bias means we'd need to generalize for non-software PM contexts.
 
+> **Adopted pattern**: The document-to-phase mapping pattern from SEON/SPMO was adopted directly — each [template pack](../glossary.md#template-pack) carries a `pm:producedInPhase` annotation linking it to a [phase](../glossary.md#phase) individual. SEON/SPMO was not imported as a dependency. See [ADR-001](../../adrs/adr-001-base-ontology.md).
+
 ## Relationship to Other Candidates
 
 - More document-oriented than [PROMONT Ontology](promont-ontology.md) or [PROJ Ontology](proj-ontology.md)
