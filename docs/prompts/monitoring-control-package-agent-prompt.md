@@ -58,6 +58,9 @@ shapes/monitoring-control/{kebab-name}.shacl.ttl
 git fetch origin
 git rebase origin/main          # your worktree may predate later ontology/prompt commits
 ls .venv/bin/python 2>/dev/null || make install   # create the venv if missing
+
+# Create a feature branch — do NOT commit directly to main
+git checkout -b feat/monitoring-control-package
 ```
 
 ---
@@ -98,13 +101,49 @@ curl -o /dev/null -s -w "%{http_code}" <prince2_url>
 ```
 All checks must pass before committing.
 
-**Step 6 — Commit and close**
+**Step 6 — Commit, push, open PR, and close issues**
 
 Commit order per document:
 1. Ontology changes (if any): `chore: add pm:{Property} to {module}.ttl`
 2. Template + shape: `feat: add {Document Name} template pack (Monitoring & Control phase)`
 
-Close each issue with a completion comment:
+Once all five documents are committed, push the branch and open a PR:
+
+```bash
+git push -u origin feat/monitoring-control-package
+
+gh pr create \
+  --title "feat: add Monitoring & Control Package template packs (Issues #25–#29)" \
+  --body "## Monitoring & Control Package
+
+Adds 20 files across 5 Monitoring & Control phase document packs plus 5 SHACL NodeShapes — completing Milestone #4.
+
+### Documents
+| Issue | Document | Ontology class | PRINCE2 equivalent |
+| ----- | -------- | -------------- | ------------------ |
+| #25 | Status Report | \`pm:StatusReport\` | Highlight Report |
+| #26 | Risk Register | \`pm:RiskRegister\` | Risk Register |
+| #27 | Issue Log | \`pm:IssueLog\` | Issue Register |
+| #28 | Decision Log | \`pm:DecisionLog\` | Daily Log |
+| #29 | Change Log | \`pm:ChangeLog\` | Issue Management Approach |
+
+### Checklist
+- [ ] \`python tools/validate/validate.py\` passes
+- [ ] All 5 SHACL shapes parse (rdflib triple count check)
+- [ ] All PRINCE2 URLs return 200
+- [ ] Issues #25–#29 closed
+
+Closes #25
+Closes #26
+Closes #27
+Closes #28
+Closes #29" \
+  --milestone "Monitoring & Control Package"
+```
+
+> **Reviewers:** Request at least 2 reviewers. Do not approve or merge the PR yourself — that is the human's job.
+
+After the PR is open, close each issue with a completion comment:
 ```
 ## Completed
 
