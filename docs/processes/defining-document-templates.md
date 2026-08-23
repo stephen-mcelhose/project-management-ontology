@@ -228,13 +228,96 @@ One gate per required or important field, in fill order. Each gate:
 ```yaml
 - id: {field_id}
   order: {N}
+  type: {gate-output-type}        # see type vocabulary below
   prompt: "The question the agent asks the user."
   fills: "## Section Heading in template.md"
   maps_to: {ontology:property}   # e.g. dct:title, pm:hasSponsor
   required: true | false
+  deferred_value: "..."           # required when required: false — see below
   validation: "Rule the agent checks before accepting the answer."
+  validation_rules:               # optional — see below
+    {key}: {value}
   guidance: "Optional: extra instruction to the agent, not shown to the user."
 ```
+
+#### Gate output type vocabulary (ADR-004)
+
+The `type:` field declares the rendering shape of the gate's output. Valid
+values are defined as `pm:GateOutputType` named individuals in
+`ontology/modules/document.ttl`.
+
+| `type:`      | Category | Description                                                        |
+|--------------|----------|--------------------------------------------------------------------|
+| `string`     | Scalar   | Free-form inline text filling a `{{placeholder}}` token            |
+| `date`       | Scalar   | ISO 8601 calendar date (YYYY-MM-DD)                               |
+| `identifier` | Scalar   | Unique code with a naming convention (e.g. CR-001)                |
+| `prose`      | Block    | Narrative paragraph(s), no required internal structure             |
+| `list`       | Block    | Ordered or unordered enumeration of discrete items                 |
+| `table`      | Block    | Markdown table with defined column headers                         |
+| `section`    | Section  | Prose with its own internal sub-structure (headings, nested blocks)|
+
+**Choosing the right type:**
+- If `fills:` contains a `{{placeholder}}` token → scalar (`string`, `date`,
+  or `identifier`)
+- If `fills:` names a `## Section` and the agent writes paragraphs → `prose`
+- If the section is a list or table → `list` or `table`
+- If the section needs its own internal headings or multiple nested blocks
+  → `section`
+
+`type:` is optional but all gates should be annotated before M5. To add a
+new type, follow the amendment process in ADR-004.
+
+#### Deferred value convention (issue #45)
+
+Every gate with `required: false` **must** carry a `deferred_value:` field.
+This is the literal text the agent writes into the template when the user
+cannot or chooses not to answer the gate. It prevents raw `{{placeholder}}`
+strings from appearing in output documents.
+
+Choose the value that makes most sense in context:
+
+| Situation                                   | Use                                               |
+|---------------------------------------------|---------------------------------------------------|
+| General optional content not yet available  | `"*Deferred — to be confirmed before phase completion.*"` |
+| A date slot where the date is not yet set   | `"*To be confirmed.*"`                            |
+| An assignee/owner slot with no one assigned | `"*Unassigned.*"`                                 |
+| A numeric or calculated field               | `"*Not yet estimated.*"` / `"*Not yet calculated.*"` |
+| An outcome that has not yet been decided    | `"*Pending.*"`                                    |
+| An assessment field not yet performed       | `"*Not yet assessed.*"`                           |
+
+Rules:
+- `deferred_value:` is mandatory for every `required: false` gate
+- The value is italic Markdown (`*...*`) to visually distinguish deferred
+  content from real content in rendered output
+- Never leave a deferred section empty or with a raw `{{placeholder}}` — the
+  deferred value exists precisely to prevent this
+
+#### Structured validation rules (ADR-005)
+
+When a `validation:` prose field expresses a constraint that is
+programmatically checkable, add a `validation_rules:` block alongside it.
+The prose is always preserved — `validation_rules:` is additive.
+
+Valid keys (full specification in ADR-005):
+
+| Key | Value | Use when |
+|-----|-------|----------|
+| `unique: true` | boolean | Identifier must never be reused in the same register |
+| `allowed_values: [...]` | list of strings | Value must be one of a fixed set of options |
+| `min_items: N` | integer | Output must contain at least N enumerable items |
+| `named_individual: true` | boolean | Value must be a specific named person, not a role or team |
+| `required_parts: [...]` | list of strings | Structured output must address each named part |
+| `format: currency` | literal | Value must be a number with a currency symbol (e.g. `€120,000`) |
+| `references_document: <id>` | kebab-case doc ID | Content must reference the named sibling document |
+
+Rules:
+- Only add `validation_rules:` when at least one constraint can be expressed
+  with the above keys — qualitative rules ("must be concise") stay prose-only
+- Multiple keys are allowed on one gate
+- `validation:` prose must always accompany `validation_rules:`
+- Keys outside the vocabulary are rejected by `instructions-schema.json` (#47)
+
+To propose a new key, follow the amendment process in ADR-005.
 
 Rules for gates:
 - All fields sourced from the standard (Step 1b) must have a gate

@@ -66,6 +66,30 @@ Fixed:
 Advisory (no fix needed):
 - glossary.md uses `type: reference` which is not in the project's documented type vocabulary (`concept | how-to | decision | runbook | proposal | spike`). `reference` is a reasonable extension and not a spec violation; document as an accepted type in AGENTS.md if the pattern recurs.
 
+## [2026-08-24] ingest | ADR-004: Gate Output Type System
+
+New decision indexed:
+- ADR-004 added to index.md Decisions section
+- Defines seven gate output types (string, date, identifier, prose, list, table, section) as pm:GateOutputType OWL named individuals
+
+## [2026-08-24] ingest | ADR-005: Gate Validation Rules Schema
+
+New decision indexed:
+- ADR-005 added to index.md Decisions section
+- Defines six validation_rules: keys for programmatic gate constraint checking
+- Inventory of ~25 qualifying gates across all phases documented in ADR
+
+## [2026-08-24] lint | 14 pages checked, 2 issues found, 2 fixed
+
+Pages checked: all 12 research pages, glossary.md, index.md (AGENTS.md, log.md, raw/ excluded as structural/immutable)
+
+Fixed:
+1. glossary.md / Gate entry — stale: missing type, deferred_value, validation_rules fields added in M3; updated with all current gate fields and cross-references to ADR-004 and ADR-005
+2. glossary.md / Sources — added ADR-004, ADR-005, M3 session citation
+
+Advisory (no fix needed):
+- ADR-004 and ADR-005 live in docs/adrs/ (outside wiki root) — correctly indexed via relative links in index.md; no action required
+
 ## [2026-08-23] lint | Extensive wiki review — industry accuracy, deep dives, structural drift
 
 Pages reviewed: all 13 research pages, glossary.md, index.md, AGENTS.md, log.md

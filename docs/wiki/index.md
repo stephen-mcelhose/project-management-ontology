@@ -40,3 +40,5 @@ Links are relative to this file (`docs/wiki/`).
 | [ADR-001: Base Ontology Selection](../adrs/adr-001-base-ontology.md)   | ADR-001: Base Ontology          | Selects PROJ + bespoke `pm:` namespace + DIN 69901 phase taxonomy                       |
 | [ADR-002: Phase Agent Prompts](../adrs/adr-002-phase-agent-prompts.md) | ADR-002: Phase Agent Prompts    | Phase prompts are scaffolds; defer mechanics to ADK agent build (issue #39)              |
 | [ADR-003: Phase Manifest Pattern](../adrs/adr-003-phase-manifest.md)   | ADR-003: Phase Manifest Pattern | `_manifest.yaml` required per phase; single-read index for agents and orchestrators     |
+| [ADR-004: Gate Output Type System](../adrs/adr-004-gate-output-type-system.md) | ADR-004: Gate Output Type System | Seven gate output types (scalar/block/section); named individuals in `pm:GateOutputType`; amendment process |
+| [ADR-005: Gate Validation Rules Schema](../adrs/adr-005-gate-validation-rules.md) | ADR-005: Gate Validation Rules | Six `validation_rules:` keys for programmatic gate constraint checking; inventory of ~25 qualifying gates; amendment process |
