@@ -52,7 +52,7 @@
     skos:definition "Outlines the initial project idea, high-level objectives, and justification to seek formal authorization."@en ;
     :producedInPhase phases:Initiation ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/project-brief/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/project-brief/> ;
     rdfs:isDefinedBy : .
 
 :BusinessCase
@@ -63,7 +63,7 @@
     :producedInPhase phases:Initiation ;
     :hasHardDependency :ProjectProposal ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/business-case/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/business-case/> ;
     rdfs:isDefinedBy : .
 
 :ProjectCharter
@@ -76,7 +76,7 @@
     :producedInPhase phases:Initiation ;
     :hasHardDependency :BusinessCase ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/project-initiation-documentation/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/project-initiation-documentation/> ;
     rdfs:isDefinedBy : .
 
 :StakeholderRegister
@@ -88,7 +88,7 @@
     :producedInPhase phases:Initiation ;
     :hasHardDependency :ProjectCharter ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/communication-management-approach/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/management-approaches/communication/> ;
     rdfs:isDefinedBy : .
 
 :RequirementSpecification
@@ -101,7 +101,7 @@
     :producedInPhase phases:Initiation ;
     :hasHardDependency :StakeholderRegister ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/project-product-description/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/project-product-description/> ;
     rdfs:isDefinedBy : .
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -117,7 +117,7 @@
     :producedInPhase phases:Planning ;
     :hasHardDependency :ProjectCharter ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/project-initiation-documentation/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/project-initiation-documentation/> ;
     rdfs:isDefinedBy : .
 
 :WorkBreakdownStructure
@@ -130,7 +130,7 @@
     :producedInPhase phases:Planning ;
     :hasHardDependency :ProjectCharter ;
     dct:source <https://www.beuth.de/en/standard/din-69901-2/119948897> ;
-    rdfs:seeAlso <https://prince2.wiki/plan/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/plan/> ;
     rdfs:isDefinedBy : .
 
 :ProjectSchedule
@@ -142,7 +142,7 @@
     :producedInPhase phases:Planning ;
     :hasHardDependency :WorkBreakdownStructure ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/plan/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/plan/> ;
     rdfs:isDefinedBy : .
 
 :ResourcePlan
@@ -154,7 +154,7 @@
     :producedInPhase phases:Planning ;
     :hasHardDependency :ProjectSchedule ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/plan/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/plan/> ;
     rdfs:isDefinedBy : .
 
 :CostEstimate
@@ -167,7 +167,7 @@
     :producedInPhase phases:Planning ;
     :hasHardDependency :ResourcePlan ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/business-case/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/business-case/> ;
     rdfs:isDefinedBy : .
 
 :RiskManagementPlan
@@ -179,7 +179,7 @@
     :producedInPhase phases:Planning ;
     :hasHardDependency :ProjectCharter ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/risk-management-approach/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/management-approaches/risk/> ;
     rdfs:isDefinedBy : .
 
 :QualityManagementPlan
@@ -191,7 +191,7 @@
     :producedInPhase phases:Planning ;
     :hasHardDependency :RequirementSpecification ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/quality-management-approach/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/management-approaches/quality/> ;
     rdfs:isDefinedBy : .
 
 :CommunicationPlan
@@ -203,7 +203,7 @@
     :producedInPhase phases:Planning ;
     :hasHardDependency :StakeholderRegister ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/communication-management-approach/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/management-approaches/communication/> ;
     rdfs:isDefinedBy : .
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -220,7 +220,7 @@
     :hasHardDependency :WorkBreakdownStructure ;
     :hasHardDependency :ProjectSchedule ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/work-package/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/work-package/> ;
     rdfs:isDefinedBy : .
 
 :DeliverableStatusReport
@@ -232,7 +232,7 @@
     :producedInPhase phases:Execution ;
     :hasHardDependency :ProjectSchedule ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/checkpoint-report/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/reports/checkpoint-report/> ;
     rdfs:isDefinedBy : .
 
 :ChangeRequest
@@ -244,7 +244,7 @@
     :producedInPhase phases:Execution ;
     :hasHardDependency :ProjectManagementPlan ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/issue-report/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/reports/issue-report/> ;
     rdfs:isDefinedBy : .
 
 :QualityAuditReport
@@ -256,7 +256,7 @@
     :producedInPhase phases:Execution ;
     :hasHardDependency :QualityManagementPlan ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/quality-register/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/project-log/quality-register/> ;
     rdfs:isDefinedBy : .
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -273,7 +273,7 @@
     :producedInPhase phases:MonitoringControl ;
     :hasHardDependency :ProjectManagementPlan ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/highlight-report/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/reports/highlight-report/> ;
     rdfs:isDefinedBy : .
 
 :RiskRegister
@@ -285,7 +285,7 @@
     :producedInPhase phases:MonitoringControl ;
     :hasHardDependency :RiskManagementPlan ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/risk-register/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/project-log/risk-register/> ;
     rdfs:isDefinedBy : .
 
 :IssueLog
@@ -297,7 +297,7 @@
     :producedInPhase phases:MonitoringControl ;
     :hasHardDependency :ProjectManagementPlan ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/issue-register/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/project-log/issue-register/> ;
     rdfs:isDefinedBy : .
 
 :DecisionLog
@@ -309,7 +309,7 @@
     :producedInPhase phases:MonitoringControl ;
     :hasHardDependency :ProjectManagementPlan ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/daily-log/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/project-log/daily-log/> ;
     rdfs:isDefinedBy : .
 
 :ChangeLog
@@ -321,7 +321,7 @@
     :producedInPhase phases:MonitoringControl ;
     :hasHardDependency :ChangeRequest ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/issue-management-approach/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/baselines/management-approaches/issue/> ;
     rdfs:isDefinedBy : .
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -338,7 +338,7 @@
     :producedInPhase phases:Closure ;
     :hasHardDependency :DeliverableStatusReport ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/end-project-report/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/reports/end-project-report/> ;
     rdfs:isDefinedBy : .
 
 :FinalProjectReport
@@ -350,7 +350,7 @@
     :producedInPhase phases:Closure ;
     :hasHardDependency :StatusReport ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/end-project-report/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/reports/end-project-report/> ;
     rdfs:isDefinedBy : .
 
 :LessonsLearnedReport
@@ -363,7 +363,7 @@
     :hasHardDependency :IssueLog ;
     :hasHardDependency :RiskRegister ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/lessons-report/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/reports/lessons-report/> ;
     rdfs:isDefinedBy : .
 
 :ArchiveIndex
@@ -376,7 +376,7 @@
     :producedInPhase phases:Closure ;
     :hasHardDependency :FinalProjectReport ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/product-register/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/project-log/product-register/> ;
     rdfs:isDefinedBy : .
 
 :ProjectClosureStatement
@@ -388,5 +388,5 @@
     :producedInPhase phases:Closure ;
     :hasHardDependency :FinalProjectReport ;
     dct:source <https://www.iso.org/standard/74947.html> ;
-    rdfs:seeAlso <https://prince2.wiki/end-project-report/> ;
+    rdfs:seeAlso <https://prince2.wiki/management-products/reports/end-project-report/> ;
     rdfs:isDefinedBy : .
