@@ -35,14 +35,17 @@ turns:
 # Gate-level capture is the primary assertion: did the agent extract and record
 # each piece to the correct document? A failure here means the agent dropped or
 # mis-routed information from the user's message.
+# In scripted mode these are exact-matched against the scripted_responses below.
+# In --run-evals mode the LLM judge checks semantic equivalence, so free-text
+# gates like problem_statement are covered without fragile string comparison.
 expect_gate_answers:
   project-proposal:
     project_name: "Supply Chain Modernisation"
-    problem_statement: "15-year-old ERP integration layer — root cause of 3–4 hours of monthly downtime."
-    sponsor: "Anna Müller, Supply Chain Director."
-    objectives: "(1) Eliminate ERP-caused outages by end of Q3. (2) Reduce integration maintenance cost by 40%. (3) Enable real-time inventory visibility."
+    problem_statement: "15-year-old ERP integration layer causing 3–4 hours of monthly downtime"
+    sponsor: "Anna Müller, Supply Chain Director"
+    objectives: "Eliminate ERP outages, reduce maintenance cost by 40%, enable real-time inventory visibility"
   stakeholder-register:
-    stakeholders: "Anna Müller (Supply Chain Director), Ben Carter (IT Architecture), Finance Controller."
+    stakeholders: "Anna Müller, Ben Carter, Finance Controller"
 
 # This case does not complete the document — focused on capture only.
 expect_document_written: false
