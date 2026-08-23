@@ -8,8 +8,8 @@ tags: [prompt, agent, planning]
 
 ## Task: Build Planning Package template packs — Issues #13–#20
 
-**Repo:** `/Users/stephen.mcelhose.ext/repos/project-management-ontology`
-**GitHub:** `stephen-mcelhose/project-management-ontology`
+**Repo:** `/Users/stephen.mcelhose.ext/repos/process-assistant`
+**GitHub:** `stephen-mcelhose/process-assistant`
 
 ---
 
@@ -41,14 +41,14 @@ Build template packs for all eight Planning Package issues. **Parallelize resear
 
 | Issue | Document | Ontology class | PRINCE2 source |
 | ----- | -------- | -------------- | -------------- |
-| [#13](https://github.com/stephen-mcelhose/project-management-ontology/issues/13) | Project Management Plan | `pm:ProjectManagementPlan` | https://prince2.wiki/management-products/baselines/project-initiation-documentation/ |
-| [#14](https://github.com/stephen-mcelhose/project-management-ontology/issues/14) | Work Breakdown Structure | `pm:WorkBreakdownStructure` | https://prince2.wiki/management-products/baselines/plan/ |
-| [#15](https://github.com/stephen-mcelhose/project-management-ontology/issues/15) | Project Schedule | `pm:ProjectSchedule` | https://prince2.wiki/management-products/baselines/plan/ |
-| [#16](https://github.com/stephen-mcelhose/project-management-ontology/issues/16) | Resource Plan | `pm:ResourcePlan` | https://prince2.wiki/management-products/baselines/plan/ |
-| [#17](https://github.com/stephen-mcelhose/project-management-ontology/issues/17) | Cost Estimate | `pm:CostEstimate` | https://prince2.wiki/management-products/baselines/business-case/ |
-| [#18](https://github.com/stephen-mcelhose/project-management-ontology/issues/18) | Risk Management Plan | `pm:RiskManagementPlan` | https://prince2.wiki/management-products/baselines/management-approaches/risk/ |
-| [#19](https://github.com/stephen-mcelhose/project-management-ontology/issues/19) | Quality Management Plan | `pm:QualityManagementPlan` | https://prince2.wiki/management-products/baselines/management-approaches/quality/ |
-| [#20](https://github.com/stephen-mcelhose/project-management-ontology/issues/20) | Communication Plan | `pm:CommunicationPlan` | https://prince2.wiki/management-products/baselines/management-approaches/communication/ |
+| [#13](https://github.com/stephen-mcelhose/process-assistant/issues/13) | Project Management Plan | `pm:ProjectManagementPlan` | https://prince2.wiki/management-products/baselines/project-initiation-documentation/ |
+| [#14](https://github.com/stephen-mcelhose/process-assistant/issues/14) | Work Breakdown Structure | `pm:WorkBreakdownStructure` | https://prince2.wiki/management-products/baselines/plan/ |
+| [#15](https://github.com/stephen-mcelhose/process-assistant/issues/15) | Project Schedule | `pm:ProjectSchedule` | https://prince2.wiki/management-products/baselines/plan/ |
+| [#16](https://github.com/stephen-mcelhose/process-assistant/issues/16) | Resource Plan | `pm:ResourcePlan` | https://prince2.wiki/management-products/baselines/plan/ |
+| [#17](https://github.com/stephen-mcelhose/process-assistant/issues/17) | Cost Estimate | `pm:CostEstimate` | https://prince2.wiki/management-products/baselines/business-case/ |
+| [#18](https://github.com/stephen-mcelhose/process-assistant/issues/18) | Risk Management Plan | `pm:RiskManagementPlan` | https://prince2.wiki/management-products/baselines/management-approaches/risk/ |
+| [#19](https://github.com/stephen-mcelhose/process-assistant/issues/19) | Quality Management Plan | `pm:QualityManagementPlan` | https://prince2.wiki/management-products/baselines/management-approaches/quality/ |
+| [#20](https://github.com/stephen-mcelhose/process-assistant/issues/20) | Communication Plan | `pm:CommunicationPlan` | https://prince2.wiki/management-products/baselines/management-approaches/communication/ |
 
 > **Note:** Issues #14, #15, and #16 all cite the PRINCE2 Plan product — read the same page once, then use the relevant section (product breakdown / schedule / resource) for each document.
 

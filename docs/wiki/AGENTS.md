@@ -5,8 +5,10 @@ This wiki is maintained by an LLM using the llm-wiki skill
 
 ## Domain
 
-This wiki covers the **Project Management Ontology** project — a formal Turtle/OWL ontology
-for project management concepts with document templates and workflow generation tooling.
+This wiki covers **Process Assistant** — a generic ontology-based process
+assistant ([glossary](glossary.md#process-assistant)). The first domain pack
+is a Turtle/OWL project-management ontology with document templates and
+workflow generation tooling.
 
 Topics covered:
 - Base ontologies (PROV-O, DOAP, schema.org, Dublin Core, FOAF) and how they are reused

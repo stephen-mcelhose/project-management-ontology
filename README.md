@@ -1,6 +1,13 @@
-# Project Management Ontology
+# Process Assistant
 
-A formal ontology for project management concepts expressed in [Turtle (TTL)](https://www.w3.org/TR/turtle/) and [OWL 2](https://www.w3.org/TR/owl2-overview/), with document templates annotated using [OKF frontmatter](https://okfn.org/) and workflow generation tooling.
+A generic ontology-based process assistant. The first packed domain is
+project management: concepts in [Turtle (TTL)](https://www.w3.org/TR/turtle/)
+and [OWL 2](https://www.w3.org/TR/owl2-overview/), document templates with
+[OKF frontmatter](https://okfn.org/), and gate-driven workflow tooling.
+
+GitHub: [stephen-mcelhose/process-assistant](https://github.com/stephen-mcelhose/process-assistant).
+OWL IRIs remain `https://stephen-mcelhose.github.io/project-management-ontology/`
+(see [ADR-009](docs/adrs/adr-009-repository-rename.md)).
 
 ## Vision
 

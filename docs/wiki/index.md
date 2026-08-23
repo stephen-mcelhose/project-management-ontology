@@ -1,8 +1,8 @@
 ---
 type: concept
 title: Wiki Index
-description: Catalog of all pages in the project-management-ontology wiki
-timestamp: 2024-08-22T00:00:00Z
+description: Catalog of all pages in the process-assistant wiki
+timestamp: 2026-08-23T23:07:33Z
 tags: [meta, index]
 ---
 
@@ -51,3 +51,4 @@ Links are relative to this file (`docs/wiki/`).
 | [ADR-006: Process Agent Architecture](../adrs/adr-006-process-agent-architecture.md) | ADR-006: Process Agent Architecture | Python + google-adk LlmAgent + env-file auth + JSON session state; LangGraph deferred to spike #65 |
 | [ADR-007: Agent Instruction Injection](../adrs/adr-007-instruction-injection.md) | ADR-007: Agent Instruction Injection | Three-layer instruction composition: base mechanics (code) + domain persona (_project-manifest.yaml) + gate context (tool returns) |
 | [ADR-008: Project Manifest and Three-Tier Hierarchy](../adrs/adr-008-project-manifest.md) | ADR-008: Project Manifest | `_project-manifest.yaml` as project-level entry point; formalises three-tier hierarchy above ADR-003 phase manifests |
+| [ADR-009: Repository rename to process-assistant](../adrs/adr-009-repository-rename.md) | ADR-009: Repository rename | GitHub repo is `process-assistant`; OWL IRIs stay on the historical github.io path |

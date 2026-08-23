@@ -2,10 +2,10 @@
 type: reference
 title: Glossary
 description: >
-  Canonical definitions for terms used across the project-management-ontology
+  Canonical definitions for terms used across the process-assistant
   repo — ontology, templates, tooling, and agent/orchestrator layers.
   Resolves naming inconsistencies across docs, prompts, issues, and ADRs.
-timestamp: 2026-08-23T00:00:00Z
+timestamp: 2026-08-23T23:07:33Z
 tags: [glossary, reference, meta]
 ---
 
@@ -205,6 +205,20 @@ receive sponsor approval. Formally declared in the phase manifest's
 
 ---
 
+## Process Assistant
+
+The product and git repository (`stephen-mcelhose/process-assistant`). A
+generic gate-driven assistant that loads a domain pack (ontology, SHACL,
+templates) and walks a user through documents. Project management is the
+first pack, not the name of the product.
+
+**Not:** the OWL namespace. `pm:` IRIs still use
+`https://stephen-mcelhose.github.io/project-management-ontology/`.
+
+**See also:** [ADR-009](../adrs/adr-009-repository-rename.md)
+
+---
+
 ## SHACL Shape
 
 A constraint file at `shapes/{phase}/{document}.shacl.ttl` that validates
@@ -253,6 +267,7 @@ A template pack is the primary deliverable of each template issue (#8–#34).
 - ADR-003: `docs/adrs/adr-003-phase-manifest.md`
 - ADR-004: `docs/adrs/adr-004-gate-output-type-system.md`
 - ADR-005: `docs/adrs/adr-005-gate-validation-rules.md`
+- ADR-009: `docs/adrs/adr-009-repository-rename.md`
 - Process guide: `docs/processes/defining-document-templates.md`
 - GAN review session — 2026-08-23
 - M3 Artifact Hygiene session — 2026-08-24

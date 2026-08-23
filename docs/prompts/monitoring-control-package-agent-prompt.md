@@ -8,8 +8,8 @@ tags: [prompt, agent, monitoring-control]
 
 ## Task: Build Monitoring & Control Package template packs — Issues #25–#29
 
-**Repo:** `/Users/stephen.mcelhose.ext/repos/project-management-ontology`
-**GitHub:** `stephen-mcelhose/project-management-ontology`
+**Repo:** `/Users/stephen.mcelhose.ext/repos/process-assistant`
+**GitHub:** `stephen-mcelhose/process-assistant`
 
 ---
 
@@ -42,11 +42,11 @@ Build template packs for all five Monitoring & Control Package issues. **Paralle
 
 | Issue | Document | Ontology class | PRINCE2 source |
 | ----- | -------- | -------------- | -------------- |
-| [#25](https://github.com/stephen-mcelhose/project-management-ontology/issues/25) | Status Report | `pm:StatusReport` | https://prince2.wiki/management-products/reports/highlight-report/ |
-| [#26](https://github.com/stephen-mcelhose/project-management-ontology/issues/26) | Risk Register | `pm:RiskRegister` | https://prince2.wiki/management-products/project-log/risk-register/ |
-| [#27](https://github.com/stephen-mcelhose/project-management-ontology/issues/27) | Issue Log | `pm:IssueLog` | https://prince2.wiki/management-products/project-log/issue-register/ |
-| [#28](https://github.com/stephen-mcelhose/project-management-ontology/issues/28) | Decision Log | `pm:DecisionLog` | https://prince2.wiki/management-products/project-log/daily-log/ |
-| [#29](https://github.com/stephen-mcelhose/project-management-ontology/issues/29) | Change Log | `pm:ChangeLog` | https://prince2.wiki/management-products/baselines/management-approaches/issue/ |
+| [#25](https://github.com/stephen-mcelhose/process-assistant/issues/25) | Status Report | `pm:StatusReport` | https://prince2.wiki/management-products/reports/highlight-report/ |
+| [#26](https://github.com/stephen-mcelhose/process-assistant/issues/26) | Risk Register | `pm:RiskRegister` | https://prince2.wiki/management-products/project-log/risk-register/ |
+| [#27](https://github.com/stephen-mcelhose/process-assistant/issues/27) | Issue Log | `pm:IssueLog` | https://prince2.wiki/management-products/project-log/issue-register/ |
+| [#28](https://github.com/stephen-mcelhose/process-assistant/issues/28) | Decision Log | `pm:DecisionLog` | https://prince2.wiki/management-products/project-log/daily-log/ |
+| [#29](https://github.com/stephen-mcelhose/process-assistant/issues/29) | Change Log | `pm:ChangeLog` | https://prince2.wiki/management-products/baselines/management-approaches/issue/ |
 
 > **Note:** These are living registers and logs — they are opened at the start of a project and maintained throughout. Templates should reflect this: sections should be structured as register/log entries (rows in a table or repeated blocks), not as one-time authored documents. The template captures the *schema for a single entry*, not the full register at a point in time.
 

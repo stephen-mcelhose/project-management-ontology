@@ -147,3 +147,12 @@ Pages reviewed: all 13 research pages, glossary.md, index.md, AGENTS.md, log.md
 - #51 — wiki: update PROMONT URL to ontology-specific resource
 - #52 — wiki: verify SNOMED CT member country count in pmbok-owl-ip.md
 - #53 — wiki: audit foaf:currentProject usage in ontology — term_status:testing
+
+## [2026-08-23] lint | 16 pages checked, 3 issues found, 3 fixed
+
+Repo rename to `process-assistant` (issue #61 / ADR-009). Index, glossary, and wiki AGENTS.md now use the product name. Added glossary term Process Assistant and indexed ADR-009. Refreshed index timestamp.
+
+Left as-is:
+- `AGENTS.md` example path `relative/path/to/page.md` is a convention sample, not a dead link
+- Research-page `timestamp` values from 2024 are ingest dates
+- OWL IRIs on `github.io/project-management-ontology/` are identity, not the git remote

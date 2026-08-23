@@ -1,4 +1,4 @@
-# AGENTS.md — Project Management Ontology
+# AGENTS.md — Process Assistant
 
 This file documents the repository conventions for both human contributors and
 AI coding assistants (agents). Read it before making changes.
@@ -7,9 +7,10 @@ AI coding assistants (agents). Read it before making changes.
 
 ## What This Repository Is
 
-A formal OWL/Turtle ontology for project management concepts, paired with a
-document template layer (YAML gate files, Markdown scaffolds, SHACL shapes)
-that an AI agent can use to guide a user through producing PM documents.
+A process assistant: OWL/Turtle vocabulary plus a document template layer
+(YAML gates, Markdown scaffolds, SHACL shapes). Project management is the
+first domain pack. An agent uses those files to walk a user through producing
+documents.
 
 **Key directories:**
 

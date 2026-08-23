@@ -8,8 +8,8 @@ tags: [prompt, agent, execution]
 
 ## Task: Build Execution Package template packs — Issues #21–#24
 
-**Repo:** `/Users/stephen.mcelhose.ext/repos/project-management-ontology`
-**GitHub:** `stephen-mcelhose/project-management-ontology`
+**Repo:** `/Users/stephen.mcelhose.ext/repos/process-assistant`
+**GitHub:** `stephen-mcelhose/process-assistant`
 
 ---
 
@@ -41,10 +41,10 @@ Build template packs for all four Execution Package issues. **Parallelize resear
 
 | Issue | Document | Ontology class | PRINCE2 source |
 | ----- | -------- | -------------- | -------------- |
-| [#21](https://github.com/stephen-mcelhose/project-management-ontology/issues/21) | Work Package Description | `pm:WorkPackageDescription` | https://prince2.wiki/management-products/baselines/work-package/ |
-| [#22](https://github.com/stephen-mcelhose/project-management-ontology/issues/22) | Deliverable Status Report | `pm:DeliverableStatusReport` | https://prince2.wiki/management-products/reports/checkpoint-report/ |
-| [#23](https://github.com/stephen-mcelhose/project-management-ontology/issues/23) | Change Request | `pm:ChangeRequest` | https://prince2.wiki/management-products/reports/issue-report/ |
-| [#24](https://github.com/stephen-mcelhose/project-management-ontology/issues/24) | Quality Audit Report | `pm:QualityAuditReport` | https://prince2.wiki/management-products/project-log/quality-register/ |
+| [#21](https://github.com/stephen-mcelhose/process-assistant/issues/21) | Work Package Description | `pm:WorkPackageDescription` | https://prince2.wiki/management-products/baselines/work-package/ |
+| [#22](https://github.com/stephen-mcelhose/process-assistant/issues/22) | Deliverable Status Report | `pm:DeliverableStatusReport` | https://prince2.wiki/management-products/reports/checkpoint-report/ |
+| [#23](https://github.com/stephen-mcelhose/process-assistant/issues/23) | Change Request | `pm:ChangeRequest` | https://prince2.wiki/management-products/reports/issue-report/ |
+| [#24](https://github.com/stephen-mcelhose/process-assistant/issues/24) | Quality Audit Report | `pm:QualityAuditReport` | https://prince2.wiki/management-products/project-log/quality-register/ |
 
 > **Note:** These are operational documents produced repeatedly during delivery — a Work Package Description may be issued many times; a Change Request is raised per change event. Templates should reflect this: section names and prompts should be written for individual instances, not as registers.
 
