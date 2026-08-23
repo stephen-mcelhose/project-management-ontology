@@ -1,0 +1,84 @@
+# instructions.yaml — Stakeholder Register
+#
+# Rules for an agent helping a user fill out the Stakeholder Register template.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# Fields are sourced from the "Contents" section of the PRINCE2 Communication
+# Management Approach management product:
+# https://prince2.wiki/management-products/baselines/management-approaches/communication/
+#
+# skos:scopeNote on pm:StakeholderRegister: "In PRINCE2 7, stakeholder analysis
+# is captured within the Communication Management Approach rather than a
+# dedicated register." This template extracts the stakeholder-analysis and
+# scope portions of that PRINCE2 product into a standalone document, per
+# ISO 21502:2020's separate stakeholder-register concept.
+#
+# This is the INPUT side. The output is validated by:
+#   shapes/initiation/stakeholder-register.shacl.ttl
+
+version: 1
+document: stakeholder-register
+
+gates:
+  - id: comms_scope
+    order: 1
+    prompt: "What communications are in scope for this project, and which stakeholders are included in this register?"
+    fills: "## Scope"
+    maps_to: dct:description
+    required: true
+
+  - id: stakeholders
+    order: 2
+    prompt: "List every stakeholder (individual, team, or role) affected by or able to influence this project. For each: their name/team, their role, and their interest in the project."
+    fills: "## Stakeholder Analysis"
+    maps_to: pm:RoleAssignment
+    required: true
+    validation: "Must list at least 3 distinct stakeholders. Avoid vague entries like 'management' without specifying which team or person."
+
+  - id: influence_impact
+    order: 3
+    prompt: "For each stakeholder, rate their influence (power to affect the project's direction) as Low, Medium, or High, and their engagement level (current and desired: Unaware, Resistant, Neutral, Supportive, Leading)."
+    fills: "## Stakeholder Analysis"
+    maps_to: pm:influenceLevel
+    required: true
+
+  - id: communications_schedule
+    order: 4
+    prompt: "For each stakeholder or stakeholder group, define the purpose, frequency, channel, format, and key messages for communicating with them."
+    fills: "## Communications Schedule and Procedures"
+    maps_to: pm:communicationApproach
+    required: true
+
+  - id: responsibilities
+    order: 5
+    prompt: "Who is responsible for preparing, delivering, and approving each communication?"
+    fills: "## Responsibilities"
+    maps_to: pm:assignedRole
+    required: true
+
+  - id: resources
+    order: 6
+    prompt: "What people, skills, and tools are required to carry out communication activities?"
+    fills: "## Resources"
+    required: false
+
+  - id: standards
+    order: 7
+    prompt: "Are there organizational, legal, or ethical standards that apply to how this project communicates with stakeholders?"
+    fills: "## Standards"
+    required: false
+    guidance: "It is acceptable to say 'none beyond standard organizational policy'."
+
+# Completion rule: all required gates must be filled before the document
+# is considered draft-complete. The agent MUST NOT mark the document complete
+# if any required gate is empty or contains only a placeholder.
+completion:
+  required_gates:
+    - comms_scope
+    - stakeholders
+    - influence_impact
+    - communications_schedule
+    - responsibilities
+  output_status: draft
+  next_document: requirement-specification
