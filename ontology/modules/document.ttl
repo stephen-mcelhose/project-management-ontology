@@ -1,0 +1,308 @@
+@prefix :      <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix phases: <https://stephen-mcelhose.github.io/project-management-ontology/phases/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+
+# ── Document Module ────────────────────────────────────────────────────────────
+# Defines the canonical set of project management documents grounded in
+# DIN 69901 / ISO 21500 / PRINCE2 theory.
+#
+# Design:
+#   - Each class is a direct subclass of foaf:Document (no pm:Document stub)
+#   - Each class also subclasses prov:Entity for provenance tracking
+#   - pm:producedInPhase links each class to its DIN 69901 phase
+#   - pm:hasHardDependency records which documents must pre-exist
+#
+# The 27 document classes span 5 phases:
+#   Initiation (5) → Planning (8) → Execution (4) →
+#   Monitoring & Control (5) → Closure (5)
+#
+# See research/orderly-methodical-blueprint.md for full grounding notes.
+
+# ── Cross-document dependency property ────────────────────────────────────────
+
+:hasHardDependency
+    a owl:ObjectProperty ;
+    rdfs:domain foaf:Document ;
+    rdfs:range foaf:Document ;
+    rdfs:label "has hard dependency"@en ;
+    rdfs:comment "A document that must already exist before this document can be produced. Encodes the logical production sequence of the project document lifecycle."@en ;
+    rdfs:isDefinedBy : .
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PHASE 1 — INITIATION
+# ══════════════════════════════════════════════════════════════════════════════
+
+:ProjectProposal
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Project Proposal"@en ;
+    skos:altLabel "Project Brief"@en ;
+    skos:definition "Outlines the initial project idea, high-level objectives, and justification to seek formal authorization."@en ;
+    :producedInPhase phases:Initiation ;
+    rdfs:isDefinedBy : .
+
+:BusinessCase
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Business Case"@en ;
+    skos:definition "Provides the financial and strategic justification for the project, comparing expected costs against anticipated benefits."@en ;
+    :producedInPhase phases:Initiation ;
+    :hasHardDependency :ProjectProposal ;
+    rdfs:isDefinedBy : .
+
+:ProjectCharter
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Project Charter"@en ;
+    skos:altLabel "Project Mandate"@en ;
+    skos:definition "Formally authorizes the existence of the project and grants the project manager authority to apply resources to project activities."@en ;
+    :producedInPhase phases:Initiation ;
+    :hasHardDependency :BusinessCase ;
+    rdfs:isDefinedBy : .
+
+:StakeholderRegister
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Stakeholder Register"@en ;
+    skos:definition "Identifies all individuals and groups affected by or able to influence the project, recording their interests, involvement, and potential impact."@en ;
+    :producedInPhase phases:Initiation ;
+    :hasHardDependency :ProjectCharter ;
+    rdfs:isDefinedBy : .
+
+:RequirementSpecification
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Requirement Specification"@en ;
+    skos:altLabel "Requirements Document"@en ;
+    skos:definition "Documents the high-level needs, expectations, and constraints of stakeholders that the project deliverables must satisfy."@en ;
+    :producedInPhase phases:Initiation ;
+    :hasHardDependency :StakeholderRegister ;
+    rdfs:isDefinedBy : .
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PHASE 2 — PLANNING
+# ══════════════════════════════════════════════════════════════════════════════
+
+:ProjectManagementPlan
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Project Management Plan"@en ;
+    skos:definition "Consolidates all subsidiary plans into a single governing document that defines how the project will be executed, monitored, and controlled."@en ;
+    :producedInPhase phases:Planning ;
+    :hasHardDependency :ProjectCharter ;
+    rdfs:isDefinedBy : .
+
+:WorkBreakdownStructure
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Work Breakdown Structure"@en ;
+    skos:altLabel "WBS"@en ;
+    skos:definition "Hierarchically decomposes the total project scope into manageable work packages and deliverables."@en ;
+    :producedInPhase phases:Planning ;
+    :hasHardDependency :ProjectCharter ;
+    rdfs:isDefinedBy : .
+
+:ProjectSchedule
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Project Schedule"@en ;
+    skos:definition "Defines the planned sequence of project activities, their durations, and key milestones, forming the project time baseline."@en ;
+    :producedInPhase phases:Planning ;
+    :hasHardDependency :WorkBreakdownStructure ;
+    rdfs:isDefinedBy : .
+
+:ResourcePlan
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Resource Plan"@en ;
+    skos:definition "Identifies the human, material, and financial resources required to complete project activities and their planned allocation."@en ;
+    :producedInPhase phases:Planning ;
+    :hasHardDependency :ProjectSchedule ;
+    rdfs:isDefinedBy : .
+
+:CostEstimate
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Cost Estimate"@en ;
+    skos:altLabel "Project Budget"@en ;
+    skos:definition "Determines the total approved budget by aggregating estimated costs of individual activities and resources."@en ;
+    :producedInPhase phases:Planning ;
+    :hasHardDependency :ResourcePlan ;
+    rdfs:isDefinedBy : .
+
+:RiskManagementPlan
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Risk Management Plan"@en ;
+    skos:definition "Defines how risks will be identified, analyzed, prioritized, and managed throughout the project lifecycle."@en ;
+    :producedInPhase phases:Planning ;
+    :hasHardDependency :ProjectCharter ;
+    rdfs:isDefinedBy : .
+
+:QualityManagementPlan
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Quality Management Plan"@en ;
+    skos:definition "Establishes the quality standards, criteria, and assurance activities that project deliverables must satisfy."@en ;
+    :producedInPhase phases:Planning ;
+    :hasHardDependency :RequirementSpecification ;
+    rdfs:isDefinedBy : .
+
+:CommunicationPlan
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Communication Plan"@en ;
+    skos:definition "Outlines the information needs of stakeholders and the methods, frequency, and responsibilities for distributing project information."@en ;
+    :producedInPhase phases:Planning ;
+    :hasHardDependency :StakeholderRegister ;
+    rdfs:isDefinedBy : .
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PHASE 3 — EXECUTION
+# ══════════════════════════════════════════════════════════════════════════════
+
+:WorkPackageDescription
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Work Package Description"@en ;
+    skos:definition "Provides detailed instructions, acceptance criteria, and resource information for team members performing a specific work package."@en ;
+    :producedInPhase phases:Execution ;
+    :hasHardDependency :WorkBreakdownStructure ;
+    :hasHardDependency :ProjectSchedule ;
+    rdfs:isDefinedBy : .
+
+:DeliverableStatusReport
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Deliverable Status Report"@en ;
+    skos:definition "Tracks the progress and completion status of individual project deliverables against the planned schedule."@en ;
+    :producedInPhase phases:Execution ;
+    :hasHardDependency :ProjectSchedule ;
+    rdfs:isDefinedBy : .
+
+:ChangeRequest
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Change Request"@en ;
+    skos:definition "Documents a formal proposal to modify any aspect of the project baseline — scope, schedule, budget, or quality."@en ;
+    :producedInPhase phases:Execution ;
+    :hasHardDependency :ProjectManagementPlan ;
+    rdfs:isDefinedBy : .
+
+:QualityAuditReport
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Quality Audit Report"@en ;
+    skos:definition "Documents the results of structured quality checks confirming that deliverables and processes meet the defined quality standards."@en ;
+    :producedInPhase phases:Execution ;
+    :hasHardDependency :QualityManagementPlan ;
+    rdfs:isDefinedBy : .
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PHASE 4 — MONITORING & CONTROL
+# ══════════════════════════════════════════════════════════════════════════════
+
+:StatusReport
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Status Report"@en ;
+    skos:altLabel "Progress Report"@en ;
+    skos:definition "Summarizes current project performance against the approved baseline across schedule, cost, and scope dimensions."@en ;
+    :producedInPhase phases:MonitoringControl ;
+    :hasHardDependency :ProjectManagementPlan ;
+    rdfs:isDefinedBy : .
+
+:RiskRegister
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Risk Register"@en ;
+    skos:definition "Logs all identified risks with their current status, probability, impact, and the effectiveness of applied response strategies."@en ;
+    :producedInPhase phases:MonitoringControl ;
+    :hasHardDependency :RiskManagementPlan ;
+    rdfs:isDefinedBy : .
+
+:IssueLog
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Issue Log"@en ;
+    skos:definition "Records problems that have occurred during the project and tracks their resolution status and assigned owner."@en ;
+    :producedInPhase phases:MonitoringControl ;
+    :hasHardDependency :ProjectManagementPlan ;
+    rdfs:isDefinedBy : .
+
+:DecisionLog
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Decision Log"@en ;
+    skos:definition "Documents key decisions made during the project, including the rationale and alternatives considered, to ensure transparency and accountability."@en ;
+    :producedInPhase phases:MonitoringControl ;
+    :hasHardDependency :ProjectManagementPlan ;
+    rdfs:isDefinedBy : .
+
+:ChangeLog
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Change Log"@en ;
+    skos:definition "Tracks the status of all change requests from initial submission through to approval or rejection."@en ;
+    :producedInPhase phases:MonitoringControl ;
+    :hasHardDependency :ChangeRequest ;
+    rdfs:isDefinedBy : .
+
+# ══════════════════════════════════════════════════════════════════════════════
+# PHASE 5 — CLOSURE
+# ══════════════════════════════════════════════════════════════════════════════
+
+:HandoverDocument
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Handover Document"@en ;
+    skos:altLabel "Handover Documentation"@en ;
+    skos:definition "Provides all information necessary for the receiving party to operate, maintain, and support the project deliverables after closure."@en ;
+    :producedInPhase phases:Closure ;
+    :hasHardDependency :DeliverableStatusReport ;
+    rdfs:isDefinedBy : .
+
+:FinalProjectReport
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Final Project Report"@en ;
+    skos:definition "Summarizes project performance, achievement of objectives, and the final status of all deliverables, milestones, and baselines."@en ;
+    :producedInPhase phases:Closure ;
+    :hasHardDependency :StatusReport ;
+    rdfs:isDefinedBy : .
+
+:LessonsLearnedReport
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Lessons Learned Report"@en ;
+    skos:definition "Captures knowledge and insights gained during the project — what worked, what did not, and recommendations for improving future project performance."@en ;
+    :producedInPhase phases:Closure ;
+    :hasHardDependency :IssueLog ;
+    :hasHardDependency :RiskRegister ;
+    rdfs:isDefinedBy : .
+
+:ArchiveIndex
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Archive Index"@en ;
+    skos:definition "Lists all project documents and records formally stored for long-term retention, serving as the definitive index of the project archive."@en ;
+    rdfs:comment "Depends on all produced project documents. This all-documents dependency is expressed narratively rather than enumerated as individual triples."@en ;
+    :producedInPhase phases:Closure ;
+    :hasHardDependency :FinalProjectReport ;
+    rdfs:isDefinedBy : .
+
+:ProjectClosureStatement
+    a owl:Class ;
+    rdfs:subClassOf foaf:Document, prov:Entity ;
+    rdfs:label "Project Closure Statement"@en ;
+    skos:definition "Formally confirms that all project activities are complete, deliverables have been accepted, and the project is officially closed."@en ;
+    :producedInPhase phases:Closure ;
+    :hasHardDependency :FinalProjectReport ;
+    rdfs:isDefinedBy : .

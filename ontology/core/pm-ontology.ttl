@@ -33,6 +33,7 @@ conceptual model informed by ProjectCO v2.0."""@en ;
     # Operational modules
     owl:imports <../modules/project.ttl> ;
     owl:imports <../modules/phase.ttl> ;
+    owl:imports <../modules/document.ttl> ;
     owl:imports <../modules/task.ttl> ;
     owl:imports <../modules/milestone.ttl> ;
     owl:imports <../modules/risk.ttl> ;
