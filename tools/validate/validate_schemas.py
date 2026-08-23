@@ -61,7 +61,10 @@ def _load_ontology() -> tuple[rdflib.Graph, dict[str, str]]:
         try:
             graph.parse(str(ttl), format="turtle")
         except (OSError, rdflib.exceptions.ParserError) as exc:
-            print(f"  ⚠ Could not parse {ttl.relative_to(REPO_ROOT)}: {exc}", file=sys.stderr)
+            print(
+                f"  ⚠ Could not parse {ttl.relative_to(REPO_ROOT)}: {exc}",
+                file=sys.stderr,
+            )
 
     return graph, curie_prefixes
 
@@ -104,15 +107,11 @@ def check_maps_to(
 
     if prefix == local_prefix:
         # Our own namespace — this is a hard error.
-        return (
-            f"maps_to: '{curie}' not found in ontology "
-            f"[{uri}]"
-        )
+        return f"maps_to: '{curie}' not found in ontology [{uri}]"
     else:
         # External namespace — report as a warning, not a blocking error.
         print(
-            f"      ⚠ maps_to: '{curie}' not found in imported vocabularies "
-            f"[{uri}]",
+            f"      ⚠ maps_to: '{curie}' not found in imported vocabularies [{uri}]",
             file=sys.stderr,
         )
         return None
@@ -162,7 +161,9 @@ def validate_all(
         # They are intentional behaviour of this tool, not schema limitations.
         cross_ref_errors: list[str] = []
 
-        gate_ids = [g["id"] for g in doc.get("gates", []) if isinstance(g, dict) and "id" in g]
+        gate_ids = [
+            g["id"] for g in doc.get("gates", []) if isinstance(g, dict) and "id" in g
+        ]
 
         # 1. Duplicate gate ids within the file.
         seen: set[str] = set()
@@ -217,11 +218,7 @@ def _gate_ids_for(instructions_path: Path) -> set[str] | None:
         doc = yaml.safe_load(instructions_path.read_text())
     except yaml.YAMLError:
         return None
-    return {
-        g["id"]
-        for g in doc.get("gates", [])
-        if isinstance(g, dict) and "id" in g
-    }
+    return {g["id"] for g in doc.get("gates", []) if isinstance(g, dict) and "id" in g}
 
 
 def validate_project_manifest() -> tuple[int, int]:
@@ -258,9 +255,7 @@ def validate_project_manifest() -> tuple[int, int]:
     errors: list[str] = []
 
     # ── Check 2: every declared phase has a _manifest.yaml on disk ───────────
-    declared_ids: list[str] = [
-        entry.get("id", "") for entry in data.get("phases", [])
-    ]
+    declared_ids: list[str] = [entry.get("id", "") for entry in data.get("phases", [])]
     for phase_id in declared_ids:
         manifest = TEMPLATES_DIR / phase_id / "_manifest.yaml"
         if not manifest.exists():
@@ -334,7 +329,7 @@ def validate_project_manifest() -> tuple[int, int]:
 
         if "transition_condition" not in pm_data.get("completion", {}):
             print(f"  ✗ {rel_pm}")
-            print(f"      completion: missing transition_condition")
+            print("      completion: missing transition_condition")
             failed += 1
         else:
             print(f"  ✓ {rel_pm}")
