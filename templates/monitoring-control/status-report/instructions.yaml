@@ -1,0 +1,117 @@
+# instructions.yaml — Status Report
+#
+# Rules for an agent helping a project manager fill out a Status Report.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# PRINCE2 basis: Highlight Report (produced periodically for the Project Board)
+# The Highlight Report serves two purposes:
+#   1. Confirming the stage remains within tolerances (time, cost, quality, scope, benefits, risk)
+#   2. Identifying potential issues before they escalate
+#
+# This is the INPUT side. The output is validated by:
+#   shapes/monitoring-control/status-report.shacl.ttl
+
+version: 1
+document: status-report
+
+gates:
+  - id: reporting_period
+    order: 1
+    prompt: "What is the reporting period covered by this Status Report? (e.g. '1–14 July 2025', 'Week 28', 'Sprint 7')"
+    fills: "## Reporting Period"
+    maps_to: dct:temporal
+    required: true
+    validation: "Must specify a start and end date or an unambiguous period reference."
+
+  - id: status_time
+    order: 2
+    prompt: "What is the current schedule status? State whether the stage is on track, ahead, or behind — and by how much. Reference the approved baseline."
+    fills: "## Status Summary / Time"
+    maps_to: pm:hasTolerance
+    required: true
+    guidance: "Avoid percentages of completion. Use clear status descriptors (e.g. '2 days behind plan', 'on track', '+1 sprint ahead'). Percentages are misleading — products often sit at 95% indefinitely."
+
+  - id: status_cost
+    order: 3
+    prompt: "What is the current cost status? State actual spend vs. budget and whether the cost tolerance is at risk."
+    fills: "## Status Summary / Cost"
+    maps_to: pm:hasTolerance
+    required: true
+
+  - id: status_quality
+    order: 4
+    prompt: "What is the current quality status? Report on any quality events, failed quality reviews, or products awaiting sign-off."
+    fills: "## Status Summary / Quality"
+    maps_to: pm:hasTolerance
+    required: true
+
+  - id: status_scope
+    order: 5
+    prompt: "What is the current scope status? State whether the scope is intact or whether any agreed scope changes have occurred since the last report."
+    fills: "## Status Summary / Scope"
+    maps_to: pm:hasTolerance
+    required: true
+
+  - id: status_benefits
+    order: 6
+    prompt: "What is the current benefits realization status? State whether expected benefits remain achievable per the Business Case."
+    fills: "## Status Summary / Benefits"
+    maps_to: pm:hasTolerance
+    required: false
+    guidance: "Benefits may not be measurable during execution — note if tracking is deferred to closure."
+
+  - id: status_risk
+    order: 7
+    prompt: "What is the overall risk exposure for this period? Summarize the net risk position — are the project's risks increasing or decreasing?"
+    fills: "## Status Summary / Risk"
+    maps_to: pm:hasRisk
+    required: true
+
+  - id: work_packages_current
+    order: 8
+    prompt: "Which products (deliverables) are currently being worked on this period? List product names — not tasks or activities."
+    fills: "## Work Packages / Current Period"
+    maps_to: dct:description
+    required: true
+    validation: "List product names, not activity descriptions. Example: 'User Authentication Module' not 'Writing login code'."
+
+  - id: work_packages_next
+    order: 9
+    prompt: "Which products are planned to start in the next reporting period?"
+    fills: "## Work Packages / Next Period"
+    maps_to: dct:description
+    required: true
+
+  - id: change_requests
+    order: 10
+    prompt: "Are there any pending or newly raised Change Requests this period? List their IDs and current status, or state 'None this period'."
+    fills: "## Change Requests"
+    maps_to: dct:references
+    required: false
+    guidance: "Reference the Change Log. In PRINCE2, change requests are formally recorded as Issue Reports linked to the Issue Register."
+
+  - id: key_risks_issues
+    order: 11
+    prompt: "What significant risks or issues require the Project Board's attention this period? List only escalations — items within the project manager's tolerance do not belong here."
+    fills: "## Key Risks and Issues"
+    maps_to: pm:hasRisk
+    required: true
+    guidance: "Be transparent. The Project Board manages by exception — they cannot act on information that is hidden. If nothing requires escalation, state 'No escalations this period'."
+
+# Completion rule: all required gates must be filled before the document
+# is considered draft-complete. The agent MUST NOT mark the document complete
+# if any required gate is empty or contains only a placeholder.
+completion:
+  required_gates:
+    - reporting_period
+    - status_time
+    - status_cost
+    - status_quality
+    - status_scope
+    - status_risk
+    - work_packages_current
+    - work_packages_next
+    - key_risks_issues
+  output_status: draft
+  next_document: null

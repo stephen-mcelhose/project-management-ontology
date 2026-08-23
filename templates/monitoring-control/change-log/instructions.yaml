@@ -1,0 +1,122 @@
+# instructions.yaml — Change Log
+#
+# Rules for an agent helping a project manager log a Change Log entry.
+# Each gate captures one field of a SINGLE CHANGE LOG ENTRY — tracking
+# one Change Request through its full lifecycle.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# PRINCE2 basis: Issue Management Approach
+#   The Issue Management Approach defines the change control lifecycle:
+#   submission → evaluation → authorisation → implementation → verification.
+#   The Change Log provides the audit trail for every Change Request.
+#
+# This is the INPUT side. The output is validated by:
+#   shapes/monitoring-control/change-log.shacl.ttl
+
+version: 1
+document: change-log
+
+gates:
+  - id: entry_id
+    order: 1
+    prompt: "What is the unique identifier for this Change Log entry? This should match the originating Change Request ID. (e.g. CR-001)"
+    fills: "## Change Log Entry"
+    maps_to: dct:identifier
+    required: true
+    validation: "Must match the ID from the originating Change Request document."
+
+  - id: change_request_ref
+    order: 2
+    prompt: "What is the reference to the originating Change Request? (e.g. 'templates/execution/change-request/CR-001' or a link to the Change Request document)"
+    fills: "## Change Request Reference"
+    maps_to: dct:references
+    required: true
+
+  - id: issue_type
+    order: 3
+    prompt: "What type of issue originated this change? (Request for Change / Off-Specification / Problem or Concern)"
+    fills: "## Issue Type"
+    maps_to: dct:description
+    required: true
+
+  - id: date_raised
+    order: 4
+    prompt: "When was the Change Request raised? (YYYY-MM-DD)"
+    fills: "## Date Raised"
+    maps_to: dct:created
+    required: true
+
+  - id: raised_by
+    order: 5
+    prompt: "Who raised the Change Request? (Named individual)"
+    fills: "## Raised By"
+    maps_to: dct:creator
+    required: true
+
+  - id: change_description
+    order: 6
+    prompt: "Briefly describe the change being requested. (One to three sentences summarising what is proposed.)"
+    fills: "## Change Description"
+    maps_to: dct:description
+    required: true
+
+  - id: priority_severity
+    order: 7
+    prompt: "What is the priority and severity of this Change Request? Priority = urgency of decision (High / Medium / Low). Severity = impact if left unresolved (Critical / Major / Minor)."
+    fills: "## Priority and Severity"
+    maps_to: pm:priority
+    required: true
+    validation: "Both priority and severity must be stated. They are independent dimensions."
+
+  - id: decision
+    order: 8
+    prompt: "What decision was made on this Change Request? (Approved / Rejected / Deferred / Pending)"
+    fills: "## Decision"
+    maps_to: dct:description
+    required: true
+    guidance: "Use 'Pending' if no decision has been made yet. The agent must not fabricate a decision."
+
+  - id: decision_authority
+    order: 9
+    prompt: "Who authorised the decision? (Named individual or governance body — e.g. Project Manager, Change Authority, Project Board)"
+    fills: "## Decision Authority"
+    maps_to: pm:approvedBy
+    required: false
+    guidance: "Leave as TBD until the decision is formally made."
+
+  - id: decision_date
+    order: 10
+    prompt: "On what date was the decision made? (YYYY-MM-DD, or TBD)"
+    fills: "## Decision Date"
+    maps_to: dct:description
+    required: false
+
+  - id: implementation_status
+    order: 11
+    prompt: "What is the implementation status of this change? (Not Started / In Progress / Implemented / Verified / Closed)"
+    fills: "## Implementation Status"
+    maps_to: pm:documentStatus
+    required: true
+
+  - id: closure_date
+    order: 12
+    prompt: "When was this Change Log entry formally closed? (YYYY-MM-DD, or TBD)"
+    fills: "## Closure Date"
+    maps_to: dct:description
+    required: false
+
+# Completion rule: all required gates must be filled before the entry
+# is considered draft-complete.
+completion:
+  required_gates:
+    - entry_id
+    - change_request_ref
+    - issue_type
+    - date_raised
+    - raised_by
+    - change_description
+    - priority_severity
+    - decision
+    - implementation_status
+  output_status: draft
+  next_document: null

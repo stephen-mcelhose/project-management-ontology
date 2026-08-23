@@ -1,0 +1,120 @@
+# shapes/monitoring-control/decision-log.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Decision Log entry is "ingested" (converted from the filled template.md
+# into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:DecisionLog
+#     → "these rules apply to any node of type pm:DecisionLog"
+#
+#   sh:property [ sh:path dct:identifier ; sh:minCount 1 ]
+#     → "every DecisionLog instance must have at least one dct:identifier triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s shapes/monitoring-control/decision-log.shacl.ttl \
+#            -d path/to/my-decision-log.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix proj:  <https://linked.data.gov.au/def/project#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/project-management-ontology/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:DecisionLogShape
+    a sh:NodeShape ;
+
+    # Target: applies to any RDF node typed as pm:DecisionLog
+    sh:targetClass pm:DecisionLog ;
+
+    rdfs:label "Decision Log shape"@en ;
+    rdfs:comment "Validates that a filled Decision Log entry satisfies the minimum information requirements of ISO 21502:2020 §8 decision transparency principles, extending the PRINCE2® Daily Log."@en ;
+
+    # ── Required: entry identifier ───────────────────────────────────────────
+    # Maps to the {{entry_id}} slot (e.g. DEC-001).
+    sh:property [
+        sh:path     dct:identifier ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 2 ;
+        sh:message  "A Decision Log entry must have a dct:identifier (e.g. DEC-001)."@en ;
+    ] ;
+
+    # ── Required: title (decision title) ────────────────────────────────────
+    # Maps to the {{decision_title}} slot — brief noun phrase of the decision.
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 3 ;
+        sh:message  "A Decision Log entry must have a dct:title (the brief decision title)."@en ;
+    ] ;
+
+    # ── Required: description ────────────────────────────────────────────────
+    # Maps to context, decision made, and rationale sections.
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Decision Log entry must have a dct:description (the decision context and outcome)."@en ;
+    ] ;
+
+    # ── Required: document status ────────────────────────────────────────────
+    # Maps to {{decision_status}} — Active / Superseded / Reversed.
+    sh:property [
+        sh:path     pm:documentStatus ;
+        sh:minCount 1 ;
+        sh:message  "A Decision Log entry must record its current status (pm:documentStatus)."@en ;
+    ] ;
+
+    # ── Required: project link ───────────────────────────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Decision Log entry must reference the project via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Monitoring & Control phase ─────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/project-management-ontology/phases/MonitoringControl> ;
+        sh:message  "A Decision Log entry must be linked to the Monitoring & Control phase."@en ;
+    ] ;
+
+    # ── Required: decision date ──────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Decision Log entry must record the date the decision was made (dct:created)."@en ;
+    ] ;
+
+    # ── Required: decision maker ─────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Decision Log entry must identify who made the decision (dct:creator)."@en ;
+    ] .

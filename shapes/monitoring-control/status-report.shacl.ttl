@@ -1,0 +1,109 @@
+# shapes/monitoring-control/status-report.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Status Report is "ingested" (converted from the filled template.md
+# into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:StatusReport
+#     → "these rules apply to any node of type pm:StatusReport"
+#
+#   sh:property [ sh:path dct:title ; sh:minCount 1 ]
+#     → "every StatusReport instance must have at least one dct:title triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s shapes/monitoring-control/status-report.shacl.ttl \
+#            -d path/to/my-status-report.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix proj:  <https://linked.data.gov.au/def/project#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/project-management-ontology/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/project-management-ontology/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:StatusReportShape
+    a sh:NodeShape ;
+
+    # Target: applies to any RDF node typed as pm:StatusReport
+    sh:targetClass pm:StatusReport ;
+
+    rdfs:label "Status Report shape"@en ;
+    rdfs:comment "Validates that a filled Status Report instance satisfies the minimum information requirements of ISO 21502:2020 §8 and the PRINCE2® Highlight Report quality criteria."@en ;
+
+    # ── Required: title ─────────────────────────────────────────────────────
+    # The document must have a title (project name + reporting period).
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 3 ;
+        sh:message  "A Status Report must have a dct:title."@en ;
+    ] ;
+
+    # ── Required: description / status summary ───────────────────────────────
+    # Maps to the overall status narrative.
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Status Report must have a dct:description (the overall status summary)."@en ;
+    ] ;
+
+    # ── Required: reporting period ───────────────────────────────────────────
+    # The report must specify the period it covers. Maps to {{reporting_period}}.
+    sh:property [
+        sh:path     dct:temporal ;
+        sh:minCount 1 ;
+        sh:message  "A Status Report must specify the reporting period it covers (dct:temporal)."@en ;
+    ] ;
+
+    # ── Required: project link ───────────────────────────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Status Report must reference the project it describes via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Monitoring & Control phase ─────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/project-management-ontology/phases/MonitoringControl> ;
+        sh:message  "A Status Report must be linked to the Monitoring & Control phase."@en ;
+    ] ;
+
+    # ── Required: creation date ──────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Status Report must record the date it was created (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator (report author) ───────────────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Status Report must identify its author (dct:creator)."@en ;
+    ] .
