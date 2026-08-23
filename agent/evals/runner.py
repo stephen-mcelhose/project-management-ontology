@@ -45,11 +45,12 @@ class EvalCase:
     description: str
     phase: str
     document: str
-    turns: list[str]                    # user messages in order
+    turns: list[str]                        # user messages in order
     expect_document_written: bool
     expect_content_contains: list[str]
-    expect_tool_calls: list[str]        # ordered subsequence
-    scripted_responses: list[dict]      # raw YAML entries, empty for real evals
+    expect_tool_calls: list[str]            # ordered subsequence
+    expect_gate_answers: dict[str, str]     # gate_id → exact recorded answer
+    scripted_responses: list[dict]          # raw YAML entries, empty for real evals
 
     @classmethod
     def load(cls, path: Path) -> EvalCase:
@@ -63,6 +64,7 @@ class EvalCase:
             expect_document_written=data.get("expect_document_written", False),
             expect_content_contains=data.get("expect_content_contains", []),
             expect_tool_calls=data.get("expect_tool_calls", []),
+            expect_gate_answers=data.get("expect_gate_answers", {}),
             scripted_responses=data.get("scripted_responses", []),
         )
 
@@ -86,6 +88,8 @@ class CaseResult:
     text_events: list[str] = field(default_factory=list)
     document_written: bool = False
     content_checks: dict[str, bool] = field(default_factory=dict)
+    gate_answers: dict[str, str | None] = field(default_factory=dict)
+    """gate_id → recorded answer (None if gate was never answered)."""
 
     @property
     def tool_call_sequence_matches(self) -> bool:
@@ -134,6 +138,12 @@ async def run_case(
                 for part in event.content.parts:
                     if part.text:
                         result.text_events.append(part.text)
+
+    # Capture recorded gate answers from session state
+    doc = session.documents.get(case.document)
+    if doc:
+        for gate_id, gate_state in doc.gates.items():
+            result.gate_answers[gate_id] = gate_state.answer
 
     # Check document written
     output_path = Path(output_dir) / case.phase / f"{case.document}.md"
