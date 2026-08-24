@@ -3,7 +3,7 @@
 A generic ontology-based process assistant. The first packed domain is
 project management: concepts in [Turtle (TTL)](https://www.w3.org/TR/turtle/)
 and [OWL 2](https://www.w3.org/TR/owl2-overview/), document templates with
-[OKF frontmatter](https://okfn.org/), and gate-driven workflow tooling.
+[OKF frontmatter](https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing), and gate-driven workflow tooling.
 
 GitHub: [stephen-mcelhose/process-assistant](https://github.com/stephen-mcelhose/process-assistant).
 PM vocabulary IRIs are based at `https://stephen-mcelhose.github.io/process-assistant/pm/`
