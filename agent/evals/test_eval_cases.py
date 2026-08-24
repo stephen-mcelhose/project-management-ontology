@@ -94,20 +94,22 @@ def test_eval_case(case_path, request, tmp_path):
     # Scripted mode: exact match (responses are deterministic).
     # Real-model mode: LLM judge (semantic equivalence handles paraphrase).
     if case.expect_gate_answers:
-        gate_prompts = _load_gate_prompts(case.phase) if use_real else {}
+        phase_gates = _load_gate_prompts(case.phase) if use_real else {}
 
         for doc_id, gates in case.expect_gate_answers.items():
             for gate_id, expected in gates.items():
                 actual = result.gate_answers.get(doc_id, {}).get(gate_id)
 
                 if use_real:
-                    prompt = gate_prompts.get(doc_id, {}).get(gate_id, gate_id)
+                    prompt = phase_gates.get(doc_id, {}).get(gate_id, gate_id)
                     verdict = judge_gate_answer(
                         doc_id=doc_id,
                         gate_id=gate_id,
                         gate_prompt=prompt,
+                        phase_gates=phase_gates,
                         user_turns=case.turns,
                         recorded_answer=actual,
+                        model=model,
                     )
                     assert verdict.passed, (
                         f"Gate '{doc_id}.{gate_id}' failed judge: {verdict.reasoning}\n"

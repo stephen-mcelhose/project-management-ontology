@@ -144,21 +144,23 @@ make agent-test          # unit tests — no network, always runs in CI
 
 ### Evals
 
-Evals drive the real model through scripted scenarios and assert on captured gate answers, tool call sequences, and rendered output.
+Evals drive the agent through YAML scenarios and assert on captured gate answers, tool call sequences, and rendered output.
 
 ```bash
 # Scripted mode — deterministic, no Vertex AI credentials needed.
 # Cases without scripted_responses are skipped.
+make agent-eval
+# or:
 .venv/bin/python -m pytest agent/evals/ -v
 
 # Real-model mode — requires Vertex AI credentials (GOOGLE_CLOUD_PROJECT etc.).
 # Gate answer assertions use an LLM judge (semantic equivalence, not exact match).
-make agent-eval
+make agent-eval-live
 # or:
 .venv/bin/python -m pytest agent/evals/ --run-evals -v
 
-# Run a single case:
-.venv/bin/python -m pytest "agent/evals/test_eval_cases.py::test_eval_case[initiation-freeform]" --run-evals -v
+# Run a single case (scripted):
+.venv/bin/python -m pytest "agent/evals/test_eval_cases.py::test_eval_case[initiation-freeform]" -v
 ```
 
 Eval cases live in `agent/evals/cases/`. Each YAML file is a self-contained scenario with turns, scripted responses, and assertions.

@@ -1,4 +1,4 @@
-.PHONY: validate validate-schemas visualize wiki-lint install clean agent-test tool-test agent-run agent-web agent-eval
+.PHONY: validate validate-schemas visualize wiki-lint install clean agent-test tool-test agent-run agent-web agent-eval agent-eval-live
 
 PYTHON := python3
 VENV   := .venv
@@ -47,6 +47,9 @@ agent-web:
 	TEMPLATES_DIR=$(or $(TEMPLATES_DIR),domains/pm/templates/) OUTPUT_DIR=$(or $(OUTPUT_DIR),output/) $(VENV)/bin/adk web agent/
 
 agent-eval:
+	$(PY) -m pytest agent/evals/ -v
+
+agent-eval-live:
 	$(PY) -m pytest agent/evals/ --run-evals -v
 
 # ── Clean ──────────────────────────────────────────────────────────────────────
