@@ -1,0 +1,81 @@
+@prefix : <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+# ── Benefit Module ─────────────────────────────────────────────────────────────
+# Supports the Business Case document (ISO 21502:2020 §6 / PRINCE2 Business
+# Case management product). Mirrors the Risk module's reification pattern:
+# a Project hasBenefit/hasDisbenefit/hasBusinessOption a set of named entities,
+# each independently describable via dct:title / dct:description.
+
+:Benefit
+    a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Benefit"@en ;
+    rdfs:comment "A measurable improvement, perceived as valuable by one or more stakeholders, expected to result from the project's outcomes."@en ;
+    rdfs:isDefinedBy : .
+
+:hasBenefit
+    a owl:ObjectProperty ;
+    rdfs:domain :Project ;
+    rdfs:range :Benefit ;
+    rdfs:label "has benefit"@en ;
+    rdfs:comment "An expected benefit of the project, as recorded in its Business Case."@en ;
+    rdfs:isDefinedBy : .
+
+:measure
+    a owl:DatatypeProperty ;
+    rdfs:domain :Benefit ;
+    rdfs:range xsd:string ;
+    rdfs:label "measure"@en ;
+    rdfs:comment "How and when this benefit will be measured (metric, target, and timing)."@en ;
+    rdfs:isDefinedBy : .
+
+:benefitOwner
+    a owl:ObjectProperty ;
+    rdfs:domain :Benefit ;
+    rdfs:range :Role ;
+    rdfs:label "benefit owner"@en ;
+    rdfs:comment "The role accountable for identifying and monitoring realization of this benefit."@en ;
+    rdfs:isDefinedBy : .
+
+:Disbenefit
+    a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Disbenefit"@en ;
+    rdfs:comment "A negative outcome perceived by one or more stakeholders as a consequence of the project, to be weighed against expected benefits."@en ;
+    rdfs:isDefinedBy : .
+
+:hasDisbenefit
+    a owl:ObjectProperty ;
+    rdfs:domain :Project ;
+    rdfs:range :Disbenefit ;
+    rdfs:label "has disbenefit"@en ;
+    rdfs:comment "An expected dis-benefit of the project, as recorded in its Business Case."@en ;
+    rdfs:isDefinedBy : .
+
+:BusinessOption
+    a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Business Option"@en ;
+    rdfs:comment "One of the investment options considered in a Business Case (e.g. do nothing, do minimum, do more)."@en ;
+    rdfs:isDefinedBy : .
+
+:hasBusinessOption
+    a owl:ObjectProperty ;
+    rdfs:domain :Project ;
+    rdfs:range :BusinessOption ;
+    rdfs:label "has business option"@en ;
+    rdfs:comment "An investment option considered and compared in the project's Business Case."@en ;
+    rdfs:isDefinedBy : .
+
+:isRecommended
+    a owl:DatatypeProperty ;
+    rdfs:domain :BusinessOption ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "is recommended"@en ;
+    rdfs:comment "True if this is the option recommended for approval in the Business Case."@en ;
+    rdfs:isDefinedBy : .

@@ -1,0 +1,25 @@
+id: cost-estimate
+title: Cost Estimate
+phase: planning
+phase_order: 5         # cost baseline; depends on resource plan
+
+ontology_class: https://stephen-mcelhose.github.io/process-assistant/pm/CostEstimate
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Business Case (cost and investment appraisal component)
+  url: https://prince2.wiki/management-products/baselines/business-case/
+package: pkgs:PlanningPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - resource-plan            # must exist before the Cost Estimate can be produced
+required_before: []          # no planning-phase documents depend on CostEstimate
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/planning/cost-estimate.shacl.ttl

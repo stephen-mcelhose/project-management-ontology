@@ -79,7 +79,7 @@ names a `## Section`, the type is a block or section.
 ### Ontological grounding
 
 Types are defined as OWL named individuals of the class `:GateOutputType` in
-`ontology/modules/document.ttl`, following the named individuals pattern used
+`domains/pm/ontology/modules/document.ttl`, following the named individuals pattern used
 for `:ProjectStatus`, `:DocumentStatus`, and `:TaskStatus`.
 
 `:GateOutputType` is a vocabulary class only. Gates are not modelled as OWL
@@ -256,7 +256,7 @@ Steps:
 2. If an existing type covers the case, close the issue and annotate the gates.
 3. If a new type is warranted: amend this ADR (add to the vocabulary table,
    update boundary notes, append to Amendment History below).
-4. Add the named individual to `ontology/modules/document.ttl`.
+4. Add the named individual to `domains/pm/ontology/modules/document.ttl`.
 5. Update `instructions-schema.json` (#47) to include the new valid value.
 6. Annotate all existing gates that match the new type.
 
@@ -312,7 +312,7 @@ Steps:
 
 - Issue #44 — Artifact layer: annotate gate output type
 - Issue #47 — Tooling: add instructions-schema.json
-- `ontology/modules/document.ttl` — `:GateOutputType` vocabulary
+- `domains/pm/ontology/modules/document.ttl` — `:GateOutputType` vocabulary
 - `docs/processes/defining-document-templates.md` — Step 3b gate schema
 - ADR-003 — Phase Manifest Pattern
 

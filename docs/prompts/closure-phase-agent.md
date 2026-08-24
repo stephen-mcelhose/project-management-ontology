@@ -34,7 +34,7 @@ accounts for and hands over what was produced in Execution.
 
 ## Documents (in dependency order)
 
-The phase manifest (`templates/closure/_manifest.yaml`) will be the authoritative
+The phase manifest (`domains/pm/templates/closure/_manifest.yaml`) will be the authoritative
 index once created (issue #43, blocked on #30–#34). Planned document sequence:
 
 | Order | Document                  | Key question it answers                             |
@@ -50,7 +50,7 @@ index once created (issue #43, blocked on #30–#34). Planned document sequence:
 ## How to Use the Artifact Files
 
 ```
-templates/closure/{document}/
+domains/pm/templates/closure/{document}/
   entry.yaml          ← metadata: standard citations, dependency chain
   instructions.yaml   ← ordered gates: what to ask, what to fill
   template.md         ← the output scaffold with {{placeholders}}

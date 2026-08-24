@@ -1,0 +1,45 @@
+@prefix : <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+# ── Milestone Module ───────────────────────────────────────────────────────────
+
+:Milestone
+    a owl:Class ;
+    rdfs:subClassOf prov:InstantaneousEvent ;
+    rdfs:label "Milestone"@en ;
+    rdfs:comment "A significant point or event in a project schedule, typically marking the completion of a phase or major deliverable."@en ;
+    rdfs:isDefinedBy : .
+
+:hasMilestone
+    a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf ( :Project :Phase ) ] ;
+    rdfs:range :Milestone ;
+    rdfs:label "has milestone"@en ;
+    rdfs:isDefinedBy : .
+
+:targetDate
+    a owl:DatatypeProperty ;
+    rdfs:domain :Milestone ;
+    rdfs:range xsd:date ;
+    rdfs:label "target date"@en ;
+    rdfs:isDefinedBy : .
+
+:isMet
+    a owl:DatatypeProperty ;
+    rdfs:domain :Milestone ;
+    rdfs:range xsd:boolean ;
+    rdfs:label "is met"@en ;
+    rdfs:comment "True if the milestone has been achieved."@en ;
+    rdfs:isDefinedBy : .
+
+:gatingDeliverable
+    a owl:ObjectProperty ;
+    rdfs:domain :Milestone ;
+    rdfs:range :Deliverable ;
+    rdfs:label "gating deliverable"@en ;
+    rdfs:comment "A deliverable whose completion triggers this milestone."@en ;
+    rdfs:isDefinedBy : .

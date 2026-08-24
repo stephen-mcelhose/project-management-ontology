@@ -41,10 +41,10 @@ tool-test:
 	$(PY) -m pytest tools/tests/ -v
 
 agent-run:
-	$(PY) -m agent --templates-dir templates/ --output-dir output/
+	$(PY) -m agent --templates-dir domains/pm/templates/ --output-dir output/
 
 agent-web:
-	TEMPLATES_DIR=$(or $(TEMPLATES_DIR),templates/) OUTPUT_DIR=$(or $(OUTPUT_DIR),output/) $(VENV)/bin/adk web agent/
+	TEMPLATES_DIR=$(or $(TEMPLATES_DIR),domains/pm/templates/) OUTPUT_DIR=$(or $(OUTPUT_DIR),output/) $(VENV)/bin/adk web agent/
 
 agent-eval:
 	$(PY) -m pytest agent/evals/ --run-evals -v

@@ -23,7 +23,7 @@
 **Ontology** defines what things *are*. **GitHub Actions** are acting as the workflow engine, defines what things *do*.
 They are complementary layers, not alternatives.
 
-| Concept in `ontology/` + `templates/`     | Concept in `pm-01-initiation.yml`                     |
+| Concept in `domains/pm/ontology/` + `domains/pm/templates/`     | Concept in `pm-01-initiation.yml`                     |
 | ----------------------------------------- | ----------------------------------------------------- |
 | `pm:Phase`                                | A workflow file                                       |
 | `pm:Document` (`entry.yaml`)              | A dispatched instance of the workflow                 |

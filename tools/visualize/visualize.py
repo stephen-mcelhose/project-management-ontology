@@ -17,11 +17,11 @@ from pathlib import Path
 
 from rdflib import Graph, OWL, RDF, RDFS, Namespace, URIRef
 
-ONTOLOGY_DIR = Path(__file__).parent.parent.parent / "ontology"
+ONTOLOGY_DIR = Path(__file__).parent.parent.parent / "domains" / "pm" / "ontology"
 DEFAULT_OUT  = Path(__file__).parent.parent.parent / "docs" / "generated"
 
-PM     = Namespace("https://stephen-mcelhose.github.io/project-management-ontology/")
-PHASES = Namespace("https://stephen-mcelhose.github.io/project-management-ontology/phases/")
+PM     = Namespace("https://stephen-mcelhose.github.io/process-assistant/pm/")
+PHASES = Namespace("https://stephen-mcelhose.github.io/process-assistant/pm/phases/")
 PROJ   = Namespace("https://linked.data.gov.au/def/project#")
 PROV   = Namespace("http://www.w3.org/ns/prov#")
 FOAF   = Namespace("http://xmlns.com/foaf/0.1/")

@@ -1,0 +1,116 @@
+# instructions.yaml — Requirement Specification
+#
+# Rules for an agent helping a user fill out the Requirement Specification
+# template. Each gate is a question or check the agent must complete before
+# moving on. Gates are ordered: earlier gates must be resolved before later
+# ones.
+#
+# Fields are sourced from the "Purpose" and quality-criteria composition
+# fields of the PRINCE2 Project Product Description management product:
+# https://prince2.wiki/management-products/baselines/project-product-description/
+# (title, purpose, composition, development skills required, customer's
+# quality expectations, acceptance criteria — cross-referenced against
+# ISO 21502:2020 terminology).
+#
+# This is the INPUT side. The output is validated by:
+#   domains/pm/shapes/initiation/requirement-specification.shacl.ttl
+
+version: 1
+document: requirement-specification
+
+gates:
+  - id: product_title
+    order: 1
+    type: prose
+    prompt: "What is the name of the project's main final product / output?"
+    fills: "## Title"
+    maps_to: dct:title
+    required: true
+
+  - id: purpose
+    order: 2
+    type: prose
+    prompt: "Why is this product being created? Who are the target users, and what problem or opportunity does it address?"
+    fills: "## Purpose"
+    maps_to: dct:description
+    required: true
+    validation: "Must name the target users, not just describe the product abstractly."
+
+  - id: composition
+    order: 3
+    type: list
+    prompt: "What are the major components or parts that make up the final product? (For software: e.g. database, UI, API. For a document: main chapters.) This effectively defines the product scope."
+    fills: "## Composition"
+    maps_to: pm:productComposition
+    required: true
+
+  - id: development_skills
+    order: 4
+    type: prose
+    prompt: "What specialized skills, knowledge, or experience are needed to create this product?"
+    fills: "## Development Skills Required"
+    maps_to: pm:developmentSkillsRequired
+    required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
+
+  - id: quality_expectations
+    order: 5
+    type: prose
+    prompt: "What are the customer's high-level quality expectations for the product? (e.g. 'highly reliable', 'modern look', 'user-friendly'.) These are broader and less measurable than acceptance criteria."
+    fills: "## Customer's Quality Expectations"
+    maps_to: pm:qualityExpectations
+    required: true
+
+  - id: requirements
+    order: 6
+    type: section
+    prompt: "List the individual requirements the product must satisfy. For each: state whether it is functional or non-functional, and phrase it as testable — avoid vague language like 'fast' without a measure (e.g. 'search results returned in under 2 seconds')."
+    fills: "## Requirements"
+    maps_to: pm:hasRequirement
+    required: true
+    validation: "Each requirement must be a specific, testable statement, not a vague quality expectation."
+    guidance: "Ask: 'How can we prove we've met this requirement?' for every entry that lacks a number or measurable threshold."
+
+  - id: acceptance_criteria
+    order: 7
+    type: section
+    prompt: "What measurable attributes must the product meet before the customer will accept it? Prioritize the list (e.g. must-have vs. nice-to-have)."
+    fills: "## Acceptance Criteria"
+    maps_to: pm:acceptanceCriteria
+    required: true
+    validation: "Each criterion must be measurable, individually realistic, and testable within the project timeframe."
+
+  - id: acceptance_method
+    order: 8
+    type: prose
+    prompt: "How will each acceptance criterion be verified? (e.g. demonstration, inspection, test, third-party audit, pilot.)"
+    fills: "## Acceptance Method"
+    maps_to: pm:acceptanceMethod
+    required: true
+
+  - id: acceptance_responsibility
+    order: 9
+    type: prose
+    prompt: "Who is responsible for confirming the acceptance criteria have been met? (Usually the Senior User / a named business representative.)"
+    fills: "## Acceptance Responsibilities"
+    maps_to: pm:acceptanceResponsibility
+    required: true
+    validation: "Must be a named role or individual, not 'the business' alone."
+    validation_rules:
+      named_individual: true
+
+# Completion rule: all required gates must be filled before the document
+# is considered draft-complete. The agent MUST NOT mark the document complete
+# if any required gate is empty or contains only a placeholder.
+completion:
+  required_gates:
+    - product_title
+    - purpose
+    - composition
+    - quality_expectations
+    - requirements
+    - acceptance_criteria
+    - acceptance_method
+    - acceptance_responsibility
+  output_status: draft
+  next_document: quality-management-plan

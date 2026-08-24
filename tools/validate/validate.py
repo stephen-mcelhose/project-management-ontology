@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Validate all Turtle/OWL files in ontology/ using rdflib.
+Validate all Turtle/OWL files in domains/pm/ontology/ using rdflib.
 
 Checks:
   1. Syntax  — every .ttl file parses without error
@@ -14,14 +14,14 @@ from pathlib import Path
 
 from rdflib import OWL, RDF, RDFS, Graph, Namespace, exceptions
 
-ONTOLOGY_DIR = Path(__file__).parent.parent.parent / "ontology"
+ONTOLOGY_DIR = Path(__file__).parent.parent.parent / "domains" / "pm" / "ontology"
 
-PM     = Namespace("https://stephen-mcelhose.github.io/project-management-ontology/")
+PM     = Namespace("https://stephen-mcelhose.github.io/process-assistant/pm/")
 PROJ   = Namespace("https://linked.data.gov.au/def/project#")
 PROV   = Namespace("http://www.w3.org/ns/prov#")
-PHASES = Namespace("https://stephen-mcelhose.github.io/project-management-ontology/phases/")
+PHASES = Namespace("https://stephen-mcelhose.github.io/process-assistant/pm/phases/")
 
-HASH_NS = "https://stephen-mcelhose.github.io/project-management-ontology#"
+HASH_NS = "https://stephen-mcelhose.github.io/process-assistant/pm#"
 
 
 # ── Step 1: Syntax ─────────────────────────────────────────────────────────────

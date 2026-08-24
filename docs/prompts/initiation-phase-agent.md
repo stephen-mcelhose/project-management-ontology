@@ -34,7 +34,7 @@ is complete.
 
 ## Documents (in dependency order)
 
-The phase manifest (`templates/initiation/_manifest.yaml`) is the authoritative
+The phase manifest (`domains/pm/templates/initiation/_manifest.yaml`) is the authoritative
 index. The sequence is:
 
 | Order | Document                 | Key question it answers                        |
@@ -56,7 +56,7 @@ Each document must be substantially complete before the next one begins
 For each document, three files define the agent's job:
 
 ```
-templates/initiation/{document}/
+domains/pm/templates/initiation/{document}/
   entry.yaml          ← metadata: standard citations, dependency chain, phase order
   instructions.yaml   ← ordered gates: what to ask, what to fill, ontology mappings
   template.md         ← the output scaffold with {{placeholders}}
@@ -78,7 +78,7 @@ non-placeholder content.
 ## Shared Context
 
 Certain fields are captured once and apply to every document in the phase.
-Do not ask for them again once collected. See `templates/initiation/_manifest.yaml`
+Do not ask for them again once collected. See `domains/pm/templates/initiation/_manifest.yaml`
 under `shared_context` for the authoritative list.
 
 ---

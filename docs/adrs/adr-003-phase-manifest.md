@@ -57,9 +57,9 @@ The artifact layer uses a three-tier manifest hierarchy. Each level can be read
 independently; a consumer reads only as far up the tree as its scope requires.
 
 ```
-templates/_project-manifest.yaml          ← project level  (phase order, domain instructions)
-templates/{phase}/_manifest.yaml          ← phase level    (document sequence, shared context, completion)
-templates/{phase}/{document}/entry.yaml   ← document level (dependencies, ontology class, template paths)
+domains/pm/templates/_project-manifest.yaml          ← project level  (phase order, domain instructions)
+domains/pm/templates/{phase}/_manifest.yaml          ← phase level    (document sequence, shared context, completion)
+domains/pm/templates/{phase}/{document}/entry.yaml   ← document level (dependencies, ontology class, template paths)
 ```
 
 `_project-manifest.yaml` is the single-read entry point for an orchestrator
@@ -73,7 +73,7 @@ It does **not** duplicate the document-level detail held in phase manifests.
 Every phase directory gets a `_manifest.yaml`:
 
 ```
-templates/{phase}/_manifest.yaml
+domains/pm/templates/{phase}/_manifest.yaml
 ```
 
 ### Required content
@@ -83,13 +83,13 @@ templates/{phase}/_manifest.yaml
 type: phase-manifest
 phase: {phase-id}
 phase_label: {Human Label}
-ontology_phase: https://stephen-mcelhose.github.io/project-management-ontology/phases/{Phase}
+ontology_phase: https://stephen-mcelhose.github.io/process-assistant/pm/phases/{Phase}
 package: pkgs:{Phase}Package
 standard: ISO 21502:2020
 
 # Document sequence — in dependency order, phase-local numbering
 documents:
-  - id: {document-id}          # matches templates/{phase}/{document-id}/
+  - id: {document-id}          # matches domains/pm/templates/{phase}/{document-id}/
     phase_local_order: 1       # 1-based within this phase only
     title: {Document Title}
     ontology_class: pm:{ClassName}
@@ -171,7 +171,7 @@ agent repo (or revisit when issue #39 is worked), not against this artifact laye
 ## References
 
 - GAN-style review of Initiation Phase (session context, 2026-08-23)
-- `templates/initiation/_manifest.yaml` — first manifest following this pattern
+- `domains/pm/templates/initiation/_manifest.yaml` — first manifest following this pattern
 - Issue #39: Build Python ADK agent
 - `docs/adrs/adr-002-phase-agent-prompts.md`
 - `docs/adrs/adr-008-project-manifest.md` — project-level layer above this one; formalises the three-tier hierarchy

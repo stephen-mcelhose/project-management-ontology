@@ -32,7 +32,7 @@ Execution, not produced once and closed.
 
 ## Documents (in dependency order)
 
-The phase manifest (`templates/monitoring-control/_manifest.yaml`) is the
+The phase manifest (`domains/pm/templates/monitoring-control/_manifest.yaml`) is the
 authoritative index.
 
 | Order | Document       | Key question it answers                                    |
@@ -48,7 +48,7 @@ authoritative index.
 ## How to Use the Artifact Files
 
 ```
-templates/monitoring-control/{document}/
+domains/pm/templates/monitoring-control/{document}/
   entry.yaml          ← metadata: standard citations, dependency chain
   instructions.yaml   ← ordered gates: what to ask, what to fill
   template.md         ← the output scaffold with {{placeholders}}
@@ -70,7 +70,7 @@ The template and gate structure applies per entry, not per document instance.
 ## Shared Context
 
 `project_name` was captured in the Initiation Phase. Do not re-ask.
-See `templates/monitoring-control/_manifest.yaml` under `shared_context`.
+See `domains/pm/templates/monitoring-control/_manifest.yaml` under `shared_context`.
 
 ---
 

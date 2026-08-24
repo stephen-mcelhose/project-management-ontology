@@ -2,7 +2,7 @@
 type: decision
 title: "ADR-008: Project Manifest and Three-Tier Hierarchy"
 description: >
-  Establishes templates/_project-manifest.yaml as the project-level entry point
+  Establishes domains/pm/templates/_project-manifest.yaml as the project-level entry point
   above the phase manifests introduced in ADR-003. Formalises the three-tier
   manifest hierarchy, the cross-phase shared context contract, and the canonical
   phase sequence. Does not supersede ADR-003 — the phase manifest pattern is
@@ -48,13 +48,13 @@ Three concrete problems remained after ADR-003:
 
 ## Decision
 
-A single `templates/_project-manifest.yaml` is the project-level entry point.
+A single `domains/pm/templates/_project-manifest.yaml` is the project-level entry point.
 This formalises the three-tier manifest hierarchy:
 
 ```
-templates/_project-manifest.yaml          ← project level
-templates/{phase}/_manifest.yaml          ← phase level   (ADR-003)
-templates/{phase}/{document}/entry.yaml   ← document level
+domains/pm/templates/_project-manifest.yaml          ← project level
+domains/pm/templates/{phase}/_manifest.yaml          ← phase level   (ADR-003)
+domains/pm/templates/{phase}/{document}/entry.yaml   ← document level
 ```
 
 Each tier can be read independently. An orchestrator starting a project run
@@ -75,7 +75,7 @@ agent_instructions: |
 phases:
   - id: {phase-id}
     phase_local_order: {n}        # 1-based, project-wide
-    manifest: templates/{phase-id}/_manifest.yaml
+    manifest: domains/pm/templates/{phase-id}/_manifest.yaml
     required_before: [{phase-id}] # immediate successors only
 
 cross_phase_context:
@@ -146,6 +146,6 @@ a layer above, not a replacement for, what ADR-003 established.
 - `docs/adrs/adr-003-phase-manifest.md` — phase-level layer; pattern unchanged
 - `docs/adrs/adr-007-instruction-injection.md` — specifies the Layer 2 model
   that `agent_instructions` satisfies
-- `templates/_project-manifest.yaml` — the file this ADR governs
+- `domains/pm/templates/_project-manifest.yaml` — the file this ADR governs
 - `agent/lifecycle/manifest.py` — `load_project_manifest()` implementation
-- Issue #50: Author `templates/_project-manifest.yaml`
+- Issue #50: Author `domains/pm/templates/_project-manifest.yaml`

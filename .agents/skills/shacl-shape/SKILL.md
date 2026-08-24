@@ -5,8 +5,8 @@ description: >
   and a class specification, produce a new NodeShape whose prefix block, baseline constraints,
   datatype convention, and message register exactly match the references. The skill is
   domain-agnostic — it reads all conventions from the workspace, never assumes them.
-  Default output: shapes/{namespace}/{classname}.shacl.ttl (namespace derived from the class
-  prefix, e.g. okf:POCStepEvidence → shapes/okf/poc-step-evidence.shacl.ttl).
+  Default output: domains/{namespace}/shapes/{classname}.shacl.ttl (namespace derived from the class
+  prefix, e.g. okf:POCStepEvidence → domains/okf/shapes/poc-step-evidence.shacl.ttl).
   Trigger on: "/shacl-shape", "generate a SHACL shape for", "create a shape for",
   "add a SHACL shape", "write a NodeShape for", "validate [ClassName] with SHACL".
 version: "1.0.0"
@@ -39,14 +39,14 @@ Gather these before starting. Ask with `AskUserQuestion` if missing.
 | Shape namespace prefix | Recommended | Prefix and IRI for shape names (e.g. `okf-sh:` → `<https://eis-intake-firehose/ontology/okf/shapes#>`). Derive from reference shapes if not given. |
 | Ontology file path | Recommended | Path to the OWL/Turtle ontology file so properties and enumerations can be read directly. |
 | Class-specific properties | Yes | Properties for this class: each with path CURIE, cardinality (min/max), datatype or class constraint, and a plain-English description of what the constraint validates. |
-| Output path | Optional | Full file path override. If omitted, defaults to `shapes/{namespace}/{slug}.shacl.ttl` where `{namespace}` is the class prefix (e.g. `okf`) and `{slug}` is the kebab-case class name. |
+| Output path | Optional | Full file path override. If omitted, defaults to `domains/{namespace}/shapes/{slug}.shacl.ttl` where `{namespace}` is the class prefix (e.g. `okf`) and `{slug}` is the kebab-case class name. |
 
 ### Default output path derivation
 
 Given class CURIE `okf:POCStepEvidence`:
 - Namespace: `okf`
 - Slug: `poc-step-evidence` (CamelCase → kebab-case)
-- Default path: `shapes/okf/poc-step-evidence.shacl.ttl`
+- Default path: `domains/okf/shapes/poc-step-evidence.shacl.ttl`
 
 If the output directory does not exist, create it. If an explicit output path is given,
 use it instead.

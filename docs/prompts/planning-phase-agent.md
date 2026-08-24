@@ -32,7 +32,7 @@ begin until the core planning documents are in place.
 
 ## Documents (in dependency order)
 
-The phase manifest (`templates/planning/_manifest.yaml`) is the authoritative index.
+The phase manifest (`domains/pm/templates/planning/_manifest.yaml`) is the authoritative index.
 
 | Order | Document                 | Key question it answers                              |
 | ----- | ------------------------ | ---------------------------------------------------- |
@@ -53,7 +53,7 @@ Plan in parallel once it is complete.
 ## How to Use the Artifact Files
 
 ```
-templates/planning/{document}/
+domains/pm/templates/planning/{document}/
   entry.yaml          ← metadata: standard citations, dependency chain
   instructions.yaml   ← ordered gates: what to ask, what to fill
   template.md         ← the output scaffold with {{placeholders}}
@@ -67,7 +67,7 @@ complete when all `required: true` gates in `completion.required_gates` are fill
 ## Shared Context
 
 `project_name` was captured in the Initiation Phase (Project Proposal). Do not
-re-ask. See `templates/planning/_manifest.yaml` under `shared_context`.
+re-ask. See `domains/pm/templates/planning/_manifest.yaml` under `shared_context`.
 
 ---
 

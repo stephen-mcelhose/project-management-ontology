@@ -1,0 +1,177 @@
+# domains/pm/shapes/initiation/business-case.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Business Case is "ingested" (converted from the filled template.md
+# into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:BusinessCase
+#     → "these rules apply to any node of type pm:BusinessCase"
+#
+#   sh:property [ sh:path dct:title ; sh:minCount 1 ]
+#     → "every BusinessCase instance must have at least one dct:title triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s domains/pm/shapes/initiation/business-case.shacl.ttl \
+#            -d path/to/my-business-case.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix proj:  <https://linked.data.gov.au/def/project#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/process-assistant/pm/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:BusinessCaseShape
+    a sh:NodeShape ;
+
+    # Target: applies to any RDF node typed as pm:BusinessCase
+    sh:targetClass pm:BusinessCase ;
+
+    rdfs:label "Business Case shape"@en ;
+    rdfs:comment "Validates that a filled Business Case instance satisfies the minimum information requirements of ISO 21502:2020 §6."@en ;
+
+    # ── Required: title ─────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 3 ;
+        sh:message  "A Business Case must have a dct:title."@en ;
+    ] ;
+
+    # ── Required: description / reasons ──────────────────────────────────────
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Business Case must have a dct:description (reasons / executive summary)."@en ;
+    ] ;
+
+    # ── Required: links to the project it describes ──────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Business Case must reference the project it describes via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Initiation phase ───────────────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/process-assistant/pm/phases/Initiation> ;
+        sh:message  "A Business Case must be linked to the Initiation phase."@en ;
+    ] ;
+
+    # ── Required: creation date ──────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Business Case must record the date it was created (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator ─────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Business Case must identify its author (dct:creator)."@en ;
+    ] .
+
+# ── Shape for the linked Project node ─────────────────────────────────────────
+# A project described by a Business Case must carry the financial/investment
+# properties this document exists to justify.
+
+pm-sh:JustifiedProjectShape
+    a sh:NodeShape ;
+    sh:targetClass pm:Project ;
+
+    # Must have at least one business option, one of which is recommended
+    sh:property [
+        sh:path     pm:hasBusinessOption ;
+        sh:minCount 1 ;
+        sh:class    pm:BusinessOption ;
+        sh:message  "A Project with a Business Case must have at least one pm:hasBusinessOption (including the 'do nothing' baseline)."@en ;
+    ] ;
+
+    # Must have at least one benefit
+    sh:property [
+        sh:path     pm:hasBenefit ;
+        sh:minCount 1 ;
+        sh:class    pm:Benefit ;
+        sh:message  "A Project with a Business Case must have at least one pm:hasBenefit."@en ;
+    ] ;
+
+    # Must have a budget
+    sh:property [
+        sh:path     pm:budget ;
+        sh:minCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:message  "A Project with a Business Case must record pm:budget."@en ;
+    ] ;
+
+    # Must have an investment appraisal
+    sh:property [
+        sh:path     pm:investmentAppraisal ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Project with a Business Case must record pm:investmentAppraisal."@en ;
+    ] .
+
+# ── Shape for each Business Option ────────────────────────────────────────────
+
+pm-sh:BusinessOptionShape
+    a sh:NodeShape ;
+    sh:targetClass pm:BusinessOption ;
+
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:message  "A Business Option must have a dct:description."@en ;
+    ] ;
+
+    sh:property [
+        sh:path     pm:isRecommended ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:boolean ;
+        sh:message  "pm:isRecommended, if present, must be an xsd:boolean."@en ;
+    ] .
+
+# ── Shape for each Benefit ─────────────────────────────────────────────────────
+
+pm-sh:BenefitShape
+    a sh:NodeShape ;
+    sh:targetClass pm:Benefit ;
+
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:message  "A Benefit must have a dct:description."@en ;
+    ] ;
+
+    sh:property [
+        sh:path     pm:measure ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Benefit must state how and when it will be measured (pm:measure)."@en ;
+    ] .

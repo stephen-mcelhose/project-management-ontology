@@ -7,7 +7,7 @@ Two validation passes:
    tools/schemas/instructions-schema.json and checks that maps_to CURIEs
    resolve in the OWL ontology graph.
 
-2. Manifest consistency — validates templates/_project-manifest.yaml and the
+2. Manifest consistency — validates domains/pm/templates/_project-manifest.yaml and the
    five phase _manifest.yaml files for internal cross-references:
    - Every phases[].id has a _manifest.yaml on disk.
    - Every _manifest.yaml on disk is listed in phases (no missing registrations).
@@ -29,8 +29,9 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = REPO_ROOT / "tools" / "schemas" / "instructions-schema.json"
-TEMPLATES_DIR = REPO_ROOT / "templates"
-ONTOLOGY_DIR = REPO_ROOT / "ontology"
+DOMAIN_DIR = REPO_ROOT / "domains" / "pm"
+TEMPLATES_DIR = DOMAIN_DIR / "templates"
+ONTOLOGY_DIR = DOMAIN_DIR / "ontology"
 
 # Entry-point Turtle that declares the canonical pm: and dct: prefixes.
 PM_ONTOLOGY_TTL = ONTOLOGY_DIR / "core" / "pm-ontology.ttl"

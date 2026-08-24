@@ -1,0 +1,137 @@
+# domains/pm/shapes/execution/work-package-description.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Work Package Description is "ingested" (converted from the filled
+# template.md into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:WorkPackageDescription
+#     → "these rules apply to any node of type pm:WorkPackageDescription"
+#
+#   sh:property [ sh:path dct:title ; sh:minCount 1 ]
+#     → "every WorkPackageDescription instance must have at least one dct:title triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s domains/pm/shapes/execution/work-package-description.shacl.ttl \
+#            -d path/to/my-work-package-description.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix proj:  <https://linked.data.gov.au/def/project#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/process-assistant/pm/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:WorkPackageDescriptionShape
+    a sh:NodeShape ;
+
+    # Target: applies to any RDF node typed as pm:WorkPackageDescription
+    sh:targetClass pm:WorkPackageDescription ;
+
+    rdfs:label "Work Package Description shape"@en ;
+    rdfs:comment "Validates that a filled Work Package Description instance satisfies the minimum information requirements of ISO 21502:2020 §8 and PRINCE2® Work Package quality criteria."@en ;
+
+    # ── Required: title (work package name) ────────────────────────────────
+    # Maps to the {{work_package_title}} slot in template.md.
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 3 ;
+        sh:message  "A Work Package Description must have a dct:title (the work package name)."@en ;
+    ] ;
+
+    # ── Required: identifier (WBS reference) ───────────────────────────────
+    # Maps to the {{work_package_id}} slot — e.g. WP-003.
+    sh:property [
+        sh:path     dct:identifier ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Work Package Description must have a dct:identifier (the WBS-traceable work package ID)."@en ;
+    ] ;
+
+    # ── Required: description of work ──────────────────────────────────────
+    # Maps to the {{work_description}} slot in template.md.
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Work Package Description must have a dct:description (the description of work to be performed)."@en ;
+    ] ;
+
+    # ── Required: at least one deliverable ─────────────────────────────────
+    # Validates that the template's Deliverables table was populated.
+    sh:property [
+        sh:path     pm:hasDeliverable ;
+        sh:minCount 1 ;
+        sh:class    pm:Deliverable ;
+        sh:message  "A Work Package Description must reference at least one deliverable (pm:hasDeliverable)."@en ;
+    ] ;
+
+    # ── Required: acceptance criteria ──────────────────────────────────────
+    # Validates that quality criteria were provided for deliverables.
+    sh:property [
+        sh:path     pm:acceptanceCriteria ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Work Package Description must specify acceptance criteria (pm:acceptanceCriteria) for its deliverables."@en ;
+    ] ;
+
+    # ── Required: tolerance ─────────────────────────────────────────────────
+    # At minimum a time tolerance must be defined.
+    sh:property [
+        sh:path     pm:hasTolerance ;
+        sh:minCount 1 ;
+        sh:class    pm:Tolerance ;
+        sh:message  "A Work Package Description must define at least one tolerance (pm:hasTolerance) — at minimum, a time tolerance."@en ;
+    ] ;
+
+    # ── Required: project link ──────────────────────────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Work Package Description must reference the project it belongs to via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Execution phase ───────────────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/process-assistant/pm/phases/Execution> ;
+        sh:message  "A Work Package Description must be linked to the Execution phase."@en ;
+    ] ;
+
+    # ── Required: creation / agreement date ────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Work Package Description must record the date it was agreed (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator / issuing Project Manager ─────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Work Package Description must identify the Project Manager who issued it (dct:creator)."@en ;
+    ] .

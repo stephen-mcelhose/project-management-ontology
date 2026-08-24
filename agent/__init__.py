@@ -1,7 +1,7 @@
 """ADK web entry point — exports root_agent for `adk web`.
 
 Configuration via environment variables (set in .env or shell):
-  TEMPLATES_DIR   Path to the templates directory  (default: templates/)
+  TEMPLATES_DIR   Path to the templates directory  (default: domains/pm/templates/)
   OUTPUT_DIR      Path to the output directory      (default: output/)
 
 Session state is persisted to {OUTPUT_DIR}/.session.json so a conversation
@@ -26,7 +26,7 @@ from agent.lifecycle.state import SessionState  # noqa: E402
 from agent.settings import Settings  # noqa: E402
 
 _settings = Settings()
-_templates_dir = os.environ.get("TEMPLATES_DIR", "templates/")
+_templates_dir = os.environ.get("TEMPLATES_DIR", "domains/pm/templates/")
 _output_dir = os.environ.get("OUTPUT_DIR", "output/")
 _session_path = Path(_output_dir) / ".session.json"
 

@@ -1,0 +1,127 @@
+# domains/pm/shapes/closure/archive-index.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When an Archive Index is "ingested" (converted from the filled template.md
+# into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:ArchiveIndex
+#     → "these rules apply to any node of type pm:ArchiveIndex"
+#
+#   sh:property [ sh:path dct:title ; sh:minCount 1 ]
+#     → "every ArchiveIndex instance must have at least one dct:title triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# Note: The all-documents dependency is expressed narratively, not as enumerated
+# triples — the index is implicitly dependent on all project documents being
+# finalized before it can be compiled.
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s domains/pm/shapes/closure/archive-index.shacl.ttl \
+#            -d path/to/my-archive-index.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix proj:  <https://linked.data.gov.au/def/project#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/process-assistant/pm/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:ArchiveIndexShape
+    a sh:NodeShape ;
+
+    # Target: applies to any RDF node typed as pm:ArchiveIndex
+    sh:targetClass pm:ArchiveIndex ;
+
+    rdfs:label "Archive Index shape"@en ;
+    rdfs:comment "Validates that a filled Archive Index instance satisfies the minimum information requirements of ISO 21502:2020 §9 (Closing a project). The all-documents dependency is expressed narratively, not as enumerated triples."@en ;
+
+    # ── Required: title ─────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 3 ;
+        sh:message  "An Archive Index must have a dct:title."@en ;
+    ] ;
+
+    # ── Required: description / archive location ─────────────────────────────
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "An Archive Index must have a dct:description (archive location and scope)."@en ;
+    ] ;
+
+    # ── Required: document inventory ─────────────────────────────────────────
+    # At least one document record must be listed in the index.
+    sh:property [
+        sh:path     dct:hasPart ;
+        sh:minCount 1 ;
+        sh:message  "An Archive Index must list at least one document (dct:hasPart)."@en ;
+    ] ;
+
+    # ── Required: access rights ──────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:accessRights ;
+        sh:minCount 1 ;
+        sh:message  "An Archive Index must specify access controls (dct:accessRights)."@en ;
+    ] ;
+
+    # ── Required: project link ───────────────────────────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "An Archive Index must reference the project it describes via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Closure phase ──────────────────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/process-assistant/pm/phases/Closure> ;
+        sh:message  "An Archive Index must be linked to the Closure phase."@en ;
+    ] ;
+
+    # ── Required: creation date ──────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "An Archive Index must record the date it was created (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator (document author) ──────────────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "An Archive Index must identify its author (dct:creator)."@en ;
+    ] ;
+
+    # ── Required: archive handover acceptance ────────────────────────────────
+    # The archive is not complete until accepted by the archive owner.
+    sh:property [
+        sh:path     pm:approvedBy ;
+        sh:minCount 1 ;
+        sh:class    foaf:Agent ;
+        sh:message  "An Archive Index must record who confirmed receipt of the archive (pm:approvedBy)."@en ;
+    ] .

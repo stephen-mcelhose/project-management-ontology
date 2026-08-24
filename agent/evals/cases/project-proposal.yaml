@@ -35,18 +35,19 @@ turns:
 # Assertions on recorded gate state (deterministic in scripted mode).
 # If any of these fail the capture broke — check before blaming the template.
 expect_gate_answers:
-  project_name: "Platform Modernisation"
-  problem_statement: "Our core data platform runs on a 10-year-old batch ETL framework that cannot support near-real-time analytics."
-  objectives: "(1) Replace batch ETL with streaming pipeline. (2) Reduce data latency from 24h to <15min. (3) Enable self-serve BI."
-  expected_benefits: "eliminate 2 analyst-days/month of data reconciliation, reduce exec reporting lag from 7 days to same-day, and free ~8 analyst-hours/week currently spent on manual PDF distribution."
-  scope_in: "Data ingestion, transformation, and serving layers."
-  scope_out: "Frontend dashboards, ML feature store."
-  sponsor: "Jane Smith, Head of Data Engineering."
-  stakeholders: "Data team, Analytics team, Finance."
-  rough_budget: "€200–400k."
-  rough_timeline: "12 months, starting Q2 2026."
-  risks_assumptions: "(1) If vendor SLA is missed, timeline slips. (2) If headcount not approved, scope must be reduced."
-  authorization_request: "We request approval to proceed to a Business Case."
+  project-proposal:
+    project_name: "Platform Modernisation"
+    problem_statement: "Our core data platform runs on a 10-year-old batch ETL framework that cannot support near-real-time analytics."
+    objectives: "(1) Replace batch ETL with streaming pipeline. (2) Reduce data latency from 24h to <15min. (3) Enable self-serve BI."
+    expected_benefits: "eliminate 2 analyst-days/month of data reconciliation, reduce exec reporting lag from 7 days to same-day, and free ~8 analyst-hours/week currently spent on manual PDF distribution."
+    scope_in: "Data ingestion, transformation, and serving layers."
+    scope_out: "Frontend dashboards, ML feature store."
+    sponsor: "Jane Smith, Head of Data Engineering."
+    stakeholders: "Data team, Analytics team, Finance."
+    rough_budget: "€200–400k."
+    rough_timeline: "12 months, starting Q2 2026."
+    risks_assumptions: "(1) If vendor SLA is missed, timeline slips. (2) If headcount not approved, scope must be reduced."
+    authorization_request: "We request approval to proceed to a Business Case."
 
 # Assertions on the written document
 expect_document_written: true

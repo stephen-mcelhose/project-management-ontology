@@ -1,0 +1,30 @@
+id: business-case
+title: Business Case
+phase: initiation
+phase_order: 2         # second document produced in a project lifecycle
+
+ontology_class: https://stephen-mcelhose.github.io/process-assistant/pm/BusinessCase
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+din_69901:
+  phase: Initiation
+  part: DIN 69901-2:2009
+  url: https://www.beuth.de/en/standard/din-69901-2/119948897
+prince2_equivalent:
+  name: Business Case
+  url: https://prince2.wiki/management-products/baselines/business-case/
+package: pkgs:InitiationPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - project-proposal       # Business Case is built on the approved Project Proposal
+required_before:
+  - project-charter         # Business Case is a hard dependency for Project Charter
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/initiation/business-case.shacl.ttl

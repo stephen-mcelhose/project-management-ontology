@@ -91,7 +91,7 @@ Everything PROJ does not cover:
 - **PROV-O provenance built in.** Phase 2 agent actions (filling in a document, making a decision) can be recorded as `prov:Activity` instances without any bridging work.
 - **Phase-annotated templates.** Every document template carries a `pm:producedInPhase` triple, making it trivially queryable: "give me all documents for the Planning phase."
 - **Full operational coverage from day one.** We are not constrained by what PROJ chose to model — our `pm:` layer covers all the operational primitives Phase 2 will need.
-- **Vendor copy in repo.** `ontology/vendor/proj.ttl` is pinned so builds are reproducible without network dependency.
+- **Vendor copy in repo.** `domains/pm/ontology/vendor/proj.ttl` is pinned so builds are reproducible without network dependency.
 
 ### Trade-offs
 - We maintain the `pm:` namespace ourselves — no upstream community. Acceptable for a project-specific ontology; we document the conceptual sources (DIN 69901, ProjectCO) in the wiki.
@@ -106,4 +106,4 @@ Everything PROJ does not cover:
 - [ProjectCO v2.0](../wiki/research/projectco-ontology.md) — wiki page (operational class model)
 - [SEON/SPMO](../wiki/research/seon-spmo.md) — wiki page (document-to-phase mapping pattern)
 - [PMBOK & OWL — IP Landscape](../wiki/research/pmbok-owl-ip.md) — wiki page (why PMI is excluded)
-- `ontology/vendor/proj.ttl` — pinned vendor copy of PROJ ontology
+- `domains/pm/ontology/vendor/proj.ttl` — pinned vendor copy of PROJ ontology

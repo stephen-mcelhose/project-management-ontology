@@ -4,7 +4,7 @@ Usage:
     python -m agent [OPTIONS]
 
 Options:
-    --templates-dir DIR   Root of template artifact layer (default: templates/)
+    --templates-dir DIR   Root of template artifact layer (default: domains/pm/templates/)
     --output-dir DIR      Where filled documents are written (default: output/)
     --session PATH        Session file path (default: {output-dir}/.session.json)
     --one-shot TEXT       Non-interactive: run one prompt then exit
@@ -27,8 +27,8 @@ def _parse_args(argv=None):
         description="PM Process Agent — drive artifacts through the lifecycle.",
     )
     parser.add_argument(
-        "--templates-dir", default="templates/", metavar="DIR",
-        help="Root of the template artifact layer (default: templates/)",
+        "--templates-dir", default="domains/pm/templates/", metavar="DIR",
+        help="Root of the template artifact layer (default: domains/pm/templates/)",
     )
     parser.add_argument(
         "--output-dir", default="output/", metavar="DIR",

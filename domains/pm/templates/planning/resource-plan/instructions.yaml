@@ -1,0 +1,94 @@
+# instructions.yaml — Resource Plan
+#
+# Rules for an agent helping a user fill out the Resource Plan template.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# This is the INPUT side. The output is validated by:
+#   domains/pm/shapes/planning/resource-plan.shacl.ttl
+
+version: 1
+document: resource-plan
+
+gates:
+  - id: project_name
+    order: 1
+    type: string
+    prompt: "What is the name of this project? (Must match the Project Charter and Project Schedule.)"
+    fills: "# Resource Plan: {{project_name}}"
+    maps_to: dct:title
+    required: true
+
+  - id: resource_plan_description
+    order: 2
+    type: prose
+    prompt: "Briefly describe the purpose of this Resource Plan. What types of resources are covered (human, material, financial)?"
+    fills: "## Overview"
+    maps_to: dct:description
+    required: true
+
+  - id: human_resources
+    order: 3
+    type: table
+    prompt: "What human resources are required? For each role: role name, required skills/experience, number of people needed, and the time period required."
+    fills: "## Human Resources"
+    maps_to: pm:usesResource
+    required: true
+    validation: "Must cover all roles identified in the WBS work packages. Named individuals or role types are both acceptable."
+    validation_rules:
+      references_document: work-breakdown-structure
+
+  - id: skill_requirements
+    order: 4
+    type: prose
+    prompt: "What specialist skills or expertise are needed that the current team may not possess? How will gaps be filled — hire, train, or contract?"
+    fills: "## Skill Requirements and Gap Analysis"
+    maps_to: pm:developmentSkillsRequired
+    required: true
+
+  - id: resource_availability
+    order: 5
+    type: table
+    prompt: "What is the availability of each key resource? For human resources, specify the allocation as a fraction of full-time (e.g. 50% = 0.5 FTE). Note any time-constrained availability."
+    fills: "## Resource Availability"
+    maps_to: pm:capacity
+    required: true
+    validation: "Team managers must confirm their allocations are feasible without relying on overtime."
+
+  - id: material_resources
+    order: 6
+    type: table
+    prompt: "What material or equipment resources are required? List each item, quantity needed, when it is needed, and estimated procurement lead time."
+    fills: "## Material and Equipment Resources"
+    maps_to: pm:usesResource
+    required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
+    guidance: "If no material resources are needed, state 'None required'."
+
+  - id: resource_calendar
+    order: 7
+    type: prose
+    prompt: "Are there known periods when key resources are unavailable (e.g. holidays, planned leave, shared projects)? List any constraints on resource availability."
+    fills: "## Resource Calendar and Constraints"
+    required: true
+
+  - id: resource_assumptions
+    order: 8
+    type: list
+    prompt: "What assumptions does this Resource Plan rely on? (e.g. named individuals confirmed available, specific contractors can be engaged, budget for training exists.)"
+    fills: "## Resource Assumptions"
+    maps_to: pm:hasAssumption
+    required: true
+
+# Completion rule
+completion:
+  required_gates:
+    - project_name
+    - resource_plan_description
+    - human_resources
+    - skill_requirements
+    - resource_availability
+    - resource_calendar
+    - resource_assumptions
+  output_status: draft
+  next_document: cost-estimate

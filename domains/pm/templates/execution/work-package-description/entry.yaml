@@ -1,0 +1,27 @@
+id: work-package-description
+title: Work Package Description
+phase: execution
+phase_order: 1         # first execution document; delegates specific work to teams
+
+ontology_class: https://stephen-mcelhose.github.io/process-assistant/pm/WorkPackageDescription
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Work Package
+  url: https://prince2.wiki/management-products/baselines/work-package/
+package: pkgs:ExecutionPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - work-breakdown-structure    # WBS must exist to identify which package is being described
+  - project-schedule            # schedule must exist to set agreed dates and reporting cadence
+required_before:
+  - deliverable-status-report   # teams cannot report checkpoint progress until a WP is issued
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/execution/work-package-description.shacl.ttl
