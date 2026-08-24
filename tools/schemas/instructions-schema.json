@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://stephen-mcelhose.github.io/project-management-ontology/schemas/instructions-schema.json",
+  "$id": "https://stephen-mcelhose.github.io/process-assistant/schemas/instructions-schema.json",
   "title": "instructions.yaml",
   "description": "JSON Schema for instructions.yaml gate files. Defines the structure of a document's gate sequence, validation rules, and completion condition. See ADR-004 (type vocabulary) and ADR-005 (validation_rules vocabulary).",
   "type": "object",

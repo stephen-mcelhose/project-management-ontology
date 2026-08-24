@@ -28,7 +28,8 @@ def validate_document(
     """
     phase = session.current_phase
     doc_path = Path(output_dir) / phase / f"{document_id}.md"
-    shape_path = Path(templates_dir) / "shapes" / phase / f"{document_id}.shacl.ttl"
+    # shapes/ is a sibling of templates/ inside the domain pack, not a child.
+    shape_path = Path(templates_dir).parent / "shapes" / phase / f"{document_id}.shacl.ttl"
 
     result = validator.validate(doc_path, shape_path)
 

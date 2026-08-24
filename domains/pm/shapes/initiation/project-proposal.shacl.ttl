@@ -1,0 +1,141 @@
+# domains/pm/shapes/initiation/project-proposal.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Project Proposal is "ingested" (converted from the filled template.md
+# into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:ProjectProposal
+#     → "these rules apply to any node of type pm:ProjectProposal"
+#
+#   sh:property [ sh:path dct:title ; sh:minCount 1 ]
+#     → "every ProjectProposal instance must have at least one dct:title triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s domains/pm/shapes/initiation/project-proposal.shacl.ttl \
+#            -d path/to/my-project-proposal.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix proj:  <https://linked.data.gov.au/def/project#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/process-assistant/pm/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:ProjectProposalShape
+    a sh:NodeShape ;
+
+    # Target: applies to any RDF node typed as pm:ProjectProposal
+    sh:targetClass pm:ProjectProposal ;
+
+    rdfs:label "Project Proposal shape"@en ;
+    rdfs:comment "Validates that a filled Project Proposal instance satisfies the minimum information requirements of ISO 21502:2020 §6."@en ;
+
+    # ── Required: title ─────────────────────────────────────────────────────
+    # The document must have a title. Maps to the {{project_name}} slot in template.md.
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 3 ;
+        sh:message  "A Project Proposal must have a dct:title (the project name)."@en ;
+    ] ;
+
+    # ── Required: description / problem statement ────────────────────────────
+    # Maps to the {{problem_statement}} slot in template.md.
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Project Proposal must have a dct:description (the problem/opportunity statement)."@en ;
+    ] ;
+
+    # ── Required: proposed sponsor ──────────────────────────────────────────
+    # pm:hasSponsor is defined on pm:Project, but a Project Proposal *describes*
+    # a project. When ingested, the proposal will reference the project node,
+    # which must carry hasSponsor. This shape checks the proposal carries a
+    # pm:describesProject link and that linked project has a sponsor.
+    #
+    # pm:describesProject is defined in domains/pm/ontology/modules/document.ttl.
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Project Proposal must reference the project it describes via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Initiation phase ───────────────────────────────
+    # Every document must declare its phase. Validates the pm:producedInPhase
+    # triple from document.ttl is present on the instance.
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/process-assistant/pm/phases/Initiation> ;
+        sh:message  "A Project Proposal must be linked to the Initiation phase."@en ;
+    ] ;
+
+    # ── Required: creation date ──────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Project Proposal must record the date it was created (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator (document author) ─────────────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Project Proposal must identify its author (dct:creator)."@en ;
+    ] .
+
+# ── Shape for the linked Project node (referenced via pm:describesProject) ───
+#
+# When the proposal references a pm:Project, that Project node must satisfy
+# these constraints.
+
+pm-sh:ProposedProjectShape
+    a sh:NodeShape ;
+    sh:targetClass pm:Project ;
+
+    # A project referenced from a proposal must have a sponsor
+    sh:property [
+        sh:path     pm:hasSponsor ;
+        sh:minCount 1 ;
+        sh:class    foaf:Agent ;
+        sh:message  "A Project described in a Proposal must have a named sponsor (pm:hasSponsor)."@en ;
+    ] ;
+
+    # Must have planned dates (can be approximate at this stage)
+    sh:property [
+        sh:path     pm:plannedStartDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "pm:plannedStartDate must be an xsd:date."@en ;
+    ] ;
+
+    sh:property [
+        sh:path     pm:plannedEndDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "pm:plannedEndDate must be an xsd:date."@en ;
+    ] .

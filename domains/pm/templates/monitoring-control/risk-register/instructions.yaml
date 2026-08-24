@@ -1,0 +1,147 @@
+# instructions.yaml — Risk Register
+#
+# Rules for an agent helping a project manager log a Risk Register entry.
+# Each gate captures one field of a SINGLE RISK ENTRY.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# PRINCE2 basis: Risk Register
+#   A central record of identified risks with probability, impact, expected value,
+#   proximity, ownership, response actions, status, and history.
+#   Scales for probability, impact, and expected value are defined in the
+#   Risk Management Plan and must be used consistently across all entries.
+#
+# This is the INPUT side. The output is validated by:
+#   domains/pm/shapes/monitoring-control/risk-register.shacl.ttl
+
+version: 1
+document: risk-register
+
+gates:
+  - id: entry_id
+    order: 1
+    type: identifier
+    prompt: "What is the unique identifier for this risk? (e.g. RISK-001, RISK-002)"
+    fills: "## Risk Entry"
+    maps_to: dct:identifier
+    required: true
+    validation: "Must follow a consistent scheme (e.g. RISK-NNN). Never reuse an ID, even for closed risks."
+    validation_rules:
+      unique: true
+
+  - id: risk_type
+    order: 2
+    type: string
+    prompt: "Is this a Threat (negative event) or an Opportunity (positive event)?"
+    fills: "## Risk Type"
+    maps_to: dct:description
+    required: true
+    validation: "Must be either 'Threat' or 'Opportunity'."
+    validation_rules:
+      allowed_values: [Threat, Opportunity]
+
+  - id: risk_description
+    order: 3
+    type: prose
+    prompt: "Describe the risk using the PRINCE2 three-part format: 'Due to [cause], there is a risk that [event], which could lead to [impact].'"
+    fills: "## Risk Description"
+    maps_to: dct:description
+    required: true
+    validation: "All three parts (cause, event, impact) must be present. Avoid vague statements like 'there might be delays'."
+    validation_rules:
+      required_parts: [cause, event, impact]
+
+  - id: probability
+    order: 4
+    type: string
+    prompt: "What is the probability of this risk occurring? Use the scale defined in the Risk Management Plan (e.g. Very Low / Low / Medium / High / Very High)."
+    fills: "## Probability"
+    maps_to: pm:likelihood
+    required: true
+    guidance: "Use the scale exactly as defined in the Risk Management Plan — do not invent new scale values."
+
+  - id: impact_severity
+    order: 5
+    type: string
+    prompt: "What is the impact severity if this risk occurs? Use the scale defined in the Risk Management Plan (e.g. Negligible / Minor / Moderate / Major / Catastrophic)."
+    fills: "## Impact"
+    maps_to: pm:impact
+    required: true
+
+  - id: expected_value
+    order: 6
+    type: prose
+    prompt: "What is the expected value of this risk? (Probability score × Impact score, using the Risk Management Plan's numeric scale.)"
+    fills: "## Expected Value"
+    maps_to: dct:description
+    required: false
+    deferred_value: "*Not yet calculated.*"
+    guidance: "Expected value = probability rating × impact rating. Useful for prioritizing risks relative to each other."
+
+  - id: proximity
+    order: 7
+    type: prose
+    prompt: "When is this risk likely to occur? (e.g. 'Within this stage', 'Before go-live', 'Q3 2025', 'Anytime during execution')"
+    fills: "## Proximity"
+    maps_to: dct:description
+    required: false
+    deferred_value: "*Not yet assessed.*"
+
+  - id: risk_owner
+    order: 8
+    type: prose
+    prompt: "Who is the named owner of this risk? (A specific person — not a team, department, or job title alone.)"
+    fills: "## Risk Owner"
+    maps_to: pm:riskOwner
+    required: true
+    validation: "Must be a named individual. Risk ownership cannot be collective."
+    validation_rules:
+      named_individual: true
+
+  - id: response_strategy
+    order: 9
+    type: string
+    prompt: "What response strategy has been selected? For threats: Avoid / Reduce / Transfer / Accept. For opportunities: Exploit / Enhance / Share / Reject."
+    fills: "## Response Strategy"
+    maps_to: pm:hasResponse
+    required: true
+
+  - id: response_actions
+    order: 10
+    type: list
+    prompt: "What specific actions will implement the response strategy? List each action with its owner and target date."
+    fills: "## Response Actions"
+    maps_to: dct:description
+    required: true
+
+  - id: risk_status
+    order: 11
+    type: string
+    prompt: "What is the current status of this risk? (Open / Active — being monitored; Closed — no longer applicable; Expired — time passed without the risk occurring)"
+    fills: "## Status"
+    maps_to: pm:documentStatus
+    required: true
+
+  - id: date_identified
+    order: 12
+    type: date
+    prompt: "When was this risk first identified? (YYYY-MM-DD)"
+    fills: "## Date Identified"
+    maps_to: dct:created
+    required: true
+
+# Completion rule: all required gates must be filled before the entry
+# is considered draft-complete.
+completion:
+  required_gates:
+    - entry_id
+    - risk_type
+    - risk_description
+    - probability
+    - impact_severity
+    - risk_owner
+    - response_strategy
+    - response_actions
+    - risk_status
+    - date_identified
+  output_status: draft
+  next_document: null

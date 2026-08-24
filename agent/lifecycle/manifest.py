@@ -2,9 +2,9 @@
 
 Ontology mapping
 ----------------
-PhaseManifest  → pm:Phase      (ontology/modules/phase.ttl)
-DocumentEntry  → pm:Document   (ontology/modules/document.ttl)
-ProjectManifest → pm:Project   (ontology/modules/project.ttl)
+PhaseManifest  → pm:Phase      (domains/pm/ontology/modules/phase.ttl)
+DocumentEntry  → pm:Document   (domains/pm/ontology/modules/document.ttl)
+ProjectManifest → pm:Project   (domains/pm/ontology/modules/project.ttl)
 
 These Python dataclasses mirror the artifact-layer YAML schema, not the
 full OWL model — the OWL classes carry richer semantics (prov:Activity
@@ -25,7 +25,7 @@ import yaml
 
 @dataclass
 class DocumentEntry:
-    # Ontology: pm:Document (ontology/modules/document.ttl)
+    # Ontology: pm:Document (domains/pm/ontology/modules/document.ttl)
     id: str
     phase_local_order: int
     title: str
@@ -36,13 +36,13 @@ class DocumentEntry:
 
 @dataclass
 class PhaseEntry:
-    # Ontology: pm:Phase (ontology/modules/phase.ttl)
+    # Ontology: pm:Phase (domains/pm/ontology/modules/phase.ttl)
     id: str
 
 
 @dataclass
 class PhaseManifest:
-    # Ontology: pm:Phase (ontology/modules/phase.ttl)
+    # Ontology: pm:Phase (domains/pm/ontology/modules/phase.ttl)
     phase: str
     phase_label: str
     documents: list[DocumentEntry]
@@ -52,7 +52,7 @@ class PhaseManifest:
 
 @dataclass
 class ProjectManifest:
-    # Ontology: pm:Project (ontology/modules/project.ttl)
+    # Ontology: pm:Project (domains/pm/ontology/modules/project.ttl)
     phases: list[PhaseEntry]
     agent_instructions: str = ""
     """Domain-specific instruction text injected into the agent's system prompt.
@@ -64,7 +64,7 @@ class ProjectManifest:
 
 
 def load_project_manifest(templates_dir: str) -> ProjectManifest:
-    """Load templates/_project-manifest.yaml.
+    """Load {templates_dir}/_project-manifest.yaml.
 
     Raises FileNotFoundError with the expected path if the file is missing.
     """
@@ -72,7 +72,7 @@ def load_project_manifest(templates_dir: str) -> ProjectManifest:
     if not path.exists():
         raise FileNotFoundError(
             f"Project manifest not found: {path}\n"
-            "Create templates/_project-manifest.yaml to define phase order."
+            f"Create {path} to define phase order."
         )
     with path.open() as f:
         data = yaml.safe_load(f)
@@ -84,7 +84,7 @@ def load_project_manifest(templates_dir: str) -> ProjectManifest:
 
 
 def load_phase_manifest(templates_dir: str, phase_id: str) -> PhaseManifest:
-    """Load templates/{phase_id}/_manifest.yaml.
+    """Load {templates_dir}/{phase_id}/_manifest.yaml.
 
     Raises FileNotFoundError with the phase id if the file is missing.
     """

@@ -4,7 +4,7 @@ Ontology mapping
 ----------------
 Gate is the Python representation of one entry in instructions.yaml.
 Conceptually it corresponds to pm:WorkflowStep in the OWL model
-(ontology/modules/workflow.ttl), but carries extra artifact-layer
+(domains/pm/ontology/modules/workflow.ttl), but carries extra artifact-layer
 fields (fills, guidance, deferred_value) that are template concerns,
 not ontology concerns.
 
@@ -25,7 +25,7 @@ import yaml
 
 @dataclass
 class Gate:
-    # Ontology: pm:WorkflowStep (ontology/modules/workflow.ttl)
+    # Ontology: pm:WorkflowStep (domains/pm/ontology/modules/workflow.ttl)
     id: str
     order: int
     type: str

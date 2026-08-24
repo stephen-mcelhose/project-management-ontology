@@ -41,11 +41,11 @@ turns:
 expect_gate_answers:
   project-proposal:
     project_name: "Supply Chain Modernisation"
-    problem_statement: "15-year-old ERP integration layer causing 3–4 hours of monthly downtime"
-    sponsor: "Anna Müller, Supply Chain Director"
-    objectives: "Eliminate ERP outages, reduce maintenance cost by 40%, enable real-time inventory visibility"
+    problem_statement: "15-year-old ERP integration layer — root cause of 3–4 hours of monthly downtime."
+    sponsor: "Anna Müller, Supply Chain Director."
+    objectives: "(1) Eliminate ERP-caused outages by end of Q3. (2) Reduce integration maintenance cost by 40%. (3) Enable real-time inventory visibility."
   stakeholder-register:
-    stakeholders: "Anna Müller, Ben Carter, Finance Controller"
+    stakeholders: "Anna Müller (Supply Chain Director), Ben Carter (IT Architecture), Finance Controller."
 
 # This case does not complete the document — focused on capture only.
 expect_document_written: false
@@ -65,7 +65,10 @@ expect_tool_calls:
 scripted_responses:
 
   # Turn 1 — rich opening message
-  # Agent extracts and records four gate answers before asking the next gate.
+  # Agent loads the phase gate map first (base instruction step 2) so it can
+  # route answers across documents, then extracts and records four gate answers
+  # before asking the next gate.
+  - tool_call: {name: get_phase_gates, args: {}}
   - tool_call: {name: record_answer, args: {document_id: project-proposal, gate_id: project_name, answer: "Supply Chain Modernisation"}}
   - tool_call: {name: record_answer, args: {document_id: project-proposal, gate_id: problem_statement, answer: "15-year-old ERP integration layer — root cause of 3–4 hours of monthly downtime."}}
   - tool_call: {name: record_answer, args: {document_id: project-proposal, gate_id: sponsor, answer: "Anna Müller, Supply Chain Director."}}

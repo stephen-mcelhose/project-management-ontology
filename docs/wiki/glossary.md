@@ -34,7 +34,7 @@ issue #39 is the first agent built on top of this artifact layer.
 An OWL class in the `pm:` namespace representing a type of project management
 document (e.g. `pm:BusinessCase`, `pm:StakeholderRegister`). All document
 classes are subclasses of `foaf:Document`. Every document class is declared in
-`ontology/modules/document.ttl` and carries:
+`domains/pm/ontology/modules/document.ttl` and carries:
 - `pm:producedInPhase` — the phase that produces it
 - `pm:hasHardDependency` — what must exist before it
 - `rdfs:seeAlso` — the PRINCE2 management product URL
@@ -69,7 +69,7 @@ document template, not a phase-boundary review event.
 ## Manifest
 
 A `_manifest.yaml` file at the root of a phase's template directory
-(`templates/{phase}/_manifest.yaml`). The single-read index for that phase.
+(`domains/pm/templates/{phase}/_manifest.yaml`). The single-read index for that phase.
 
 A manifest contains:
 - All documents in the phase, in `phase_local_order` (1-based within the phase)
@@ -80,7 +80,7 @@ A manifest contains:
 **Not to be confused with** `entry.yaml`, which is document-scoped.
 The manifest is phase-scoped.
 
-**See also:** ADR-003, `templates/initiation/_manifest.yaml`
+**See also:** ADR-003, `domains/pm/templates/initiation/_manifest.yaml`
 
 ---
 
@@ -212,8 +212,8 @@ generic gate-driven assistant that loads a domain pack (ontology, SHACL,
 templates) and walks a user through documents. Project management is the
 first pack, not the name of the product.
 
-**Not:** the OWL namespace. `pm:` IRIs still use
-`https://stephen-mcelhose.github.io/project-management-ontology/`.
+**Not:** the OWL namespace. Each domain pack gets its own base under the
+product path — PM is `https://stephen-mcelhose.github.io/process-assistant/pm/`.
 
 **See also:** [ADR-009](../adrs/adr-009-repository-rename.md)
 
@@ -221,7 +221,7 @@ first pack, not the name of the product.
 
 ## SHACL Shape
 
-A constraint file at `shapes/{phase}/{document}.shacl.ttl` that validates
+A constraint file at `domains/pm/shapes/{phase}/{document}.shacl.ttl` that validates
 a filled document instance against the ontology. The SHACL shape is the
 machine-readable acceptance test for a document: it asserts that required
 properties are present, that range types are correct, and that the document
@@ -250,11 +250,11 @@ header field in every subsequent document.
 The four files that together define one PM document:
 
 ```
-templates/{phase}/{document}/
+domains/pm/templates/{phase}/{document}/
   entry.yaml           ← metadata: standard citations, dependency chain
   instructions.yaml    ← ordered gates: what to ask, what to fill
   template.md          ← Markdown scaffold with {{placeholders}}
-shapes/{phase}/{document}.shacl.ttl   ← ontology validation shape
+domains/pm/shapes/{phase}/{document}.shacl.ttl   ← ontology validation shape
 ```
 
 A template pack is the primary deliverable of each template issue (#8–#34).

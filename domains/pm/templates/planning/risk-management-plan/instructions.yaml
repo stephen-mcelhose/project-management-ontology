@@ -1,0 +1,114 @@
+# instructions.yaml — Risk Management Plan
+#
+# Rules for an agent helping a user fill out the Risk Management Plan template.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# This is the INPUT side. The output is validated by:
+#   domains/pm/shapes/planning/risk-management-plan.shacl.ttl
+
+version: 1
+document: risk-management-plan
+
+gates:
+  - id: project_name
+    order: 1
+    type: string
+    prompt: "What is the name of this project? (Must match the Project Charter.)"
+    fills: "# Risk Management Plan: {{project_name}}"
+    maps_to: dct:title
+    required: true
+
+  - id: risk_scope
+    order: 2
+    type: prose
+    prompt: "What is the scope of this Risk Management Plan? Which types of risks are covered (technical, commercial, external, organizational)? Are any categories explicitly excluded?"
+    fills: "## Scope"
+    maps_to: dct:description
+    required: true
+
+  - id: risk_procedures
+    order: 3
+    type: prose
+    prompt: "Describe the risk management procedure: how will risks be identified, assessed, planned, implemented, and communicated? Is this aligned with organizational risk management standards?"
+    fills: "## Risk Management Procedures"
+    required: true
+    validation: "Must cover at minimum: identification, assessment, response planning, and monitoring steps."
+
+  - id: probability_scale
+    order: 4
+    type: prose
+    prompt: "Define the probability (likelihood) scale used to assess risks. Example: 1=Rare (<10%), 2=Unlikely (10–30%), 3=Possible (30–60%), 4=Likely (60–90%), 5=Almost Certain (>90%)."
+    fills: "## Risk Assessment Scales / Probability"
+    maps_to: pm:likelihood
+    required: true
+    validation: "Must define at least 3 levels with percentage ranges or descriptors."
+    validation_rules:
+      min_items: 3
+
+  - id: impact_scale
+    order: 5
+    type: prose
+    prompt: "Define the impact scale used to assess risks across relevant dimensions (cost, time, quality, reputation). Example: 1=Low, 2=Medium, 3=High, 4=Critical."
+    fills: "## Risk Assessment Scales / Impact"
+    maps_to: pm:impact
+    required: true
+    validation: "Must define at least 3 levels with clear descriptors."
+    validation_rules:
+      min_items: 3
+
+  - id: risk_tolerance
+    order: 6
+    type: prose
+    prompt: "What is the project's risk tolerance — the maximum level of exposure acceptable without escalation? Define the threshold (e.g. any risk with score ≥8 must be reported to the Project Board)."
+    fills: "## Risk Tolerance and Escalation Threshold"
+    maps_to: pm:hasTolerance
+    required: true
+
+  - id: risk_timing
+    order: 7
+    type: prose
+    prompt: "When will formal risk management activities take place? (e.g. initial risk workshop at project start, review at end of each stage, monthly status review.)"
+    fills: "## Timing of Risk Management Activities"
+    required: true
+
+  - id: risk_responsibilities
+    order: 8
+    type: section
+    prompt: "Who is responsible for risk management? Define: Risk Manager (or Project Manager), Risk Owner (per risk), Risk Action Owner (per response action). Name the person or role for each."
+    fills: "## Responsibilities"
+    maps_to: pm:RoleAssignment
+    required: true
+    validation: "Every role must be assigned to a named person or a defined role. The Risk Owner and Risk Action Owner must be distinguished."
+
+  - id: risk_tools
+    order: 9
+    type: list
+    prompt: "What tools and techniques will be used to identify and assess risks? (e.g. risk workshops, pre-mortems, checklists, probability-impact matrix, risk register software.)"
+    fills: "## Supporting Tools and Techniques"
+    required: true
+
+  - id: initial_risks
+    order: 10
+    type: table
+    prompt: "Seed the initial risk register: list the top 3–5 risks already identified. For each: risk description, probability, impact, response strategy, and owner."
+    fills: "## Initial Risk Register (Seed)"
+    maps_to: pm:hasRisk
+    required: true
+    guidance: "The seed risks come from the Project Proposal (Key Risks section). Response strategies: Avoid, Mitigate, Transfer, or Accept."
+
+# Completion rule
+completion:
+  required_gates:
+    - project_name
+    - risk_scope
+    - risk_procedures
+    - probability_scale
+    - impact_scale
+    - risk_tolerance
+    - risk_timing
+    - risk_responsibilities
+    - risk_tools
+    - initial_risks
+  output_status: draft
+  next_document: quality-management-plan

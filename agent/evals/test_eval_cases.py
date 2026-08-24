@@ -29,7 +29,7 @@ from agent.lifecycle.state import SessionState
 LLMRegistry.register(ScriptedModel)
 
 CASES_DIR = Path(__file__).parent / "cases"
-TEMPLATES_DIR = Path("templates")
+TEMPLATES_DIR = Path("domains/pm/templates")
 _CASE_PATHS = sorted(CASES_DIR.glob("*.yaml"))
 
 

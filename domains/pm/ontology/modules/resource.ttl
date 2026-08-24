@@ -1,0 +1,57 @@
+@prefix : <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+
+# ── Resource Module ────────────────────────────────────────────────────────────
+
+:Resource
+    a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Resource"@en ;
+    rdfs:comment "An asset (human, material, financial, or informational) used to accomplish project tasks."@en ;
+    rdfs:isDefinedBy : .
+
+:HumanResource
+    a owl:Class ;
+    rdfs:subClassOf :Resource ;
+    rdfs:label "Human Resource"@en ;
+    rdfs:isDefinedBy : .
+
+:MaterialResource
+    a owl:Class ;
+    rdfs:subClassOf :Resource ;
+    rdfs:label "Material Resource"@en ;
+    rdfs:isDefinedBy : .
+
+:InformationResource
+    a owl:Class ;
+    rdfs:subClassOf :Resource ;
+    rdfs:label "Information Resource"@en ;
+    rdfs:isDefinedBy : .
+
+:usesResource
+    a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf ( :Project :Task ) ] ;
+    rdfs:range :Resource ;
+    rdfs:subPropertyOf prov:used ;
+    rdfs:label "uses resource"@en ;
+    rdfs:isDefinedBy : .
+
+:capacity
+    a owl:DatatypeProperty ;
+    rdfs:domain :HumanResource ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "capacity"@en ;
+    rdfs:comment "Available capacity as a fraction of full-time equivalent (0.0–1.0)."@en ;
+    rdfs:isDefinedBy : .
+
+:costRate
+    a owl:DatatypeProperty ;
+    rdfs:domain :Resource ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "cost rate"@en ;
+    rdfs:comment "Cost per hour of resource use."@en ;
+    rdfs:isDefinedBy : .

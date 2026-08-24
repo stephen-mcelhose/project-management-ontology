@@ -33,7 +33,7 @@ per change event, one Deliverable Status Report per reporting cycle.
 
 ## Documents (in dependency order)
 
-The phase manifest (`templates/execution/_manifest.yaml`) is the authoritative index.
+The phase manifest (`domains/pm/templates/execution/_manifest.yaml`) is the authoritative index.
 
 | Order | Document                  | Key question it answers                           |
 | ----- | ------------------------- | ------------------------------------------------- |
@@ -47,7 +47,7 @@ The phase manifest (`templates/execution/_manifest.yaml`) is the authoritative i
 ## How to Use the Artifact Files
 
 ```
-templates/execution/{document}/
+domains/pm/templates/execution/{document}/
   entry.yaml          ← metadata: standard citations, dependency chain
   instructions.yaml   ← ordered gates: what to ask, what to fill
   template.md         ← the output scaffold with {{placeholders}}
@@ -69,7 +69,7 @@ to fill a new instance without re-reading prior instances unless cross-referenci
 ## Shared Context
 
 `project_name` was captured in the Initiation Phase. Do not re-ask.
-See `templates/execution/_manifest.yaml` under `shared_context`.
+See `domains/pm/templates/execution/_manifest.yaml` under `shared_context`.
 
 ---
 

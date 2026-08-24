@@ -15,15 +15,16 @@ documents.
 **Key directories:**
 
 ```
-ontology/              ← OWL/Turtle ontology modules
-shapes/                ← SHACL validation shapes (per phase/document)
-templates/             ← Document template packs (entry.yaml, instructions.yaml, template.md)
-  {phase}/
-    _manifest.yaml     ← Phase index (single-read entry point for an agent)
-    {document}/
-      entry.yaml
-      instructions.yaml  ← gate sequence; validated by tools/schemas/instructions-schema.json
-      template.md
+domains/{domain}/      ← One domain pack; PM is the only one today (domains/pm/)
+  ontology/            ← OWL/Turtle ontology modules
+  shapes/              ← SHACL validation shapes (per phase/document)
+  templates/           ← Document template packs (entry.yaml, instructions.yaml, template.md)
+    {phase}/
+      _manifest.yaml   ← Phase index (single-read entry point for an agent)
+      {document}/
+        entry.yaml
+        instructions.yaml  ← gate sequence; validated by tools/schemas/instructions-schema.json
+        template.md
 tools/
   schemas/             ← JSON Schema files for artifact-layer files
     instructions-schema.json
@@ -123,11 +124,11 @@ ontology files, and ADRs are `chore` or `docs`.
 Every PM document has four files — do not create partial packs:
 
 ```
-templates/{phase}/{document}/
+domains/pm/templates/{phase}/{document}/
   entry.yaml           ← OKF frontmatter, dependency chain, ontology class
   instructions.yaml    ← ordered gates (id, prompt, fills, maps_to, required)
   template.md          ← Markdown scaffold with {{placeholders}}
-shapes/{phase}/{document}.shacl.ttl  ← SHACL validation shape
+domains/pm/shapes/{phase}/{document}.shacl.ttl  ← SHACL validation shape
 ```
 
 ### Ontology drift — keep templates and code in sync
@@ -136,11 +137,11 @@ Every gate in `instructions.yaml` has a `maps_to` field that must be a CURIE
 referencing a real OWL property (e.g. `pm:hasSponsor`, `dct:title`).
 
 **Rule: before adding or renaming a `maps_to` value, verify the property exists
-in the ontology (`ontology/modules/*.ttl`).** If it doesn't, add it there first.
+in the ontology (`domains/pm/ontology/modules/*.ttl`).** If it doesn't, add it there first.
 
 `make validate-schemas` resolves every `maps_to` CURIE against the loaded
 ontology graph and fails if a `pm:` property is missing. Run it after any
-change to `instructions.yaml` or `ontology/`.
+change to `instructions.yaml` or `domains/pm/ontology/`.
 
 Python lifecycle dataclasses in `agent/lifecycle/` map to OWL classes — the
 mapping is documented in each module's docstring and inline comments. If you
@@ -149,10 +150,10 @@ exists before inventing one. The classes are:
 
 | Python class    | OWL class       | File                            |
 | --------------- | --------------- | ------------------------------- |
-| `Gate`          | `pm:WorkflowStep` | `ontology/modules/workflow.ttl` |
-| `PhaseManifest` | `pm:Phase`      | `ontology/modules/phase.ttl`    |
-| `DocumentEntry` | `pm:Document`   | `ontology/modules/document.ttl` |
-| `ProjectManifest` | `pm:Project`  | `ontology/modules/project.ttl`  |
+| `Gate`          | `pm:WorkflowStep` | `domains/pm/ontology/modules/workflow.ttl` |
+| `PhaseManifest` | `pm:Phase`      | `domains/pm/ontology/modules/phase.ttl`    |
+| `DocumentEntry` | `pm:Document`   | `domains/pm/ontology/modules/document.ttl` |
+| `ProjectManifest` | `pm:Project`  | `domains/pm/ontology/modules/project.ttl`  |
 
 ### Phase manifests
 

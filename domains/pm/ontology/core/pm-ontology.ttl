@@ -1,0 +1,46 @@
+@prefix pm:   <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:  <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix proj: <https://linked.data.gov.au/def/project#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+
+# ── Ontology Declaration ───────────────────────────────────────────────────────
+
+<https://stephen-mcelhose.github.io/process-assistant/pm>
+    a owl:Ontology ;
+    owl:versionIRI <https://stephen-mcelhose.github.io/process-assistant/pm/0.1.0> ;
+    owl:versionInfo "0.1.0" ;
+    rdfs:label "Project Management Ontology"@en ;
+    rdfs:comment """A formal ontology for project management concepts.
+Upper layer: PROJ Ontology (PROV-O profile, CSIRO).
+Operational layer: pm: namespace, structured by DIN 69901 process groups,
+conceptual model informed by ProjectCO v2.0."""@en ;
+    dct:title "Project Management Ontology"@en ;
+    dct:description "Formalizes project, phase, task, milestone, role, resource, deliverable, risk, and decision concepts as linked data. Document templates are annotated to DIN 69901 lifecycle phases."@en ;
+    dct:created "2024-08-22"^^xsd:date ;
+    dct:license <https://creativecommons.org/licenses/by/4.0/> ;
+    vann:preferredNamespacePrefix "pm" ;
+    vann:preferredNamespaceUri "https://stephen-mcelhose.github.io/process-assistant/pm/" ;
+    # Upper layer: PROJ Ontology (CC-BY 4.0, CSIRO/Simon Cox)
+    # Vendored at domains/pm/ontology/vendor/proj.ttl — see ADR-001
+    owl:imports <https://linked.data.gov.au/def/project> ;
+    # Operational modules
+    owl:imports <../modules/project.ttl> ;
+    owl:imports <../modules/phase.ttl> ;
+    owl:imports <../modules/document.ttl> ;
+    owl:imports <../modules/package.ttl> ;
+    owl:imports <../modules/task.ttl> ;
+    owl:imports <../modules/milestone.ttl> ;
+    owl:imports <../modules/risk.ttl> ;
+    owl:imports <../modules/resource.ttl> ;
+    owl:imports <../modules/role.ttl> ;
+    owl:imports <../modules/deliverable.ttl> ;
+    owl:imports <../modules/workflow.ttl> ;
+    owl:imports <../modules/benefit.ttl> ;
+    owl:imports <../modules/requirement.ttl> .

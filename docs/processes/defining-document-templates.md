@@ -31,7 +31,7 @@ Issues in a Package milestone), parallelize by step, not by document:
   several documents adding fields to `pm:Project`). Running Step 2
   concurrently per-document — whether as separate agent sessions or just
   interleaved edits — risks duplicate or conflicting properties and
-  `ontology/modules/*.ttl` merge conflicts.
+  `domains/pm/ontology/modules/*.ttl` merge conflicts.
 - **Steps 3–4 (template + shape) parallelize again once the ontology is
   settled and `python tools/validate/validate.py` passes.**
 
@@ -39,7 +39,7 @@ Issues in a Package milestone), parallelize by step, not by document:
 
 ```bash
 git fetch origin
-git rebase origin/main          # worktrees can predate later ontology/prompt commits
+git rebase origin/main          # worktrees can predate later domains/pm/ontology/prompt commits
 ls .venv/bin/python 2>/dev/null || make install   # create the venv if missing
 ```
 
@@ -59,15 +59,15 @@ Issue filed
     │  no  → continue
     ▼
 3. Build the template pack
-      templates/{phase}/{document-name}/
+      domains/pm/templates/{phase}/{document-name}/
         entry.yaml          ← metadata + citations
         instructions.yaml   ← agent gates (how to fill)
         template.md         ← markdown scaffold
-      templates/{phase}/_manifest.yaml   ← create or update
+      domains/pm/templates/{phase}/_manifest.yaml   ← create or update
     │
     ▼
 4. Write the SHACL shape
-      shapes/{phase}/{document-name}.shacl.ttl
+      domains/pm/shapes/{phase}/{document-name}.shacl.ttl
     │
     ▼
 5. Verify — validate TTL, check all URLs return 200
@@ -84,7 +84,7 @@ Before writing a single line of template, read the real sources.
 
 ### 1a. Identify the ontology class
 
-Look up the document class in `ontology/modules/document.ttl`. Note:
+Look up the document class in `domains/pm/ontology/modules/document.ttl`. Note:
 - `pm:producedInPhase` — which phase it belongs to
 - `pm:hasHardDependency` — what must exist before this document
 - `dct:source` — which standard is cited
@@ -164,7 +164,7 @@ Common gaps to look for:
 
 ### If a gap exists
 
-1. Add the missing class or property to the relevant `ontology/modules/*.ttl`
+1. Add the missing class or property to the relevant `domains/pm/ontology/modules/*.ttl`
 2. Add `rdfs:label`, `rdfs:comment`, domain, range
 3. Add `rdfs:isDefinedBy :`
 4. Run `make validate` — must pass before continuing
@@ -178,17 +178,17 @@ ontology.
 
 ## Step 3 — Build the template pack
 
-Create the folder: `templates/{phase}/{document-name}/`
+Create the folder: `domains/pm/templates/{phase}/{document-name}/`
 
 Phase folder names match the DIN 69901 phase identifiers:
 
 | Phase | Folder |
 | ----- | ------ |
-| Initiation | `templates/initiation/` |
-| Planning | `templates/planning/` |
-| Execution | `templates/execution/` |
-| Monitoring & Control | `templates/monitoring-control/` |
-| Closure | `templates/closure/` |
+| Initiation | `domains/pm/templates/initiation/` |
+| Planning | `domains/pm/templates/planning/` |
+| Execution | `domains/pm/templates/execution/` |
+| Monitoring & Control | `domains/pm/templates/monitoring-control/` |
+| Closure | `domains/pm/templates/closure/` |
 
 ### 3a. `entry.yaml`
 
@@ -198,7 +198,7 @@ title: {Human Readable Title}
 phase: {phase}
 phase_order: {N}               # position within the phase
 
-ontology_class: https://stephen-mcelhose.github.io/project-management-ontology/{ClassName}
+ontology_class: https://stephen-mcelhose.github.io/process-assistant/pm/{ClassName}
 
 standard:
   name: ISO 21502:2020 — Guidance on project management
@@ -244,7 +244,7 @@ One gate per required or important field, in fill order. Each gate:
 
 The `type:` field declares the rendering shape of the gate's output. Valid
 values are defined as `pm:GateOutputType` named individuals in
-`ontology/modules/document.ttl`.
+`domains/pm/ontology/modules/document.ttl`.
 
 | `type:`      | Category | Description                                                        |
 |--------------|----------|--------------------------------------------------------------------|
@@ -338,7 +338,7 @@ document_class: pm:{ClassName}
 phase: {phase}
 standard: ISO 21502:2020
 prince2_equivalent: {Name}
-ontology_uri: https://stephen-mcelhose.github.io/project-management-ontology/{ClassName}
+ontology_uri: https://stephen-mcelhose.github.io/process-assistant/pm/{ClassName}
 status: draft
 ---
 
@@ -362,7 +362,7 @@ Rules for the scaffold:
 
 ## Step 3d — Update the phase manifest
 
-Every phase has a `_manifest.yaml` at `templates/{phase}/_manifest.yaml`
+Every phase has a `_manifest.yaml` at `domains/pm/templates/{phase}/_manifest.yaml`
 (see ADR-003). Update it to include this document:
 
 - **If this is the first document in a new phase:** create the manifest from
@@ -378,7 +378,7 @@ Every phase has a `_manifest.yaml` at `templates/{phase}/_manifest.yaml`
 
 ## Step 4 — Write the SHACL shape
 
-Create `shapes/{phase}/{document-name}.shacl.ttl`.
+Create `domains/pm/shapes/{phase}/{document-name}.shacl.ttl`.
 
 Minimum required constraints for every document shape:
 
@@ -416,7 +416,7 @@ Add document-specific constraints for every field that the standard marks
 as required or quality criteria.
 
 Add the SHACL primer comment block at the top of every shape file (copy from
-`shapes/initiation/project-proposal.shacl.ttl`).
+`domains/pm/shapes/initiation/project-proposal.shacl.ttl`).
 
 ---
 
@@ -431,7 +431,7 @@ python3 - << 'EOF'
 from rdflib import Graph, RDFS, URIRef
 import subprocess, sys
 g = Graph()
-g.parse("ontology/modules/document.ttl", format="turtle")
+g.parse("domains/pm/ontology/modules/document.ttl", format="turtle")
 urls = [str(o) for s, p, o in g if str(p) == str(RDFS.seeAlso)]
 for url in sorted(set(urls)):
     r = subprocess.run(["curl","-o","/dev/null","-s","-w","%{http_code}",url],
@@ -442,7 +442,7 @@ for url in sorted(set(urls)):
 EOF
 
 # 3. Template files exist and are non-empty
-ls -la templates/{phase}/{document-name}/
+ls -la domains/pm/templates/{phase}/{document-name}/
 
 # 4. instructions.yaml validates against the gate schema
 make validate-schemas
@@ -461,8 +461,8 @@ Replace the issue body with a completion record:
 ```markdown
 ## Completed
 
-Template pack built at `templates/{phase}/{document-name}/`.
-SHACL shape at `shapes/{phase}/{document-name}.shacl.ttl`.
+Template pack built at `domains/pm/templates/{phase}/{document-name}/`.
+SHACL shape at `domains/pm/shapes/{phase}/{document-name}.shacl.ttl`.
 
 ### Sources used
 - PRINCE2: [{product name}]({verified URL})

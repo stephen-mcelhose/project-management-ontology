@@ -1,0 +1,93 @@
+# instructions.yaml — Communication Plan
+#
+# Rules for an agent helping a user fill out the Communication Plan template.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# This is the INPUT side. The output is validated by:
+#   domains/pm/shapes/planning/communication-plan.shacl.ttl
+
+version: 1
+document: communication-plan
+
+gates:
+  - id: project_name
+    order: 1
+    type: string
+    prompt: "What is the name of this project? (Must match the Stakeholder Register.)"
+    fills: "# Communication Plan: {{project_name}}"
+    maps_to: dct:title
+    required: true
+
+  - id: communication_scope
+    order: 2
+    type: prose
+    prompt: "What is in scope for this Communication Plan? Which stakeholders and stakeholder groups are included? Are any explicitly excluded (e.g. internal-only communications)?"
+    fills: "## Scope"
+    maps_to: dct:description
+    required: true
+
+  - id: stakeholder_analysis
+    order: 3
+    type: section
+    prompt: "For each stakeholder or stakeholder group, identify: (a) their interest in the project, (b) their influence level (1=Low, 2=Medium, 3=High), (c) current engagement level, (d) desired engagement level."
+    fills: "## Stakeholder Analysis"
+    maps_to: pm:RoleAssignment
+    required: true
+    validation: "All stakeholders from the Stakeholder Register must appear. Engagement levels must be assigned."
+    validation_rules:
+      references_document: stakeholder-register
+
+  - id: communication_schedule
+    order: 4
+    type: table
+    prompt: "Define the communication schedule for each stakeholder group: what information they receive, how often, via what channel, and in what format. Create a table: Stakeholder | Information | Frequency | Channel | Format | Owner."
+    fills: "## Communication Schedule"
+    maps_to: pm:communicationApproach
+    required: true
+    validation: "Every stakeholder group must have at least one scheduled communication. Frequency must be stated (e.g. weekly, monthly, at stage gates)."
+
+  - id: communication_channels
+    order: 5
+    type: prose
+    prompt: "What communication channels and tools will be used? (e.g. email, MS Teams, Jira, project portal, face-to-face meetings, dashboards.) For sensitive information, confirm channels are appropriate (no confidential data via public channels)."
+    fills: "## Communication Channels and Tools"
+    required: true
+
+  - id: communication_responsibilities
+    order: 6
+    type: section
+    prompt: "Who is responsible for preparing, approving, and distributing each type of communication? Name the person or role for: status reports, stakeholder updates, escalations, and project-wide announcements."
+    fills: "## Responsibilities"
+    maps_to: pm:RoleAssignment
+    required: true
+
+  - id: feedback_procedures
+    order: 7
+    type: prose
+    prompt: "How can stakeholders provide feedback or raise concerns? What is the process for capturing and acting on stakeholder feedback? Who reviews it and how quickly?"
+    fills: "## Feedback Procedures"
+    required: true
+    validation: "Communication must be two-way. A plan that only describes outbound communication is incomplete."
+
+  - id: communication_standards
+    order: 8
+    type: prose
+    prompt: "What organizational or legal standards apply to project communications? (e.g. language requirements, branding guidelines, data protection/GDPR constraints, record-keeping obligations.)"
+    fills: "## Standards and Constraints"
+    required: false
+    deferred_value: "*Deferred — to be confirmed before phase completion.*"
+    guidance: "If no specific standards apply beyond normal organizational practices, state this explicitly."
+
+# Completion rule
+completion:
+  required_gates:
+    - project_name
+    - communication_scope
+    - stakeholder_analysis
+    - communication_schedule
+    - communication_channels
+    - communication_responsibilities
+    - feedback_procedures
+  output_status: draft
+  next_document: null    # final document in the Planning Package

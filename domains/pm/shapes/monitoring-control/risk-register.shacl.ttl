@@ -1,0 +1,140 @@
+# domains/pm/shapes/monitoring-control/risk-register.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Risk Register entry is "ingested" (converted from the filled template.md
+# into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:RiskRegister
+#     → "these rules apply to any node of type pm:RiskRegister"
+#
+#   sh:property [ sh:path dct:identifier ; sh:minCount 1 ]
+#     → "every RiskRegister instance must have at least one dct:identifier triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s domains/pm/shapes/monitoring-control/risk-register.shacl.ttl \
+#            -d path/to/my-risk-register.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix proj:  <https://linked.data.gov.au/def/project#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/process-assistant/pm/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:RiskRegisterShape
+    a sh:NodeShape ;
+
+    # Target: applies to any RDF node typed as pm:RiskRegister
+    sh:targetClass pm:RiskRegister ;
+
+    rdfs:label "Risk Register shape"@en ;
+    rdfs:comment "Validates that a filled Risk Register entry satisfies the minimum information requirements of ISO 21502:2020 §9 and the PRINCE2® Risk Register quality criteria."@en ;
+
+    # ── Required: entry identifier ───────────────────────────────────────────
+    # Maps to the {{entry_id}} slot (e.g. RISK-001). Unique per risk.
+    sh:property [
+        sh:path     dct:identifier ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 2 ;
+        sh:message  "A Risk Register entry must have a dct:identifier (e.g. RISK-001)."@en ;
+    ] ;
+
+    # ── Required: title ─────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Risk Register entry must have a dct:title."@en ;
+    ] ;
+
+    # ── Required: risk description ───────────────────────────────────────────
+    # Must follow the three-part cause/event/impact format.
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Risk Register entry must have a dct:description (risk description using cause/event/impact format)."@en ;
+    ] ;
+
+    # ── Required: likelihood (probability) ──────────────────────────────────
+    # Maps to {{probability}} — scale from the Risk Management Plan.
+    sh:property [
+        sh:path     pm:likelihood ;
+        sh:minCount 1 ;
+        sh:message  "A Risk Register entry must record the probability of the risk (pm:likelihood)."@en ;
+    ] ;
+
+    # ── Required: impact severity ────────────────────────────────────────────
+    # Maps to {{impact_severity}} — scale from the Risk Management Plan.
+    sh:property [
+        sh:path     pm:impact ;
+        sh:minCount 1 ;
+        sh:message  "A Risk Register entry must record the impact severity (pm:impact)."@en ;
+    ] ;
+
+    # ── Required: risk owner ─────────────────────────────────────────────────
+    sh:property [
+        sh:path     pm:riskOwner ;
+        sh:minCount 1 ;
+        sh:message  "A Risk Register entry must identify a named risk owner (pm:riskOwner)."@en ;
+    ] ;
+
+    # ── Required: response strategy ─────────────────────────────────────────
+    sh:property [
+        sh:path     pm:hasResponse ;
+        sh:minCount 1 ;
+        sh:message  "A Risk Register entry must record the response strategy (pm:hasResponse)."@en ;
+    ] ;
+
+    # ── Required: project link ───────────────────────────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Risk Register entry must reference the project via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Monitoring & Control phase ─────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/process-assistant/pm/phases/MonitoringControl> ;
+        sh:message  "A Risk Register entry must be linked to the Monitoring & Control phase."@en ;
+    ] ;
+
+    # ── Required: date identified ────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Risk Register entry must record the date the risk was identified (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator (who logged the risk) ──────────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Risk Register entry must identify who logged the risk (dct:creator)."@en ;
+    ] .

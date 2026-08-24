@@ -1,0 +1,164 @@
+# instructions.yaml — Change Request
+#
+# Rules for an agent helping a user fill out the Change Request template.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# This is the INPUT side. The output is validated by:
+#   domains/pm/shapes/execution/change-request.shacl.ttl
+#
+# PRINCE2 basis: Issue Report (Issue type = Request for Change / RFC)
+
+version: 1
+document: change-request
+
+gates:
+  - id: change_request_id
+    order: 1
+    type: identifier
+    prompt: "What is the unique identifier for this Change Request? (Must be consistent with the Issue Register, e.g. CR-001. If no register exists yet, use CR-NNN sequential numbering.)"
+    fills: "# Change Request: {{change_request_id}}"
+    maps_to: dct:identifier
+    required: true
+    validation: "Must be a unique identifier. Check the Issue Register for the next available number. Duplicate IDs cause traceability failures."
+    validation_rules:
+      unique: true
+
+  - id: issue_type
+    order: 2
+    type: string
+    prompt: "What is the type of this issue? Choose one: (1) Request for Change — propose modifying the project baseline; (2) Off-Specification — the product has not met its specification; (3) Problem/Concern — a general issue that does not fit the other categories."
+    fills: "## Issue Type"
+    maps_to: dct:description
+    required: true
+    validation: "Must be one of the three PRINCE2 issue types. This classification determines who has authority to approve the resolution."
+    validation_rules:
+      allowed_values: [Request for Change, Off-Specification, Problem or Concern]
+
+  - id: date_raised_and_by
+    order: 3
+    type: prose
+    prompt: "On what date was this Change Request raised, and by whom? Provide the date (YYYY-MM-DD) and the full name and role of the person raising it."
+    fills: "## Date Raised and Raised By"
+    maps_to: dct:created
+    required: true
+
+  - id: issue_description
+    order: 4
+    type: prose
+    prompt: "Provide a clear, objective description of the issue or proposed change. What is the current situation? What change is being proposed, and why?"
+    fills: "## Issue Description"
+    maps_to: dct:description
+    required: true
+    validation: "Must describe the current state (what exists now) and the proposed change (what is being requested). Avoid solution language in this section — that belongs in Recommended Options."
+
+  - id: impact_time
+    order: 5
+    type: prose
+    prompt: "What is the impact of this change on the project timeline? (State the number of days/weeks of schedule change, which milestones are affected, and whether a stage boundary is at risk.)"
+    fills: "## Impact Analysis / Time"
+    maps_to: pm:hasTolerance
+    required: true
+    guidance: "If impact is zero, state explicitly: 'No schedule impact.' A blank cell implies the assessment was not done."
+
+  - id: impact_cost
+    order: 6
+    type: prose
+    prompt: "What is the impact of this change on the project cost? (State the estimated additional or reduced cost, and whether the project budget tolerance is breached.)"
+    fills: "## Impact Analysis / Cost"
+    maps_to: pm:hasTolerance
+    required: true
+    guidance: "Reference the Cost Estimate and current project budget. If a tolerance breach is likely, this must be escalated to the Project Board."
+
+  - id: impact_quality
+    order: 7
+    type: prose
+    prompt: "What is the impact of this change on project quality? (State which quality criteria or Product Descriptions are affected and how.)"
+    fills: "## Impact Analysis / Quality"
+    maps_to: pm:hasTolerance
+    required: true
+
+  - id: impact_scope
+    order: 8
+    type: prose
+    prompt: "What is the impact of this change on the project scope? (State whether the change adds, removes, or modifies deliverables or objectives.)"
+    fills: "## Impact Analysis / Scope"
+    maps_to: pm:hasTolerance
+    required: true
+
+  - id: impact_benefits
+    order: 9
+    type: prose
+    prompt: "What is the impact of this change on the project benefits? (State whether the change increases, reduces, or defers the benefits stated in the Business Case.)"
+    fills: "## Impact Analysis / Benefits"
+    maps_to: pm:hasTolerance
+    required: true
+
+  - id: impact_risk
+    order: 10
+    type: section
+    prompt: "What risks does this change introduce or remove? For each risk: describe the risk, its likelihood, and impact."
+    fills: "## Impact Analysis / Risk"
+    maps_to: pm:hasRisk
+    required: true
+    guidance: "A change that reduces scope often introduces the risk of not achieving originally planned benefits. Always consider both directions."
+
+  - id: priority_severity
+    order: 11
+    type: prose
+    prompt: "What is the priority and severity of this Change Request? Priority = urgency of decision (High / Medium / Low). Severity = extent of impact if not addressed (Critical / Major / Minor)."
+    fills: "## Priority and Severity"
+    maps_to: pm:priority
+    required: true
+    validation: "Both priority and severity must be stated. They are independent dimensions — a Low priority change can still have Critical severity if unaddressed long-term."
+
+  - id: recommended_options
+    order: 12
+    type: list
+    prompt: "What options are available to address this Change Request? Provide at least two options (including 'do nothing') with the advantages and disadvantages of each, and state your recommendation."
+    fills: "## Recommended Options"
+    maps_to: dct:description
+    required: true
+    validation: "Must include at least two options. The recommended option must be clearly identified. 'Do nothing' must always be evaluated as a baseline option."
+    validation_rules:
+      min_items: 2
+
+  - id: decision
+    order: 13
+    type: prose
+    prompt: "What decision was made? (To be completed by the approving authority — Project Manager, Change Authority, or Project Board.) State the chosen option and any conditions attached."
+    fills: "## Decision"
+    maps_to: dct:description
+    required: false
+    deferred_value: "*Pending.*"
+    guidance: "Leave as '{{decision_pending}}' if the Change Request has not yet been decided. The agent must not fabricate a decision."
+
+  - id: decision_date
+    order: 14
+    type: prose
+    prompt: "What was the date the decision was made and, if applicable, the date the Change Request was formally closed?"
+    fills: "## Decision Date and Closure"
+    maps_to: dct:created
+    required: false
+    deferred_value: "*To be confirmed.*"
+    guidance: "Leave as TBD if awaiting decision. Closure date may differ from decision date if implementation is delayed."
+
+# Completion rule: a Change Request is draft-complete when impact analysis and
+# recommended options are filled. Decision fields may remain TBD until the
+# approving authority acts.
+completion:
+  required_gates:
+    - change_request_id
+    - issue_type
+    - date_raised_and_by
+    - issue_description
+    - impact_time
+    - impact_cost
+    - impact_quality
+    - impact_scope
+    - impact_benefits
+    - impact_risk
+    - priority_severity
+    - recommended_options
+  output_status: draft
+  next_document: quality-audit-report

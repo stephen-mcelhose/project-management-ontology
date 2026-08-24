@@ -1,0 +1,123 @@
+# domains/pm/shapes/planning/cost-estimate.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Cost Estimate is "ingested" (converted from the filled template.md
+# into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:CostEstimate
+#     → "these rules apply to any node of type pm:CostEstimate"
+#
+#   sh:property [ sh:path dct:title ; sh:minCount 1 ]
+#     → "every CostEstimate instance must have at least one dct:title triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s domains/pm/shapes/planning/cost-estimate.shacl.ttl \
+#            -d path/to/my-cost-estimate.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/process-assistant/pm/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:CostEstimateShape
+    a sh:NodeShape ;
+
+    sh:targetClass pm:CostEstimate ;
+
+    rdfs:label "Cost Estimate shape"@en ;
+    rdfs:comment "Validates that a filled Cost Estimate instance satisfies the minimum requirements of ISO 21502:2020 and the PRINCE2® Business Case (costs component) quality criteria."@en ;
+
+    # ── Required: title ─────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 3 ;
+        sh:message  "A Cost Estimate must have a dct:title (the project name)."@en ;
+    ] ;
+
+    # ── Required: description ────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Cost Estimate must have a dct:description."@en ;
+    ] ;
+
+    # ── Required: total budget ───────────────────────────────────────────────
+    # PRINCE2 Business Case quality criterion: costs must be comprehensive.
+    sh:property [
+        sh:path     pm:budget ;
+        sh:minCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:message  "A Cost Estimate must state the total project budget (pm:budget)."@en ;
+    ] ;
+
+    # ── Required: investment appraisal ──────────────────────────────────────
+    # PRINCE2 Business Case quality criterion: must demonstrate project value.
+    sh:property [
+        sh:path     pm:investmentAppraisal ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Cost Estimate must include an investment appraisal (pm:investmentAppraisal)."@en ;
+    ] ;
+
+    # ── Required: cost tolerance ─────────────────────────────────────────────
+    sh:property [
+        sh:path     pm:hasTolerance ;
+        sh:minCount 1 ;
+        sh:class    pm:Tolerance ;
+        sh:message  "A Cost Estimate must define a cost tolerance (pm:hasTolerance)."@en ;
+    ] ;
+
+    # ── Required: project link ──────────────────────────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Cost Estimate must reference the project it describes via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Planning phase ─────────────────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/process-assistant/pm/phases/Planning> ;
+        sh:message  "A Cost Estimate must be linked to the Planning phase."@en ;
+    ] ;
+
+    # ── Required: creation date ──────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Cost Estimate must record the date it was created (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator ────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Cost Estimate must identify its author (dct:creator)."@en ;
+    ] .

@@ -34,6 +34,7 @@ def validate(document_path: Path, shape_path: Path) -> ValidationResult:
         )
     try:
         import pyshacl
+        from rdflib.exceptions import ParserError
     except ImportError as exc:
         return ValidationResult(passed=False, messages=[f"pyshacl is not installed: {exc}"])
 
@@ -53,5 +54,5 @@ def validate(document_path: Path, shape_path: Path) -> ValidationResult:
             if line.strip() and not line.startswith("@")
         ]
         return ValidationResult(passed=False, messages=lines or [results_text])
-    except (OSError, ValueError, RuntimeError) as exc:
+    except (OSError, ValueError, RuntimeError, ParserError) as exc:
         return ValidationResult(passed=False, messages=[str(exc)])

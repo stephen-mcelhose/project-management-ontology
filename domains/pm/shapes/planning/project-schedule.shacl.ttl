@@ -1,0 +1,123 @@
+# domains/pm/shapes/planning/project-schedule.shacl.ttl
+#
+# SHACL PRIMER — what is this file?
+# ─────────────────────────────────
+# SHACL (Shapes Constraint Language, W3C 2017) defines rules that an RDF graph
+# must satisfy. Think of it as a type checker / schema validator for ontology data.
+#
+# When a Project Schedule is "ingested" (converted from the filled template.md
+# into RDF), this file is what tells us whether the RDF is valid.
+#
+# How to read a shape:
+#
+#   sh:targetClass pm:ProjectSchedule
+#     → "these rules apply to any node of type pm:ProjectSchedule"
+#
+#   sh:property [ sh:path dct:title ; sh:minCount 1 ]
+#     → "every ProjectSchedule instance must have at least one dct:title triple"
+#
+#   sh:message "..."
+#     → the error message a human sees when validation fails
+#
+# To run validation:
+#   pip install pyshacl
+#   pyshacl -s domains/pm/shapes/planning/project-schedule.shacl.ttl \
+#            -d path/to/my-project-schedule.ttl
+#
+# ── Prefixes ──────────────────────────────────────────────────────────────────
+
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix pm:    <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix pm-sh: <https://stephen-mcelhose.github.io/process-assistant/pm/shapes/> .
+
+# ── Shape definition ──────────────────────────────────────────────────────────
+
+pm-sh:ProjectScheduleShape
+    a sh:NodeShape ;
+
+    sh:targetClass pm:ProjectSchedule ;
+
+    rdfs:label "Project Schedule shape"@en ;
+    rdfs:comment "Validates that a filled Project Schedule instance satisfies the minimum requirements of ISO 21502:2020 and the PRINCE2® Plan (schedule component) quality criteria."@en ;
+
+    # ── Required: title ─────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:title ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 3 ;
+        sh:message  "A Project Schedule must have a dct:title (the project name)."@en ;
+    ] ;
+
+    # ── Required: description ────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:description ;
+        sh:minCount 1 ;
+        sh:datatype xsd:string ;
+        sh:message  "A Project Schedule must have a dct:description."@en ;
+    ] ;
+
+    # ── Required: planned start date ─────────────────────────────────────────
+    sh:property [
+        sh:path     pm:plannedStartDate ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Project Schedule must have a planned start date (pm:plannedStartDate)."@en ;
+    ] ;
+
+    # ── Required: planned end date ───────────────────────────────────────────
+    sh:property [
+        sh:path     pm:plannedEndDate ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Project Schedule must have a planned end date (pm:plannedEndDate)."@en ;
+    ] ;
+
+    # ── Required: at least one milestone ────────────────────────────────────
+    sh:property [
+        sh:path     pm:hasMilestone ;
+        sh:minCount 1 ;
+        sh:class    pm:Milestone ;
+        sh:message  "A Project Schedule must define at least one milestone (pm:hasMilestone)."@en ;
+    ] ;
+
+    # ── Required: project link ──────────────────────────────────────────────
+    sh:property [
+        sh:path     pm:describesProject ;
+        sh:minCount 1 ;
+        sh:class    pm:Project ;
+        sh:message  "A Project Schedule must reference the project it describes via pm:describesProject."@en ;
+    ] ;
+
+    # ── Required: produced in Planning phase ─────────────────────────────────
+    sh:property [
+        sh:path     pm:producedInPhase ;
+        sh:minCount 1 ;
+        sh:hasValue <https://stephen-mcelhose.github.io/process-assistant/pm/phases/Planning> ;
+        sh:message  "A Project Schedule must be linked to the Planning phase."@en ;
+    ] ;
+
+    # ── Required: creation date ──────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:created ;
+        sh:minCount 1 ;
+        sh:datatype xsd:date ;
+        sh:message  "A Project Schedule must record the date it was created (dct:created)."@en ;
+    ] ;
+
+    # ── Required: creator ────────────────────────────────────────────────────
+    sh:property [
+        sh:path     dct:creator ;
+        sh:minCount 1 ;
+        sh:message  "A Project Schedule must identify its author (dct:creator)."@en ;
+    ] .

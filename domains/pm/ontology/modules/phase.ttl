@@ -1,0 +1,102 @@
+@prefix :      <https://stephen-mcelhose.github.io/process-assistant/pm/> .
+@prefix phases: <https://stephen-mcelhose.github.io/process-assistant/pm/phases/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov:  <http://www.w3.org/ns/prov#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+
+# ── Phase Module ───────────────────────────────────────────────────────────────
+# Defines the project lifecycle using DIN 69901 process groups (open standard).
+# :Phase is a class for actual phase instances in a specific project.
+# :PhaseType is a controlled vocabulary of the five DIN 69901 process groups.
+# Document templates carry :producedInPhase to link them to a phase.
+# See ADR-001 for rationale.
+
+# ── Phase (class for project-specific phase instances) ────────────────────────
+
+:Phase
+    a owl:Class ;
+    rdfs:subClassOf prov:Activity ;
+    rdfs:label "Phase"@en ;
+    rdfs:comment "A named, time-bounded stage within a specific project's lifecycle."@en ;
+    rdfs:isDefinedBy : .
+
+:phaseType
+    a owl:ObjectProperty ;
+    rdfs:domain :Phase ;
+    rdfs:range :PhaseType ;
+    rdfs:label "phase type"@en ;
+    rdfs:comment "Classifies this phase instance as one of the DIN 69901 process groups."@en ;
+    rdfs:isDefinedBy : .
+
+:phaseOrder
+    a owl:DatatypeProperty ;
+    rdfs:domain :Phase ;
+    rdfs:range xsd:integer ;
+    rdfs:label "phase order"@en ;
+    rdfs:comment "Sequential position of this phase within the project (1 = first)."@en ;
+    rdfs:isDefinedBy : .
+
+# ── PhaseType (DIN 69901 controlled vocabulary) ───────────────────────────────
+
+:PhaseType
+    a owl:Class ;
+    rdfs:label "Phase Type"@en ;
+    rdfs:comment "A DIN 69901 process group, used as a controlled vocabulary for classifying project phases."@en ;
+    rdfs:isDefinedBy : .
+
+# ── DIN 69901 phase instances ─────────────────────────────────────────────────
+
+phases:Initiation
+    a :PhaseType ;
+    rdfs:label "Initiation"@en ;
+    skos:definition "The project is formally authorized; high-level scope, objectives, and stakeholders are identified."@en ;
+    skos:notation "1" ;
+    dct:source <https://www.din.de/en/din-and-our-partners/press/press-releases/din-69901> ;
+    rdfs:isDefinedBy : .
+
+phases:Planning
+    a :PhaseType ;
+    rdfs:label "Planning"@en ;
+    skos:definition "Project scope is refined and the plan for achieving objectives is established, including schedule, budget, resource, risk, and communication plans."@en ;
+    skos:notation "2" ;
+    dct:source <https://www.din.de/en/din-and-our-partners/press/press-releases/din-69901> ;
+    rdfs:isDefinedBy : .
+
+phases:Execution
+    a :PhaseType ;
+    rdfs:label "Execution"@en ;
+    skos:definition "Work defined in the project plan is performed and deliverables are produced."@en ;
+    skos:notation "3" ;
+    dct:source <https://www.din.de/en/din-and-our-partners/press/press-releases/din-69901> ;
+    rdfs:isDefinedBy : .
+
+phases:MonitoringControl
+    a :PhaseType ;
+    rdfs:label "Monitoring & Control"@en ;
+    skos:definition "Ongoing measurement and oversight tracks project performance, identifies variances, and triggers corrective actions."@en ;
+    skos:notation "4" ;
+    dct:source <https://www.din.de/en/din-and-our-partners/press/press-releases/din-69901> ;
+    rdfs:isDefinedBy : .
+
+phases:Closure
+    a :PhaseType ;
+    rdfs:label "Closure"@en ;
+    skos:definition "The project is formally closed: deliverables are accepted, lessons are documented, and resources are released."@en ;
+    skos:notation "5" ;
+    dct:source <https://www.din.de/en/din-and-our-partners/press/press-releases/din-69901> ;
+    rdfs:isDefinedBy : .
+
+# ── Document template annotation ──────────────────────────────────────────────
+
+:producedInPhase
+    a owl:ObjectProperty ;
+    rdfs:domain foaf:Document ;
+    rdfs:range :PhaseType ;
+    rdfs:label "produced in phase"@en ;
+    rdfs:comment "The DIN 69901 phase in which this document is typically produced. Applied directly to foaf:Document subclasses — no intermediate pm:Document needed."@en ;
+    rdfs:isDefinedBy : .

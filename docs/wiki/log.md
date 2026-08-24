@@ -156,3 +156,14 @@ Left as-is:
 - `AGENTS.md` example path `relative/path/to/page.md` is a convention sample, not a dead link
 - Research-page `timestamp` values from 2024 are ingest dates
 - OWL IRIs on `github.io/project-management-ontology/` are identity, not the git remote
+
+## [2026-08-23] ingest | ADR-009 revised — namespace rebased, domains/pm/ adopted
+
+Supersedes the "IRIs are identity, leave them" note above. ADR-009 now rebases
+the PM namespace to `github.io/process-assistant/pm/` (one base per domain) and
+moves `ontology/`, `shapes/`, `templates/` under `domains/pm/`. Rationale: no
+external consumer dereferences these IRIs, so the rewrite is a one-time
+in-repo edit rather than a compatibility break.
+
+Wiki pages touched: `glossary.md` (Process Assistant entry — namespace wording
+and `domains/pm/shapes/` path).

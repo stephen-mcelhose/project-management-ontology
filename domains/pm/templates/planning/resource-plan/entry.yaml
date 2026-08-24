@@ -1,0 +1,26 @@
+id: resource-plan
+title: Resource Plan
+phase: planning
+phase_order: 4         # resource baseline; depends on the project schedule
+
+ontology_class: https://stephen-mcelhose.github.io/process-assistant/pm/ResourcePlan
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Plan (resource planning component)
+  url: https://prince2.wiki/management-products/baselines/plan/
+package: pkgs:PlanningPackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - project-schedule         # must exist before the Resource Plan can be produced
+required_before:
+  - cost-estimate            # CostEstimate depends on ResourcePlan
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/planning/resource-plan.shacl.ttl

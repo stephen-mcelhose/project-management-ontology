@@ -11,11 +11,12 @@ against SHACL, emit documents.
 _Avoid_: Project Management Ontology (as the product name)
 
 **Domain**:
-One ontology + SHACL + template-pack set the assistant can load (today: PM).
+One ontology + SHACL + template-pack set the assistant can load, living under
+`domains/{name}/` (today: `domains/pm/`).
 _Avoid_: calling the whole repo "the ontology"
 
 **pm: namespace**:
 The PM OWL namespace
-`https://stephen-mcelhose.github.io/project-management-ontology/`. Historical
-GitHub Pages path; not renamed with the git repo.
-_Avoid_: treating that URL as the current GitHub repo name
+`https://stephen-mcelhose.github.io/process-assistant/pm/`. One base per
+domain; the `/pm/` segment mirrors `domains/pm/`.
+_Avoid_: dropping the `/pm/` segment, or reusing this base for another domain

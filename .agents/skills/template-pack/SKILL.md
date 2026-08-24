@@ -6,8 +6,8 @@ description: >
   (entry.yaml + instructions.yaml + template.md) whose field names, gate structure,
   placeholder syntax, and section layout exactly match the references. The skill is
   domain-agnostic — it reads all conventions from the workspace, never assumes them.
-  Default output: templates/{namespace}/{slug}/ (namespace derived from the ontology class
-  prefix, e.g. okf:POCStepEvidence → templates/okf/poc-step-evidence-01-discovery/).
+  Default output: domains/{namespace}/templates/{slug}/ (namespace derived from the ontology class
+  prefix, e.g. okf:POCStepEvidence → domains/okf/templates/poc-step-evidence-01-discovery/).
   Trigger on: "/template-pack", "create a template pack for", "generate a template for",
   "add a template pack", "write a document template", "scaffold a gate template".
 version: "1.0.0"
@@ -44,15 +44,15 @@ Gather these before starting. Ask with `AskUserQuestion` if missing.
 | Ontology file path | Recommended | Path to the OWL/Turtle file so `maps_to` CURIEs can be verified. |
 | Standard or source URL | Recommended | URL of the specification or process framework to derive gate prompts from. Fetched in Step 3. |
 | Dependencies | Optional | Slugs of packs this one depends on (comma-separated). |
-| Output directory | Optional | Explicit parent directory override. If omitted, defaults to `templates/{namespace}/` where `{namespace}` is the class prefix. |
+| Output directory | Optional | Explicit parent directory override. If omitted, defaults to `domains/{namespace}/templates/` where `{namespace}` is the class prefix. |
 | Phase or category | Recommended | Grouping label used in entry.yaml (e.g. `discovery`, `feasibility`). |
 
 ### Default output path derivation
 
 Given class CURIE `okf:POCStepEvidence` and slug `poc-step-evidence-01-discovery`:
 - Namespace: `okf`
-- Default output directory: `templates/okf/`
-- Default pack directory: `templates/okf/poc-step-evidence-01-discovery/`
+- Default output directory: `domains/okf/templates/`
+- Default pack directory: `domains/okf/templates/poc-step-evidence-01-discovery/`
 
 If the output directory does not exist, create it. If an explicit output directory is given,
 use it instead.
@@ -165,7 +165,7 @@ State the cross-check result explicitly before writing any file.
 Use the field names, order, and value conventions from the reference packs. Include every
 field present in both references. Omit fields present in only one reference if they are
 clearly domain-specific to that pack. Set `shacl_shape` to the expected default path
-(`shapes/{namespace}/{slug}.shacl.ttl`) — note it as pending if the shape does not yet exist.
+(`domains/{namespace}/shapes/{slug}.shacl.ttl`) — note it as pending if the shape does not yet exist.
 
 ---
 

@@ -1,0 +1,104 @@
+# instructions.yaml — Cost Estimate
+#
+# Rules for an agent helping a user fill out the Cost Estimate template.
+# Each gate is a question or check the agent must complete before moving on.
+# Gates are ordered: earlier gates must be resolved before later ones.
+#
+# This is the INPUT side. The output is validated by:
+#   domains/pm/shapes/planning/cost-estimate.shacl.ttl
+
+version: 1
+document: cost-estimate
+
+gates:
+  - id: project_name
+    order: 1
+    type: string
+    prompt: "What is the name of this project? (Must match the Project Charter and Resource Plan.)"
+    fills: "# Cost Estimate: {{project_name}}"
+    maps_to: dct:title
+    required: true
+
+  - id: cost_estimate_description
+    order: 2
+    type: prose
+    prompt: "Briefly describe the scope of this Cost Estimate. What cost categories are included (labour, materials, licences, contingency, operational costs)?"
+    fills: "## Overview"
+    maps_to: dct:description
+    required: true
+
+  - id: cost_breakdown
+    order: 3
+    type: table
+    prompt: "Provide the cost breakdown by work package or project phase. For each line item: work package or phase name, cost type (labour/material/other), estimated cost, and basis of estimate."
+    fills: "## Cost Breakdown"
+    required: true
+    validation: "Every work package from the WBS must have at least a high-level cost estimate. Basis of estimate must be stated (analogous, parametric, bottom-up, or expert judgement)."
+
+  - id: labour_costs
+    order: 4
+    type: table
+    prompt: "What are the total labour costs? Calculate from the Resource Plan: for each role, multiply cost rate × estimated hours. Provide a summary table."
+    fills: "## Labour Costs"
+    maps_to: pm:costRate
+    required: true
+
+  - id: total_budget
+    order: 5
+    type: string
+    prompt: "What is the total approved project budget (sum of all cost categories)? State the currency."
+    fills: "## Total Project Budget"
+    maps_to: pm:budget
+    required: true
+    validation: "Must be a numeric value with a stated currency (e.g. €120,000)."
+    validation_rules:
+      format: currency
+
+  - id: contingency_budget
+    order: 6
+    type: prose
+    prompt: "What contingency or risk reserve has been set aside? State the amount and the percentage of the base estimate it represents. What cost tolerance is permitted before escalation?"
+    fills: "## Contingency and Cost Tolerance"
+    maps_to: pm:hasTolerance
+    required: true
+    guidance: "Typical contingency is 5–15% of base estimate depending on project risk level."
+
+  - id: operational_costs
+    order: 7
+    type: table
+    prompt: "What ongoing operational and maintenance costs will the project create after delivery? (e.g. hosting, licences, support.) These are not project costs but must be declared for the Business Case."
+    fills: "## Post-Delivery Operational Costs"
+    required: true
+    guidance: "Even if zero, this must be explicitly stated. Omitting post-delivery costs is a common Business Case failure."
+
+  - id: investment_appraisal
+    order: 8
+    type: prose
+    prompt: "Provide the investment appraisal summary: compare total project costs against expected benefits. Include the preferred appraisal metric (ROI, payback period, or net present value) and the result."
+    fills: "## Investment Appraisal"
+    maps_to: pm:investmentAppraisal
+    required: true
+    validation: "Must reference the expected benefits from the Business Case. A cost estimate without a benefit comparison is incomplete."
+
+  - id: cost_assumptions
+    order: 9
+    type: list
+    prompt: "What assumptions underpin the cost estimates? (e.g. exchange rates, day rates fixed at time of estimate, vendor quotes valid for 30 days.)"
+    fills: "## Cost Assumptions"
+    maps_to: pm:hasAssumption
+    required: true
+
+# Completion rule
+completion:
+  required_gates:
+    - project_name
+    - cost_estimate_description
+    - cost_breakdown
+    - labour_costs
+    - total_budget
+    - contingency_budget
+    - operational_costs
+    - investment_appraisal
+    - cost_assumptions
+  output_status: draft
+  next_document: risk-management-plan

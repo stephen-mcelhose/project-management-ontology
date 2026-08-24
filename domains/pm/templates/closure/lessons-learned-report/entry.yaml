@@ -1,0 +1,26 @@
+id: lessons-learned-report
+title: Lessons Learned Report
+phase: closure
+phase_order: 3         # third document produced in the closure phase
+
+ontology_class: https://stephen-mcelhose.github.io/process-assistant/pm/LessonsLearnedReport
+
+# Grounding
+standard:
+  name: ISO 21502:2020 — Guidance on project management
+  url: https://www.iso.org/standard/74947.html
+prince2_equivalent:
+  name: Lessons Report
+  url: https://prince2.wiki/management-products/reports/lessons-report/
+package: pkgs:ClosurePackage
+
+# Dependency chain (pm:hasHardDependency)
+dependencies:
+  - issue-log       # cross-phase: from Monitoring & Control
+  - risk-register   # cross-phase: from Monitoring & Control
+required_before: []   # terminal — no further closure documents depend on this
+
+# Template files
+template: template.md
+instructions: instructions.yaml
+shacl_shape: ../../../shapes/closure/lessons-learned-report.shacl.ttl

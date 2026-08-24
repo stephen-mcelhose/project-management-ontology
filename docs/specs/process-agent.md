@@ -95,7 +95,7 @@ side effects at collection time.
 ### 4.1 Phase ordering
 
 The agent MUST navigate phases in the order declared by
-`templates/_project-manifest.yaml`. If that file does not exist, the agent
+`{templates_dir}/_project-manifest.yaml`. If that file does not exist, the agent
 MUST fail with a descriptive error listing the expected path.
 
 ### 4.2 Document ordering
@@ -250,7 +250,7 @@ python -m agent [OPTIONS]
 
 | Flag              | Default                      | Description                              |
 | ----------------- | ---------------------------- | ---------------------------------------- |
-| `--templates-dir` | `templates/`                 | Root of the template artifact layer      |
+| `--templates-dir` | `domains/pm/templates/`      | Root of the template artifact layer      |
 | `--output-dir`    | `output/`                    | Where filled documents are written       |
 | `--session`       | `{output_dir}/.session.json` | Override session file path               |
 | `--one-shot`      | —                            | Non-interactive: single prompt then exit |

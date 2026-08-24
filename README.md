@@ -6,8 +6,8 @@ and [OWL 2](https://www.w3.org/TR/owl2-overview/), document templates with
 [OKF frontmatter](https://okfn.org/), and gate-driven workflow tooling.
 
 GitHub: [stephen-mcelhose/process-assistant](https://github.com/stephen-mcelhose/process-assistant).
-OWL IRIs remain `https://stephen-mcelhose.github.io/project-management-ontology/`
-(see [ADR-009](docs/adrs/adr-009-repository-rename.md)).
+PM vocabulary IRIs are based at `https://stephen-mcelhose.github.io/process-assistant/pm/`
+— one base per domain (see [ADR-009](docs/adrs/adr-009-repository-rename.md)).
 
 ## Vision
 
@@ -34,14 +34,14 @@ any structured process — is built from two distinct and separable layers:
 An ontology defines the vocabulary: what a `Risk` is, what properties a
 `ProjectCharter` has, what `pm:hasSponsor` means, how a `Gate` relates to a
 `Phase`. It is a schema for concepts, not a script for behaviour. The OWL/Turtle
-files in `ontology/` are this layer.
+files in `domains/pm/ontology/` are this layer.
 
 **Layer 2 — the steps** answers *"what happens, and when?"*
 
 A workflow layer defines the process: which gates must be completed before a
 document is draft-complete, what format is required for each answer, who must
 approve before the next phase begins, what triggers the transition. The
-`instructions.yaml` and `_manifest.yaml` files in `templates/` are this layer.
+`instructions.yaml` and `_manifest.yaml` files in `domains/pm/templates/` are this layer.
 
 These two layers are complementary. The ontology does not know about sequence.
 The workflow does not know about semantics. Together they define a
@@ -53,7 +53,7 @@ Once you see the layers separately, you see that the workflow layer can be
 expressed in many ways. The `_manifest.yaml` gate sequences are structurally
 identical to a GitHub Actions workflow:
 
-| Concept in `templates/`              | Concept in GitHub Actions               |
+| Concept in `domains/pm/templates/`   | Concept in GitHub Actions               |
 | ------------------------------------ | --------------------------------------- |
 | `pm:Phase`                           | A workflow file                         |
 | `pm:Document`                        | A job                                   |
@@ -65,7 +65,7 @@ identical to a GitHub Actions workflow:
 | `completion.transition_condition`    | Phase-gate job + environment approval   |
 | `next_phase: planning`               | `createWorkflowDispatch` at the end     |
 
-The ontology layer (`ontology/*.ttl`) has no equivalent in GitHub Actions —
+The ontology layer (`domains/pm/ontology/*.ttl`) has no equivalent in GitHub Actions —
 it holds the semantic meaning that the workflow engine operates on but does
 not understand. That is the point: the engine is generic; the domain is
 pluggable.
@@ -87,21 +87,27 @@ the Project Proposal gate sequence via GitHub Issue comments.
 ## Structure
 
 ```
-ontology/
-├── core/           # Root ontology — imports and binds modules
-├── modules/        # Domain modules: project, task, milestone, risk, resource, role, deliverable, workflow
-├── imports/        # Cached copies of imported base ontologies
-└── shapes/         # SHACL constraint shapes
+domains/pm/         # The PM domain pack — one directory per domain
+├── ontology/
+│   ├── core/       # Root ontology — imports and binds modules
+│   ├── modules/    # Domain modules: project, task, milestone, risk, resource, role, deliverable, workflow
+│   └── vendor/     # Pinned copies of imported base ontologies
+├── shapes/         # SHACL constraint shapes, per phase
+└── templates/      # Template packs with OKF frontmatter, per phase
 
-docs/
-├── wiki/           # LLM-wiki knowledge base (llm-wiki skill)
-└── templates/      # Document templates with OKF frontmatter
+agent/              # Domain-agnostic process agent (ADK)
+├── lifecycle/      # Gates, manifests, session state
+└── tools/          # Agent tools: gates, write, validate
 
 tools/
+├── schemas/        # JSON Schema for the artifact layer
 ├── visualize/      # Visualization scripts (Widoco, OWLViz, Graphviz)
 └── validate/       # Validation scripts (SHACL, RDFLib)
 
-workflows/          # Derived workflow definitions
+docs/
+├── adrs/           # Architectural Decision Records
+├── prompts/        # Phase agent prompt scaffolds
+└── wiki/           # LLM-wiki knowledge base (llm-wiki skill)
 ```
 
 ## Quickstart
@@ -125,7 +131,7 @@ make wiki-lint
 make agent-run
 # or directly:
 set -a && source .env && set +a
-python -m agent --templates-dir templates/ --output-dir output/
+python -m agent --templates-dir domains/pm/templates/ --output-dir output/
 ```
 
 Start with the phase and document you want — e.g. *"I want to create a Project Proposal"* — and the agent walks you through the gates, capturing anything you volunteer along the way.
